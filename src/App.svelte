@@ -1,7 +1,8 @@
-<script lang="ts">
+<script>
+  import Header from "./components/Header.svelte";
+  import { warrior_display } from "./game/skills";
+
+  console.log(warrior_display);
 </script>
 
-<main />
-
-<style>
-</style>
+<Header />
