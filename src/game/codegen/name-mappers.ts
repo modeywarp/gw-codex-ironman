@@ -31,5 +31,5 @@ export function toNormalized(str: string) {
 }
 
 export function toIcon(str: string) {
-  return toNormalized(str) + ".jpg";
+  return toNormalized(str) + ".webp";
 }
