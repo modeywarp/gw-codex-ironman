@@ -16,13 +16,24 @@ for (const icon of icons) {
       icons_dir,
       icon
         .replace("32px-", "")
+        .replace("100px", "")
         .replace("_-large", "")
-        .replaceAll("_", " ")
-        .replace("-s ", "'s")
-        .replace("'s", "'s ")
         .replace("-.jpg", ".jpg")
+        .replaceAll("_", " ")
+        .replaceAll("-s ", "'s")
+        .replaceAll("'s", "s ")
         .replaceAll("  ", " ")
-        .replace("-", "")
+        .replaceAll("-", "")
+        .replaceAll("_", " ")
+        .replaceAll('"', "")
+        .replaceAll("'", "")
+        .replaceAll("!", "")
+        .replaceAll(",", "")
+        .replaceAll(".jpg", "##jpg##")
+        .replaceAll(".", "")
+        .replaceAll("##jpg##", ".jpg")
+        .toLowerCase()
+        .trim()
     )
   );
 }

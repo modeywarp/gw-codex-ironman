@@ -1,6 +1,20 @@
 <script lang="ts">
-  import store_campaign from "../stores/campaign";
-  import store_outposts from "../stores/outposts";
+  import store_outposts, { store_selected_outpost } from "../stores/outposts";
+  import {
+    store_available_secondary_professions,
+    store_character_name,
+    store_primary_profession,
+    store_secondary_profession,
+  } from "../stores/character";
+  import { all_professions } from "../game/professions";
+  import { refreshBuildsStore } from "../stores/builds";
+  import { store_campaign } from "../stores/campaign";
+
+  $: display_outposts = $store_character_name.length > 0;
+
+  function onSubmitGenerateSkillset() {
+    refreshBuildsStore();
+  }
 </script>
 
 <header>
@@ -14,7 +28,7 @@
     >
     <button
       class:active={$store_campaign == "Prophecy"}
-      on:click={() => store_campaign.set("Prophecy")}>Prophecy+Gwen</button
+      on:click={() => store_campaign.set("Prophecy")}>Prophecy</button
     >
     <button
       class:active={$store_campaign == "Faction"}
@@ -24,47 +38,55 @@
       class:active={$store_campaign == "Nightfall"}
       on:click={() => store_campaign.set("Nightfall")}>Nightfall</button
     >
+    <button
+      class:active={$store_campaign == "Gwen"}
+      on:click={() => store_campaign.set("Gwen")}>GWEN</button
+    >
   </div>
 
   <div class="actions">
-    <input type="text" placeholder="Character name" />
-    <select name="primary-profession">
-      <option value="warrior">Warrior</option>
-      <option value="ranger">Ranger</option>
-      <option value="elementalist">Elementalist</option>
-      <option value="monk">Monk</option>
-      <option value="mesmer">Mesmer</option>
-      <option value="assassin">Assassin</option>
-      <option value="ritualist">Ritualist</option>
-      <option value="dervish">Dervish</option>
-      <option value="paragon">Paragon</option>
-    </select>
-    <select name="secondary-profession">
-      <option value="none">None</option>
-      <option value="warrior">Warrior</option>
-      <option value="ranger">Ranger</option>
-      <option value="elementalist">Elementalist</option>
-      <option value="monk">Monk</option>
-      <option value="mesmer">Mesmer</option>
-      <option value="assassin">Assassin</option>
-      <option value="ritualist">Ritualist</option>
-      <option value="dervish">Dervish</option>
-      <option value="paragon">Paragon</option>
-    </select>
-    <hr class="spacer" />
-    <select name="outpost">
-      {#each $store_outposts as region}
-        <optgroup label={region.name}>
-          {#each region.outposts as outpost}
-            <option value={outpost.link}>{outpost.name}</option>
-          {/each}
-        </optgroup>
+    <input
+      type="text"
+      placeholder="Character name"
+      bind:value={$store_character_name}
+    />
+    <select name="primary-profession" bind:value={$store_primary_profession}>
+      {#each all_professions as profession}
+        <option value={profession}>{profession}</option>
       {/each}
     </select>
+    <select
+      name="secondary-profession"
+      bind:value={$store_secondary_profession}
+    >
+      {#each $store_available_secondary_professions as profession}
+        <option value={profession}>{profession}</option>
+      {/each}
+    </select>
+    {#if display_outposts}
+      <hr class="spacer" />
+      <select name="outpost" bind:value={$store_selected_outpost}>
+        {#each $store_outposts as region}
+          <optgroup label={region.name}>
+            {#each region.outposts as outpost}
+              <option value={outpost.link}>{outpost.name}</option>
+            {/each}
+          </optgroup>
+        {/each}
+      </select>
+      <button on:click={onSubmitGenerateSkillset}>Generate skillset</button>
+    {/if}
   </div>
 </header>
 
 <style>
+  header {
+    padding: 2em;
+    background: white;
+    box-shadow: 0px 6px 12px rgba(20, 20, 20, 0.2);
+    margin-bottom: 2em;
+  }
+
   .actions,
   .title {
     display: flex;
@@ -88,5 +110,9 @@
   .active {
     background: #646cff;
     color: white;
+  }
+
+  select {
+    text-transform: capitalize;
   }
 </style>

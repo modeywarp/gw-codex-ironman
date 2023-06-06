@@ -1,12 +1,12 @@
 import { writable } from "svelte/store";
 
 import * as outposts from "../game/outposts";
-import campaign_store from "./campaign";
+import { store_campaign } from "./campaign";
 
 const STORE = writable<outposts.RegionDatabase>(outposts.pre_searing);
 export default STORE;
 
-campaign_store.subscribe((campaign) => {
+store_campaign.subscribe((campaign) => {
   switch (campaign) {
     case "Pre-Searing":
       STORE.set(outposts.pre_searing);
@@ -22,3 +22,7 @@ campaign_store.subscribe((campaign) => {
       break;
   }
 });
+
+export const store_selected_outpost = writable<outposts.Outpost>(
+  outposts.pre_searing[0].outposts[0]
+);
