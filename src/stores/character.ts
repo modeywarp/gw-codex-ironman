@@ -4,11 +4,26 @@ import {
   type Profession,
   type SecondaryProfession,
 } from "../game/professions";
-import { refreshBuildsStore } from "./builds";
+import {
+  getCharacterNameLs,
+  setCharacterNameLs,
+} from "../localstorage/character_name";
+import {
+  getCharacterPrimaryProfessionLs,
+  setCharacterPrimaryProfessionLs,
+} from "../localstorage/character_primary_prof";
+import {
+  getCharacterSecondaryProfessionLs,
+  setCharacterSecondaryProfessionLs,
+} from "../localstorage/character_secondary_prof";
 
-export const store_character_name = writable("");
-export const store_primary_profession = writable<Profession>("warrior");
-export const store_secondary_profession = writable<SecondaryProfession>("none");
+export const store_character_name = writable(getCharacterNameLs());
+export const store_primary_profession = writable<Profession>(
+  getCharacterPrimaryProfessionLs()
+);
+export const store_secondary_profession = writable<SecondaryProfession>(
+  getCharacterSecondaryProfessionLs()
+);
 export const store_available_secondary_professions = writable<
   SecondaryProfession[]
 >([]);
@@ -18,6 +33,10 @@ store_primary_profession.subscribe((p) => {
     getAvailableSecondaryProfessions(p)
   );
 });
+
+store_character_name.subscribe(setCharacterNameLs);
+store_primary_profession.subscribe(setCharacterPrimaryProfessionLs);
+store_secondary_profession.subscribe(setCharacterSecondaryProfessionLs);
 
 function getAvailableSecondaryProfessions(
   profession: Profession

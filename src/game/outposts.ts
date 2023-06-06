@@ -1076,3 +1076,29 @@ export function getSuggestedOutposts(outpost: Outpost): Outpost[] {
     .slice(Math.max(index - 2, 0), Math.min(index + 3, max - 1))
     .filter((o) => o !== outpost);
 }
+
+export function getOutpostCampaign(outpost: Outpost): Campaign {
+  if (
+    pre_searing.flatMap((r) => r.outposts).find((o) => o.link === outpost.link)
+  ) {
+    return "Pre-Searing";
+  }
+
+  if (
+    prophecy.flatMap((r) => r.outposts).find((o) => o.link === outpost.link)
+  ) {
+    return "Prophecy";
+  }
+
+  if (faction.flatMap((r) => r.outposts).find((o) => o.link === outpost.link)) {
+    return "Faction";
+  }
+
+  if (
+    nightfall.flatMap((r) => r.outposts).find((o) => o.link === outpost.link)
+  ) {
+    return "Nightfall";
+  }
+
+  return "Gwen";
+}

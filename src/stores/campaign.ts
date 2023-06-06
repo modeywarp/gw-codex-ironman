@@ -1,5 +1,8 @@
 import { writable } from "svelte/store";
-import { store_selected_outpost } from "./outposts";
+import {
+  getSelectedCampaignLs,
+  setSelectedCampaignLs,
+} from "../localstorage/selected_campaign";
 
 export type Campaign =
   | "Pre-Searing"
@@ -8,4 +11,6 @@ export type Campaign =
   | "Nightfall"
   | "Gwen";
 
-export const store_campaign = writable<Campaign>("Pre-Searing");
+export const store_campaign = writable<Campaign>(getSelectedCampaignLs());
+
+store_campaign.subscribe(setSelectedCampaignLs);
