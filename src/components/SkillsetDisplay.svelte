@@ -36,7 +36,7 @@
 
   h2 {
     text-transform: capitalize;
-    font-size: 4em;
+    font-size: 3em;
     margin: 0;
     padding: 0;
   }

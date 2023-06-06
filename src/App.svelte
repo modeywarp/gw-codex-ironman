@@ -1,6 +1,7 @@
-<script>
+<script lang="ts">
   import Header from "./components/Header.svelte";
   import SkillsetDisplay from "./components/SkillsetDisplay.svelte";
+  import type { Outpost } from "./game/outposts";
   import store_skillset, { refreshBuildsStore } from "./stores/builds";
   import { store_campaign } from "./stores/campaign";
   import {
@@ -8,7 +9,10 @@
     store_primary_profession,
     store_secondary_profession,
   } from "./stores/character";
-  import { store_selected_outpost } from "./stores/outposts";
+  import {
+    store_selected_outpost,
+    store_suggested_outposts,
+  } from "./stores/outposts";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -16,27 +20,61 @@
       ? $store_skillset.get($store_secondary_profession)
       : null;
 
+  store_character_name.subscribe(refreshBuildsStore);
   store_primary_profession.subscribe(refreshBuildsStore);
   store_secondary_profession.subscribe(refreshBuildsStore);
   store_campaign.subscribe(refreshBuildsStore);
   store_selected_outpost.subscribe(refreshBuildsStore);
+
+  store_campaign.subscribe((campaign) => {
+    store_selected_outpost;
+  });
+
+  function onClickedSuggestedOutpost(outpost: Outpost) {
+    store_selected_outpost.set(outpost);
+  }
 </script>
 
 <Header />
 
-{#if Boolean(primary_skillset) && primary_skillset.size}
+{#if Boolean(primary_skillset) && primary_skillset.size && $store_selected_outpost}
   <div class="skillsets">
-    <SkillsetDisplay
-      profession={$store_primary_profession}
-      skillset={primary_skillset}
-    />
-
-    {#if $store_secondary_profession !== "none"}
-      <SkillsetDisplay
-        profession={$store_secondary_profession}
-        skillset={secondary_skillset}
-      />
+    {#if $store_selected_outpost && $store_selected_outpost.name}
+      <h1 class="outpost-name">{$store_selected_outpost.name}</h1>
+      <div class="suggested-outposts">
+        {#each $store_suggested_outposts.slice(0, 2) as outpost}
+          <button
+            class="outpost"
+            on:click={() => onClickedSuggestedOutpost(outpost)}
+          >
+            {outpost.name}
+          </button>
+        {/each}
+        <span>↔</span>
+        {#each $store_suggested_outposts.slice(2) as outpost}
+          <button
+            class="outpost"
+            on:click={() => onClickedSuggestedOutpost(outpost)}
+          >
+            {outpost.name}
+          </button>
+        {/each}
+      </div>
     {/if}
+
+    <div class="inner">
+      <SkillsetDisplay
+        profession={$store_primary_profession}
+        skillset={primary_skillset}
+      />
+
+      {#if $store_secondary_profession !== "none"}
+        <SkillsetDisplay
+          profession={$store_secondary_profession}
+          skillset={secondary_skillset}
+        />
+      {/if}
+    </div>
 
     <img src="/py6cbseq.webp" alt="" class="background" />
   </div>
@@ -112,9 +150,48 @@
     opacity: 0.2;
   }
 
+  .outpost-name {
+    text-align: center;
+    text-decoration: underline;
+    margin: 0;
+  }
+
+  .suggested-outposts {
+    display: flex;
+    margin-top: 1em;
+    align-items: center;
+  }
+
+  .suggested-outposts .outpost {
+    display: flex;
+    align-items: center;
+    background-color: black;
+    color: white;
+    padding: 0.2em 0.6em;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 70%;
+    opacity: 0.5;
+    font-family: "Courier New", Courier, monospace;
+    margin: 0 0.4em;
+  }
+
+  .suggested-outposts .outpost:hover {
+    opacity: 1;
+  }
+
   .skillsets {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .skillsets .inner {
+    margin: auto;
     position: relative;
     display: flex;
+    max-width: 1250px;
   }
 
   .rules {
@@ -130,12 +207,13 @@
   .rules::before {
     content: "";
     position: absolute;
-    top: 0;
+    top: -200px;
     left: 0;
     width: 100%;
-    height: 20px;
-    transform: skewY(15def);
+    height: 400px;
+    transform: skewY(-8deg);
     background-color: white;
+    box-shadow: 0 -20px 45px 0px rgba(20, 20, 20, 0.2);
     z-index: -1;
   }
 

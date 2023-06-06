@@ -1,3 +1,5 @@
+import type { Campaign } from "../stores/campaign";
+
 export interface Outpost {
   name: string;
   link: string;
@@ -1053,3 +1055,24 @@ export const nightfall: RegionDatabase = [
   desolation,
   vortex,
 ];
+
+export const all_outposts = [
+  ...pre_searing.flatMap((r) => r.outposts),
+  ...prophecy.flatMap((r) => r.outposts),
+  ...nightfall.flatMap((r) => r.outposts),
+  ...faction.flatMap((r) => r.outposts),
+  ...gwen.flatMap((r) => r.outposts),
+];
+
+export function getOutpostByLink(link: string): Outpost {
+  return all_outposts.find((o) => o.link === link);
+}
+
+export function getSuggestedOutposts(outpost: Outpost): Outpost[] {
+  const index = all_outposts.indexOf(outpost);
+  const max = all_outposts.length;
+
+  return all_outposts
+    .slice(Math.max(index - 2, 0), Math.min(index + 3, max - 1))
+    .filter((o) => o !== outpost);
+}

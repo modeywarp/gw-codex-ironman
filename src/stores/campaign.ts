@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { refreshBuildsStore } from "./builds";
+import { store_selected_outpost } from "./outposts";
 
 export type Campaign =
   | "Pre-Searing"

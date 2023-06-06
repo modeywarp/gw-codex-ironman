@@ -1,5 +1,5 @@
 <script lang="ts">
-  import store_outposts, { store_selected_outpost } from "../stores/outposts";
+  import { store_selected_outpost, store_outposts } from "../stores/outposts";
   import {
     store_available_secondary_professions,
     store_character_name,
@@ -22,10 +22,11 @@
     <h1>GW - Codex Ironman</h1>
     <hr class="spacer" />
 
-    <button
+    <!-- <button
+      disabled
       class:active={$store_campaign == "Pre-Searing"}
       on:click={() => store_campaign.set("Pre-Searing")}>Pre-Searing</button
-    >
+    > -->
     <button
       class:active={$store_campaign == "Prophecy"}
       on:click={() => store_campaign.set("Prophecy")}>Prophecy</button
@@ -69,7 +70,7 @@
         {#each $store_outposts as region}
           <optgroup label={region.name}>
             {#each region.outposts as outpost}
-              <option value={outpost.link}>{outpost.name}</option>
+              <option value={outpost}>{outpost.name}</option>
             {/each}
           </optgroup>
         {/each}

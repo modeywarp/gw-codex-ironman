@@ -24,7 +24,7 @@ export function generateSkillset(
     options.available_skill_origins || []
   );
 
-  const rng = new Rng(`${character_name}-${outpost}-${profession}`);
+  const rng = new Rng(`${character_name}-${outpost.link}-${profession}`);
   const available_skills = skills
     .get(profession)
     .filter((skill) => available_skill_origins.has(skill.options.origin));
@@ -43,9 +43,11 @@ export function generateSkillset(
   // 1.
   // start by adding one guaranted self-heal
   if (subsets.selfheals.length < 1) {
-    throw alert(
+    alert(
       "BuildGen Error: self-heals subset length < 1, when it should always be >= 0"
     );
+
+    return new Set();
   }
 
   let shortcircuit = 100;
