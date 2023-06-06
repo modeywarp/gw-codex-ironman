@@ -1337,6 +1337,4 @@ const database: SkillsDatabase = new Map([
   ],
 ]);
 
-console.log(Array.from(database.entries()));
-
 export default database;

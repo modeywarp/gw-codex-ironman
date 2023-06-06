@@ -17,7 +17,6 @@ export class Rng {
   constructor(seed: Seed = uuid()) {
     //@ts-ignore
     this.generator = new Math.seedrandom(seed);
-    console.log(seed);
   }
 
   next(): number {

@@ -17,8 +17,6 @@ export type BuildsStore = Map<Profession, Skillset>;
 const STORE = writable<BuildsStore>(null);
 export default STORE;
 
-refreshBuildsStore();
-
 export function refreshBuildsStore() {
   const skillset: BuildsStore = new Map();
 

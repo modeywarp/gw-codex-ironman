@@ -17,7 +17,6 @@ export const self_heals = new Set(
     "Soul Feast",
     "Taste of Death",
     "Taste of Pain",
-    "Drain Enchantment",
     "Ether Feast",
     "Mantra of Signets",
     "Illusion of Weakness",

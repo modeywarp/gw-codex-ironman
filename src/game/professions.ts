@@ -18,6 +18,7 @@ export const all_professions: Profession[] = [
   "monk",
   "elementalist",
   "necromancer",
+  "mesmer",
   "assassin",
   "ritualist",
   "dervish",

@@ -16,6 +16,10 @@ export function generateSkillset(
   profession: Profession,
   options: Partial<BuildGenOptions> = {}
 ): Skillset {
+  if (!character_name || !outpost || !profession) {
+    return new Set();
+  }
+
   const available_skill_origins = new Set(
     options.available_skill_origins || []
   );
@@ -28,8 +32,7 @@ export function generateSkillset(
   const subsets = {
     regulars: available_skills.filter((s) => !s.options.is_elite),
     selfheals: available_skills.filter(
-      (s) =>
-        !s.options.is_elite && (s.options.is_heal || s.options.is_self_heal)
+      (s) => !s.options.is_elite && s.options.is_self_heal
     ),
     elites: available_skills.filter((s) => s.options.is_elite),
   };
@@ -45,15 +48,15 @@ export function generateSkillset(
     );
   }
 
-  console.log(subsets.selfheals);
-
-  while (skillset.size < 1) {
+  let shortcircuit = 100;
+  while (skillset.size < 1 && shortcircuit--) {
     skillset.add(subsets.selfheals.at(rng.nextRange(subsets.selfheals.length)));
   }
 
   // 2.
   // add regular skills until it reaches SKILLSET_NORMAL_SIZE
-  while (skillset.size < SKILLSET_NORMAL_SIZE) {
+  shortcircuit = 100;
+  while (skillset.size < SKILLSET_NORMAL_SIZE && shortcircuit--) {
     const skill_index = rng.nextRange(subsets.regulars.length);
     const skill = subsets.regulars.at(skill_index);
 
@@ -69,7 +72,11 @@ export function generateSkillset(
   if (options.is_primary_profession) {
     const elites_count = rng.nextRange(Math.min(subsets.elites.length, 6), 3);
 
-    while (skillset.size < SKILLSET_NORMAL_SIZE + elites_count) {
+    shortcircuit = 100;
+    while (
+      skillset.size < SKILLSET_NORMAL_SIZE + elites_count &&
+      shortcircuit--
+    ) {
       const skill_index = rng.nextRange(subsets.elites.length);
       const skill = subsets.elites.at(skill_index);
 

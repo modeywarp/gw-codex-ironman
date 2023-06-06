@@ -4,6 +4,7 @@ import {
   type Profession,
   type SecondaryProfession,
 } from "../game/professions";
+import { refreshBuildsStore } from "./builds";
 
 export const store_character_name = writable("");
 export const store_primary_profession = writable<Profession>("warrior");

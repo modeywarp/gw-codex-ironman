@@ -83,7 +83,7 @@
   header {
     padding: 2em;
     background: white;
-    box-shadow: 0px 6px 12px rgba(20, 20, 20, 0.2);
+    /* box-shadow: 0px 6px 12px rgba(20, 20, 20, 0.2); */
     margin-bottom: 2em;
   }
 
