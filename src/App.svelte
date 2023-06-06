@@ -29,7 +29,7 @@
   {/if}
 </div>
 
-<img src="/py6cbseq.bmp" alt="" class="background" />
+<img src="/py6cbseq.webp" alt="" class="background" />
 
 <!-- <img src="/n1swb8x3.bmp" alt="" class="background-1" /> -->
 
