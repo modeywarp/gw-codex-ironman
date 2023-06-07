@@ -1,14 +1,23 @@
 <script lang="ts">
   import type { Profession } from "../game/professions";
   import type { Skill } from "../game/skills";
+  import { store_wiki_iframe } from "../stores/wiki-iframe";
 
   export let skills: Skill[] = [];
   export let profession: Profession = "warrior";
+
+  function setWikiIframe(e, skill: Skill) {
+    e.preventDefault();
+    e.target.scrollIntoView({ block: "start", behavior: "smooth" });
+
+    store_wiki_iframe.set(skill.name);
+  }
 </script>
 
 <div class="skill-list">
   {#each skills as skill}
     <a
+      on:click={(e) => setWikiIframe(e, skill)}
       class="skill"
       href={`https://wiki.guildwars.com/?search=${skill.name}`}
       class:elite={skill.options.is_elite}

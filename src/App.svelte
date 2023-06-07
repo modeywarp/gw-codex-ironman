@@ -13,6 +13,7 @@
     store_selected_outpost,
     store_suggested_outposts,
   } from "./stores/outposts";
+  import { closeIframe, store_wiki_iframe } from "./stores/wiki-iframe";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -32,6 +33,26 @@
 
   function onClickedSuggestedOutpost(outpost: Outpost) {
     store_selected_outpost.set(outpost);
+  }
+
+  function clickOutside(element, callbackFunction) {
+    function onClick(event) {
+      // check for the node name because of shadow-dom
+      if (event.target.nodeName !== "APP-MENU") {
+        callbackFunction();
+      }
+    }
+
+    document.body.addEventListener("click", onClick);
+
+    return {
+      update(newCallbackFunction) {
+        callbackFunction = newCallbackFunction;
+      },
+      destroy() {
+        document.body.removeEventListener("click", onClick);
+      },
+    };
   }
 </script>
 
@@ -148,6 +169,16 @@
     the rules you use (Regular or Ironman)
   </p>
 </section>
+
+{#if $store_wiki_iframe}
+  <iframe
+    use:clickOutside={closeIframe}
+    title="wiki iframe"
+    loading="lazy"
+    src={`https://wiki.guildwars.com/?search=${$store_wiki_iframe}`}
+    frameborder="0"
+  />
+{/if}
 
 <style>
   .background {
@@ -296,5 +327,18 @@
     max-width: 450px;
     text-align: center;
     margin: auto;
+  }
+
+  iframe {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+
+    transform: translate(-50%, 0);
+    min-height: 70vh;
+    min-width: 100vw;
+    z-index: 100;
+    box-shadow: 0px -12px 12px rgba(20, 20, 20, 0.1);
+    border-top: solid 6px black;
   }
 </style>
