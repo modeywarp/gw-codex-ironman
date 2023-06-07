@@ -10,7 +10,7 @@
   {#each skills as skill}
     <a
       class="skill"
-      href={`https://wiki.guildwars.com${skill.link}`}
+      href={`https://wiki.guildwars.com/?search=${skill.name}`}
       class:elite={skill.options.is_elite}
       class:selfheal={skill.options.is_self_heal}
     >
@@ -58,13 +58,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
     min-width: 100%;
-    background-color: white;
-    color: black;
+    color: white;
     padding: 0.3em;
     min-height: 100%;
-    box-shadow: 0 6px 6px rgba(20, 20, 20, 0.1);
     border-radius: 6px;
-    border: solid 1px black;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -76,6 +73,10 @@
 
   .skill:hover span {
     display: flex;
+  }
+
+  .skill:hover img {
+    opacity: 0.2;
   }
 
   @keyframes slide {

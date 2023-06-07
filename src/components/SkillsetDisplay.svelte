@@ -17,21 +17,54 @@
 
 <div class="skillset">
   <h2>{profession}</h2>
-  <h3>Regular skills</h3>
-  <SkillList skills={regular_skills} {profession} />
+  <span class="skilllist">
+    <h3>Regular skills</h3>
+    <SkillList skills={regular_skills} {profession} />
+  </span>
 
-  <h3>Healing skills</h3>
-  <SkillList skills={heal_skills} {profession} />
+  <span class="skilllist">
+    <h3>Healing skills</h3>
+    <SkillList skills={heal_skills} {profession} />
+  </span>
 
   {#if elite_skills.length}
-    <h3>Elite skills</h3>
-    <SkillList skills={elite_skills} {profession} />
+    <span class="skilllist">
+      <h3>Elite skills</h3>
+      <SkillList skills={elite_skills} {profession} />
+    </span>
   {/if}
 </div>
 
 <style>
   .skillset {
     padding: 1em;
+  }
+
+  span.skilllist {
+    animation-name: appear;
+    animation-duration: 0.3s;
+  }
+
+  span.skilllist:nth-of-type(2) {
+    animation-duration: 0.6s;
+  }
+
+  span.skilllist:nth-of-type(3) {
+    animation-duration: 0.9s;
+  }
+
+  @keyframes appear {
+    0% {
+      opacity: 0;
+    }
+
+    75% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
   }
 
   h2 {

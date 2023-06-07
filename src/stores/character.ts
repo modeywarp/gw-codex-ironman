@@ -41,5 +41,9 @@ store_secondary_profession.subscribe(setCharacterSecondaryProfessionLs);
 function getAvailableSecondaryProfessions(
   profession: Profession
 ): SecondaryProfession[] {
-  return all_professions.filter((p) => p !== profession);
+  let filtered_profession: SecondaryProfession[] = all_professions.filter(
+    (p) => p !== profession
+  );
+
+  return filtered_profession.concat(["none"]);
 }
