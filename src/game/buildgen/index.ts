@@ -41,7 +41,9 @@ export function generateSkillset(
     return new Set();
   }
 
-  const rng = new Rng(`${character_name}-${outpost.link}-${profession}`);
+  const rng = new Rng(
+    `${character_name.toLowerCase()}-${outpost.link}-${profession}`
+  );
   const available_skills = skills
     .get(profession)
     .filter((skill) => available_skill_origins.has(skill.options.origin));
