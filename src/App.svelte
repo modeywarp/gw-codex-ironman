@@ -38,14 +38,12 @@
     <div class="inner">
       <SkillsetDisplay
         profession={$store_primary_profession}
-        skillset={primary_skillset}
-      />
+        skillset={primary_skillset} />
 
       {#if $store_secondary_profession !== "none"}
         <SkillsetDisplay
           profession={$store_secondary_profession}
-          skillset={secondary_skillset}
-        />
+          skillset={secondary_skillset} />
       {/if}
     </div>
 

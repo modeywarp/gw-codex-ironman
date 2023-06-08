@@ -21,8 +21,7 @@
       class="skill"
       href={`https://wiki.guildwars.com/?search=${skill.name}`}
       class:elite={skill.options.is_elite}
-      class:selfheal={skill.options.is_self_heal}
-    >
+      class:selfheal={skill.options.is_self_heal}>
       <img src={`/skill-icons/${profession}/${skill.icon}`} alt="" />
       <span class="name">{skill.name}</span>
     </a>

@@ -28,8 +28,7 @@
     title=""
     loading="lazy"
     src={`https://wiki.guildwars.com/?search=${$store_wiki_iframe}`}
-    frameborder="0"
-  />
+    frameborder="0" />
 {/if}
 
 <style>

@@ -9,8 +9,17 @@
   import { all_professions } from "../game/professions";
   import { refreshBuildsStore } from "../stores/builds";
   import { store_campaign } from "../stores/campaign";
+  import { InputFocusState, store_input_focus } from "../stores/input_focus";
+
+  let field_character_name;
 
   $: display_outposts = $store_character_name.length > 0;
+
+  store_input_focus.subscribe((field) => {
+    if (field === InputFocusState.CharacterName) {
+      field_character_name.focus();
+    }
+  });
 
   function onSubmitGenerateSkillset() {
     refreshBuildsStore();
@@ -29,28 +38,24 @@
     > -->
     <button
       class:active={$store_campaign == "Prophecy"}
-      on:click={() => store_campaign.set("Prophecy")}>Prophecy</button
-    >
+      on:click={() => store_campaign.set("Prophecy")}>Prophecy</button>
     <button
       class:active={$store_campaign == "Faction"}
-      on:click={() => store_campaign.set("Faction")}>Faction</button
-    >
+      on:click={() => store_campaign.set("Faction")}>Faction</button>
     <button
       class:active={$store_campaign == "Nightfall"}
-      on:click={() => store_campaign.set("Nightfall")}>Nightfall</button
-    >
+      on:click={() => store_campaign.set("Nightfall")}>Nightfall</button>
     <button
       class:active={$store_campaign == "Gwen"}
-      on:click={() => store_campaign.set("Gwen")}>GWEN</button
-    >
+      on:click={() => store_campaign.set("Gwen")}>GWEN</button>
   </div>
 
   <div class="actions">
     <input
       type="text"
       placeholder="Character name"
-      bind:value={$store_character_name}
-    />
+      bind:this={field_character_name}
+      bind:value={$store_character_name} />
     <select name="primary-profession" bind:value={$store_primary_profession}>
       {#each all_professions as profession}
         <option value={profession}>{profession}</option>
@@ -58,8 +63,7 @@
     </select>
     <select
       name="secondary-profession"
-      bind:value={$store_secondary_profession}
-    >
+      bind:value={$store_secondary_profession}>
       {#each $store_available_secondary_professions as profession}
         <option value={profession}>{profession}</option>
       {/each}

@@ -1,10 +1,13 @@
+<script>
+  import { InputFocusState, store_input_focus } from "../stores/input_focus";
+</script>
+
 <section class="rules">
   <h1>Rules</h1>
 
   <p>
     Similar to the <a href="https://wiki.guildwars.com/wiki/Codex_Arena"
-      >Codex Arena</a
-    >
+      >Codex Arena</a>
     where players have a limited skillset available to them everyday, you must complete
     the campaigns with a set of skills that varies as you progress.
   </p>
@@ -27,8 +30,7 @@
       <p>
         Create a fresh character using the <a
           href="https://wiki.guildwars.com/wiki/User:Hazedesunna/Ironman"
-          >Ironman rules</a
-        >
+          >Ironman rules</a>
         of your choice.
       </p>
     </div>
@@ -65,6 +67,9 @@
     Start by entering your character name & the outpost you're in according to
     the rules you use (Regular or Ironman)
   </p>
+
+  <button on:click={() => store_input_focus.set(InputFocusState.CharacterName)}
+    >Start</button>
 </section>
 
 <style>
