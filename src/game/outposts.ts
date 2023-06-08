@@ -1079,12 +1079,6 @@ export function getSuggestedOutposts(outpost: Outpost): Outpost[] {
 
 export function getOutpostCampaign(outpost: Outpost): Campaign {
   if (
-    pre_searing.flatMap((r) => r.outposts).find((o) => o.link === outpost.link)
-  ) {
-    return "Pre-Searing";
-  }
-
-  if (
     prophecy.flatMap((r) => r.outposts).find((o) => o.link === outpost.link)
   ) {
     return "Prophecy";

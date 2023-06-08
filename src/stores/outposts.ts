@@ -26,13 +26,6 @@ store_campaign.subscribe((campaign) => {
     campaign !== getOutpostCampaign(get(store_selected_outpost));
 
   switch (campaign) {
-    case "Pre-Searing":
-      store_outposts.set(outposts.pre_searing);
-
-      if (can_switch_selected_outpost) {
-        store_selected_outpost.set(outposts.pre_searing[0].outposts[0]);
-      }
-      break;
     case "Prophecy":
       store_outposts.set(outposts.prophecy);
 

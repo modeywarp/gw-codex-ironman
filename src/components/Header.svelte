@@ -33,11 +33,6 @@
     <h1>GW - Codex Ironman</h1>
     <hr class="spacer" />
 
-    <!-- <button
-      disabled
-      class:active={$store_campaign == "Pre-Searing"}
-      on:click={() => store_campaign.set("Pre-Searing")}>Pre-Searing</button
-    > -->
     <button
       class:active={$store_campaign == "Prophecy"}
       on:click={() => store_campaign.set("Prophecy")}>Prophecy</button>
