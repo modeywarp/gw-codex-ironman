@@ -1100,5 +1100,5 @@ export function getOutpostCampaign(outpost: Outpost): Campaign {
     return "Nightfall";
   }
 
-  return "Gwen";
+  return "GWEN";
 }

@@ -46,8 +46,14 @@ h1 {
 }
 
 button,
+label {
+  user-select: none;
+}
+
+button,
 select,
-input {
+input,
+label {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -76,7 +82,8 @@ button:focus-visible {
   }
   button,
   select,
-  input {
+  input,
+  label {
     background-color: #f9f9f9;
   }
 }

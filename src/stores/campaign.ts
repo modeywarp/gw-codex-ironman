@@ -4,12 +4,7 @@ import {
   setSelectedCampaignLs,
 } from "../localstorage/selected_campaign";
 
-export type Campaign =
-  | "Pre-Searing"
-  | "Prophecy"
-  | "Faction"
-  | "Nightfall"
-  | "Gwen";
+export type Campaign = "Prophecy" | "Faction" | "Nightfall" | "GWEN";
 
 export const store_campaign = writable<Campaign>(getSelectedCampaignLs());
 

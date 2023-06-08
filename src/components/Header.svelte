@@ -10,6 +10,8 @@
   import { refreshBuildsStore } from "../stores/builds";
   import { store_campaign } from "../stores/campaign";
   import { InputFocusState, store_input_focus } from "../stores/input_focus";
+  import { store_selected_skillpacks } from "../stores/skillpacks";
+  import { ALL_SKILL_ORIGINS } from "../game/codegen/subgroups/campaigns";
 
   let field_character_name;
 
@@ -46,8 +48,8 @@
       class:active={$store_campaign == "Nightfall"}
       on:click={() => store_campaign.set("Nightfall")}>Nightfall</button>
     <button
-      class:active={$store_campaign == "Gwen"}
-      on:click={() => store_campaign.set("Gwen")}>GWEN</button>
+      class:active={$store_campaign == "GWEN"}
+      on:click={() => store_campaign.set("GWEN")}>GWEN</button>
   </div>
 
   <div class="actions">
@@ -68,6 +70,7 @@
         <option value={profession}>{profession}</option>
       {/each}
     </select>
+
     {#if display_outposts}
       <hr class="spacer" />
       <select name="outpost" bind:value={$store_selected_outpost}>
@@ -79,8 +82,24 @@
           </optgroup>
         {/each}
       </select>
-      <button on:click={onSubmitGenerateSkillset}>Generate skillset</button>
+      <!-- <button on:click={onSubmitGenerateSkillset}>Generate skillset</button> -->
     {/if}
+    <hr class="spacer" />
+
+    <div class="skill-packs">
+      <span> Skill packs: </span>
+
+      {#each ALL_SKILL_ORIGINS as pack}
+        <input
+          type="checkbox"
+          name={pack}
+          id={pack}
+          style="display: none;"
+          bind:group={$store_selected_skillpacks}
+          value={pack} />
+        <label for={pack}>{pack}</label>
+      {/each}
+    </div>
   </div>
 </header>
 
@@ -92,9 +111,30 @@
   }
 
   .actions,
-  .title {
+  .title,
+  .skill-packs {
     display: flex;
     align-items: center;
+  }
+
+  @media (max-width: 1615px) {
+    .actions {
+      flex-wrap: wrap;
+    }
+
+    .actions > .spacer ~ .spacer {
+      display: none;
+    }
+
+    .skill-packs {
+      display: flex;
+      justify-content: flex-end;
+      flex-grow: 1;
+      margin-top: 0.6em;
+    }
+  }
+  .skill-packs label {
+    margin-left: 1em;
   }
 
   h1 {
@@ -111,7 +151,8 @@
     margin-left: 1em;
   }
 
-  .active {
+  .active,
+  input:checked + label {
     background: #646cff;
     color: white;
   }

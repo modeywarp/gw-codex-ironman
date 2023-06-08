@@ -15,25 +15,29 @@
   $: elite_skills = skills.filter((s) => s.options.is_elite);
 </script>
 
-<div class="skillset">
-  <h2>{profession}</h2>
-  <span class="skilllist">
-    <h3>Regular skills</h3>
-    <SkillList skills={regular_skills} {profession} />
-  </span>
-
-  <span class="skilllist">
-    <h3>Healing skills</h3>
-    <SkillList skills={heal_skills} {profession} />
-  </span>
-
-  {#if elite_skills.length}
+{#if skills.length > 0}
+  <div class="skillset">
+    <h2>{profession}</h2>
     <span class="skilllist">
-      <h3>Elite skills</h3>
-      <SkillList skills={elite_skills} {profession} />
+      <h3>Regular skills</h3>
+      <SkillList skills={regular_skills} {profession} />
     </span>
-  {/if}
-</div>
+
+    {#if heal_skills.length}
+      <span class="skilllist">
+        <h3>Healing skills</h3>
+        <SkillList skills={heal_skills} {profession} />
+      </span>
+    {/if}
+
+    {#if elite_skills.length}
+      <span class="skilllist">
+        <h3>Elite skills</h3>
+        <SkillList skills={elite_skills} {profession} />
+      </span>
+    {/if}
+  </div>
+{/if}
 
 <style>
   .skillset {

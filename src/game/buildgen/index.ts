@@ -24,6 +24,23 @@ export function generateSkillset(
     options.available_skill_origins || []
   );
 
+  if (
+    (profession === "dervish" || profession === "paragon") &&
+    !available_skill_origins.has("Nightfall") &&
+    !available_skill_origins.has("GWEN")
+  ) {
+    return new Set();
+  }
+
+  if (
+    (profession === "assassin" || profession === "ritualist") &&
+    !available_skill_origins.has("Faction") &&
+    !available_skill_origins.has("Nightfall") &&
+    !available_skill_origins.has("GWEN")
+  ) {
+    return new Set();
+  }
+
   const rng = new Rng(`${character_name}-${outpost.link}-${profession}`);
   const available_skills = skills
     .get(profession)
@@ -42,17 +59,13 @@ export function generateSkillset(
 
   // 1.
   // start by adding one guaranted self-heal
-  if (subsets.selfheals.length < 1) {
-    alert(
-      "BuildGen Error: self-heals subset length < 1, when it should always be >= 0"
-    );
-
-    return new Set();
-  }
-
   let shortcircuit = 100;
-  while (skillset.size < 1 && shortcircuit--) {
-    skillset.add(subsets.selfheals.at(rng.nextRange(subsets.selfheals.length)));
+  if (subsets.selfheals.length > 0) {
+    while (skillset.size < 1 && shortcircuit--) {
+      const index = rng.nextRange(subsets.selfheals.length);
+
+      skillset.add(subsets.selfheals.at(index));
+    }
   }
 
   // 2.
@@ -71,7 +84,7 @@ export function generateSkillset(
 
   // 3.
   // if primary profession, add a random amount of elites to the skillset
-  if (options.is_primary_profession) {
+  if (options.is_primary_profession && subsets.elites.length > 0) {
     const elites_count = rng.nextRange(Math.min(subsets.elites.length, 6), 3);
 
     shortcircuit = 100;

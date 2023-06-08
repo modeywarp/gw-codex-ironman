@@ -8,14 +8,15 @@
   <p>
     Similar to the <a href="https://wiki.guildwars.com/wiki/Codex_Arena"
       >Codex Arena</a>
-    where players have a limited skillset available to them everyday, you must complete
-    the campaigns with a set of skills that varies as you progress.
+    where players have a limited skill pool available to them everyday, you must
+    complete the campaigns with a set of skills that varies as you progress.
   </p>
 
   <p>
     Two variants of the mode are available. Both revolving around having a
-    limited skillset in order to spice things up, the outposts replace the daily
-    rotation you'd usually see in the Codex Arena:
+    limited skill pool in order to put your build-crafting capabilities to the
+    test, the outposts replace the daily rotation you'd usually see in the Codex
+    Arena:
   </p>
 
   <hr />
@@ -38,7 +39,8 @@
     <div class="row center">
       <i>
         Before leaving an outpost or a city into an explorable area you must
-        ensure your skillbar contains only skills from the offered skillset of:
+        ensure your skillbar contains only skills from the offered skill pool
+        of:
       </i>
     </div>
     <div class="row split">
@@ -51,11 +53,9 @@
     </div>
   </div>
 
-  <hr />
-
   <p>
     Heroes are subject are subject to the same rules as the player character
-    with one exception: they are able to use the skillsets from any of the
+    with one exception: they are able to use the skill pools from any of the
     previously discovered outposts. As it would be too cumbersome to edit the
     build of a whole group every outpost. Even with this exception discovering
     outposts should still provide some welcomed build-crafting potential
@@ -132,5 +132,14 @@
     max-width: 450px;
     text-align: center;
     margin: auto;
+  }
+
+  hr {
+    margin: 2em 0;
+    opacity: 0;
+  }
+
+  section.rules {
+    padding-bottom: 10em;
   }
 </style>

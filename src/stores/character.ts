@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import {
   all_professions,
   type Profession,
@@ -28,7 +28,16 @@ export const store_available_secondary_professions = writable<
   SecondaryProfession[]
 >([]);
 
+let old_primary: Profession = get(store_primary_profession);
 store_primary_profession.subscribe((p) => {
+  // verify if it's a swap from primary to secondary
+  const secondary = get(store_secondary_profession);
+  if (p === secondary) {
+    store_secondary_profession.set(old_primary);
+  }
+
+  old_primary = p;
+
   store_available_secondary_professions.set(
     getAvailableSecondaryProfessions(p)
   );

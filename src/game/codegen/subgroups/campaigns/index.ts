@@ -4,7 +4,15 @@ import { factions_skills } from "./factions";
 import { nightfall_skills } from "./nightfall";
 import { prophecy_skills } from "./prophecy";
 
-export type SkillOrigin = Campaign | "Core" | "Gwen";
+export type SkillOrigin = Campaign | "Core";
+
+export const ALL_SKILL_ORIGINS: SkillOrigin[] = [
+  "Core",
+  "Prophecy",
+  "Faction",
+  "Nightfall",
+  "GWEN",
+];
 
 export function getSkillOrigin(skill: string): SkillOrigin {
   if (core_skills.has(skill)) {
@@ -17,5 +25,5 @@ export function getSkillOrigin(skill: string): SkillOrigin {
     return "Nightfall";
   }
 
-  return "Gwen";
+  return "GWEN";
 }

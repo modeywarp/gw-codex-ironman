@@ -9,6 +9,7 @@ import {
 } from "./character";
 import { generateSkillset } from "../game/buildgen";
 import { store_campaign } from "./campaign";
+import { store_selected_skillpacks } from "./skillpacks";
 
 export type Skillset = Set<Skill>;
 
@@ -28,7 +29,7 @@ export function refreshBuildsStore() {
       get(store_primary_profession),
       {
         is_primary_profession: true,
-        available_skill_origins: ["Core", get(store_campaign)],
+        available_skill_origins: get(store_selected_skillpacks),
       }
     )
   );
@@ -42,7 +43,7 @@ export function refreshBuildsStore() {
         get(store_selected_outpost),
         secondary,
         {
-          available_skill_origins: ["Core", get(store_campaign)],
+          available_skill_origins: get(store_selected_skillpacks),
         }
       )
     );

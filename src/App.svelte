@@ -12,6 +12,10 @@
     store_secondary_profession,
   } from "./stores/character";
   import { store_selected_outpost } from "./stores/outposts";
+  import {
+    refreshSkillpacks,
+    store_selected_skillpacks,
+  } from "./stores/skillpacks";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -19,16 +23,28 @@
       ? $store_skillset.get($store_secondary_profession)
       : null;
 
-  store_character_name.subscribe(refreshBuildsStore);
-  store_primary_profession.subscribe(refreshBuildsStore);
-  store_secondary_profession.subscribe(refreshBuildsStore);
-  store_campaign.subscribe(refreshBuildsStore);
-  store_selected_outpost.subscribe(refreshBuildsStore);
+  $: can_display_skillsets =
+    ((Boolean(primary_skillset) && primary_skillset.size) ||
+      (Boolean(secondary_skillset) && secondary_skillset.size)) &&
+    Boolean($store_selected_outpost);
+
+  function refreshStuff() {
+    refreshSkillpacks();
+    refreshBuildsStore();
+  }
+
+  store_character_name.subscribe(refreshStuff);
+  store_primary_profession.subscribe(refreshStuff);
+  store_secondary_profession.subscribe(refreshStuff);
+  store_campaign.subscribe(refreshStuff);
+  store_selected_outpost.subscribe(refreshStuff);
+
+  store_selected_skillpacks.subscribe(refreshBuildsStore);
 </script>
 
 <Header />
 
-{#if Boolean(primary_skillset) && primary_skillset.size && $store_selected_outpost}
+{#if can_display_skillsets}
   <div class="skillsets">
     {#if $store_selected_outpost && $store_selected_outpost.name}
       <h1 class="outpost-name">{$store_selected_outpost.name}</h1>
