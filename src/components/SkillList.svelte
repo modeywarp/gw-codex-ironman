@@ -12,6 +12,10 @@
 
     store_wiki_iframe.set(skill.name);
   }
+
+  // github pages aren't hosted on a domain's root, each repository is in a sub
+  // folder, so this is a way to get icons to load once pushed to production.
+  const image_root = import.meta.env.PROD ? import.meta.env.BASE_URL : "";
 </script>
 
 <div class="skill-list">
@@ -22,7 +26,9 @@
       href={`https://wiki.guildwars.com/?search=${skill.name}`}
       class:elite={skill.options.is_elite}
       class:selfheal={skill.options.is_self_heal}>
-      <img src={`/skill-icons/${profession}/${skill.icon}`} alt="" />
+      <img
+        src={`${image_root}/skill-icons/${profession}/${skill.icon}`}
+        alt="" />
       <span class="name">{skill.name}</span>
     </a>
   {/each}

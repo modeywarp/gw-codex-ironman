@@ -17,6 +17,7 @@
     refreshSkillpacks,
     store_selected_skillpacks,
   } from "./stores/skillpacks";
+  import background from "./background.webp";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -64,7 +65,7 @@
       {/if}
     </div>
 
-    <img src="/py6cbseq.webp" alt="" class="background" />
+    <img src={background} alt="" class="background" />
   </div>
 {/if}
 
