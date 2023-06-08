@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Footer from "./components/Footer.svelte";
   import Header from "./components/Header.svelte";
   import Rules from "./components/Rules.svelte";
   import SkillsetDisplay from "./components/SkillsetDisplay.svelte";
@@ -69,6 +70,7 @@
 
 <Rules />
 <WikiIframe />
+<Footer />
 
 <style>
   .background {

@@ -54,19 +54,15 @@
   </div>
 
   <p>
-    Heroes are subject are subject to the same rules as the player character
-    with one exception: they are able to use the skill pools from any of the
-    previously discovered outposts. As it would be too cumbersome to edit the
-    build of a whole group every outpost. Even with this exception discovering
-    outposts should still provide some welcomed build-crafting potential
+    Heroes are subject to the same rules as the player character with one
+    exception: they are able to keep the skill pools from any of the previously
+    discovered outposts, as it would be too cumbersome to edit the build of a
+    whole group every outpost.
   </p>
 
   <hr />
 
-  <p>
-    Start by entering your character name & the outpost you're in according to
-    the rules you use (Regular or Ironman)
-  </p>
+  <p>Start by entering your character name</p>
 
   <button on:click={() => store_input_focus.set(InputFocusState.CharacterName)}
     >Start</button>
