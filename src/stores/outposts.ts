@@ -9,11 +9,11 @@ import {
 import { getOutpostCampaign } from "../game/outposts";
 
 export const store_outposts = writable<outposts.RegionDatabase>(
-  outposts.pre_searing
+  outposts.prophecy
 );
 
 export const store_selected_outpost = writable<outposts.Outpost>(
-  getSelectedOutpostLs()
+  getSelectedOutpostLs() || outposts.prophecy[0].outposts[0]
 );
 
 export const store_suggested_outposts = writable<outposts.Outpost[]>([]);
