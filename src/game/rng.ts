@@ -25,7 +25,7 @@ export class Rng {
   }
 
   nextRangeF(max: number, min = 0): number {
-    return this.next() * max + min;
+    return this.next() * (max - min) + min;
   }
 
   nextRange(max: number, min = 0): number {
@@ -34,7 +34,7 @@ export class Rng {
 }
 
 export function randRangeF(max: number, min = 0): number {
-  return Math.random() * max + min;
+  return Math.random() * (max - min) + min;
 }
 
 export function randRange(max: number, min = 0) {
