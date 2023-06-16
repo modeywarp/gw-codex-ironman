@@ -51,6 +51,12 @@
         the <u>last outpost you unlocked.</u>
       </p>
     </div>
+    <div class="row center">
+      <i>
+        Specify how many heroes or henchmen are present in your group in the
+        right panel. The more henchmen the smaller your skill pool gets.
+      </i>
+    </div>
   </div>
 
   <p>

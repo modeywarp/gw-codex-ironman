@@ -8,10 +8,11 @@ import {
   store_secondary_profession,
 } from "./character";
 import { generateSkillset } from "../game/buildgen";
-import { store_campaign } from "./campaign";
 import { store_selected_skillpacks } from "./skillpacks";
+import { store_henchmen_count } from "./henchmen";
 
-export type Skillset = Set<Skill>;
+export type SkillsetEntry = Skill & { disabled: boolean };
+export type Skillset = Set<SkillsetEntry>;
 
 export type BuildsStore = Map<Profession, Skillset>;
 
@@ -30,6 +31,7 @@ export function refreshBuildsStore() {
       {
         is_primary_profession: true,
         available_skill_origins: get(store_selected_skillpacks),
+        henchmen_count: get(store_henchmen_count),
       }
     )
   );
@@ -44,6 +46,8 @@ export function refreshBuildsStore() {
         secondary,
         {
           available_skill_origins: get(store_selected_skillpacks),
+          henchmen_count: get(store_henchmen_count),
+          is_primary_profession: false,
         }
       )
     );

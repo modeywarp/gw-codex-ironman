@@ -9,7 +9,15 @@
       }
     }
 
+    function onKeyDown(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        callbackFunction();
+      }
+    }
+
     document.body.addEventListener("click", onClick);
+    document.body.addEventListener("keydown", onKeyDown);
 
     return {
       update(newCallbackFunction) {
@@ -17,6 +25,7 @@
       },
       destroy() {
         document.body.removeEventListener("click", onClick);
+        document.body.removeEventListener("keydown", onKeyDown);
       },
     };
   }

@@ -1,9 +1,10 @@
 <script lang="ts">
   import type { Profession } from "../game/professions";
   import type { Skill } from "../game/skills";
+  import type { SkillsetEntry } from "../stores/builds";
   import { store_wiki_iframe } from "../stores/wiki-iframe";
 
-  export let skills: Skill[] = [];
+  export let skills: SkillsetEntry[] = [];
   export let profession: Profession = "warrior";
 
   function setWikiIframe(e, skill: Skill) {
@@ -25,7 +26,8 @@
       class="skill"
       href={`https://wiki.guildwars.com/?search=${skill.name}`}
       class:elite={skill.options.is_elite}
-      class:selfheal={skill.options.is_self_heal}>
+      class:selfheal={skill.options.is_self_heal}
+      class:disabled={skill.disabled}>
       <img
         src={`${image_root}/skill-icons/${profession}/${skill.icon}`}
         alt="" />
@@ -53,6 +55,7 @@
     outline: solid 6px black;
     color: white;
     z-index: 10;
+    transition: 0.1s all ease-in-out;
   }
 
   .skill img {
@@ -63,6 +66,12 @@
 
   .skill.elite {
     outline-color: goldenrod;
+  }
+
+  .skill.disabled {
+    opacity: 0.4;
+    transform: scale(0.8);
+    transform-origin: center;
   }
 
   span {

@@ -18,6 +18,8 @@
     store_selected_skillpacks,
   } from "./stores/skillpacks";
   import background from "./background.webp";
+  import HenchmenSelector from "./components/henchmen-selector/HenchmenSelector.svelte";
+  import { store_henchmen_count } from "./stores/henchmen";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -40,6 +42,7 @@
   store_secondary_profession.subscribe(refreshStuff);
   store_campaign.subscribe(refreshStuff);
   store_selected_outpost.subscribe(refreshStuff);
+  store_henchmen_count.subscribe(refreshStuff);
 
   store_selected_skillpacks.subscribe(refreshBuildsStore);
 </script>
@@ -64,6 +67,8 @@
           skillset={secondary_skillset} />
       {/if}
     </div>
+
+    <HenchmenSelector />
 
     <img src={background} alt="" class="background" />
   </div>

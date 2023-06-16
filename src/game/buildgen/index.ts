@@ -1,20 +1,22 @@
-import type { Skillset } from "../../stores/builds";
+import type { Skillset, SkillsetEntry } from "../../stores/builds";
 import type { SkillOrigin } from "../codegen/subgroups/campaigns";
 import type { Outpost } from "../outposts";
 import type { Profession } from "../professions";
 import { Rng } from "../rng";
-import skills from "../skills";
+import skills, { type Skill } from "../skills";
+import { getSkillPenaltyFromHenchmen } from "./henchmen_restrictions";
 
 export interface BuildGenOptions {
   is_primary_profession: boolean;
   available_skill_origins: SkillOrigin[];
+  henchmen_count: number;
 }
 
 export function generateSkillset(
   character_name: string,
   outpost: Outpost,
   profession: Profession,
-  options: Partial<BuildGenOptions> = {}
+  options: BuildGenOptions
 ): Skillset {
   if (!character_name || !outpost || !profession) {
     return new Set();
@@ -57,7 +59,7 @@ export function generateSkillset(
   };
 
   const SKILLSET_NORMAL_SIZE = Math.min(20, subsets.regulars.length);
-  let skillset: Skillset = new Set();
+  let skillset: Set<Skill> = new Set();
 
   // 1.
   // start by adding one guaranted self-heal
@@ -105,5 +107,46 @@ export function generateSkillset(
     }
   }
 
-  return skillset;
+  // 4.
+  // construct a list of disabled skills from the henchmen penalty
+  const penalty = getSkillPenaltyFromHenchmen(
+    options.henchmen_count,
+    options.is_primary_profession
+  );
+
+  const skills_to_disable = Array.from(skillset);
+  const disabled_skills = new Set();
+  for (let i = 0; i < penalty; i += 1) {
+    const skill_index = rng.nextRange(skills_to_disable.length);
+    const [skill] = skills_to_disable.splice(skill_index, 1);
+
+    disabled_skills.add(skill);
+  }
+
+  // 4.1
+  // but ensure there is at least 1 available heal even after the penalty:
+  const skills_array = Array.from(skillset);
+  const enabled_skills = new Set(
+    Array.from(skillset).filter((skill) => !disabled_skills.has(skill))
+  );
+  const skillset_heals = subsets.selfheals.filter((s) => skillset.has(s));
+  const enabled_heals = new Set(
+    subsets.selfheals.filter((s) => enabled_skills.has(s))
+  );
+
+  // 4.1.1
+  // enable back a random heal:
+  if (enabled_heals.size < 1) {
+    const skill_index = rng.nextRange(skillset_heals.length);
+    const skill = skills_array[skill_index];
+
+    disabled_skills.delete(skill);
+  }
+
+  return new Set(
+    skills_array.map((skill) => ({
+      ...skill,
+      disabled: disabled_skills.has(skill),
+    }))
+  );
 }
