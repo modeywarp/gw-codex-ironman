@@ -7,6 +7,9 @@ import {
   type SkillOrigin,
 } from "./codegen/subgroups/campaigns";
 import { all_heal_skills } from "./codegen/subgroups/heal";
+import { all_offensive_skills } from "./codegen/subgroups/offensive";
+import { all_defensive_skills } from "./codegen/subgroups/defensive";
+import { all_support_skills } from "./codegen/subgroups/support";
 
 function makeSkill(link, options: Partial<SkillOptions>): Skill {
   let normalized_name = toNormalized(link);
@@ -19,6 +22,9 @@ function makeSkill(link, options: Partial<SkillOptions>): Skill {
       is_heal: all_heal_skills.has(normalized_name),
       is_self_heal: self_heals.has(normalized_name),
       is_elite: all_elites.has(normalized_name),
+      is_offensive: all_offensive_skills.has(normalized_name),
+      is_defensive: all_defensive_skills.has(normalized_name),
+      is_support: all_support_skills.has(normalized_name),
       origin: getSkillOrigin(normalized_name),
       ...options,
     },
@@ -31,6 +37,9 @@ interface SkillOptions {
   is_self_heal: boolean;
   is_heal: boolean;
   is_elite: boolean;
+  is_offensive: boolean;
+  is_defensive: boolean;
+  is_support: boolean;
   origin: SkillOrigin;
 }
 export interface Skill {
@@ -1338,3 +1347,10 @@ const database: SkillsDatabase = new Map([
 ]);
 
 export default database;
+
+console.log(
+  Array.from(database.entries()).map((s) => ({
+    profession: s[0],
+    skills: s[1],
+  }))
+);

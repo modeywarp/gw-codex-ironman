@@ -1,3 +1,7 @@
+/**
+ * transforms a skill name from the `skill.ts` list of skill to a name that
+ * can be displayed to the user on the UI.
+ */
 export function toDisplay(str: string) {
   return str
     .trimStart()
@@ -11,6 +15,10 @@ export function toDisplay(str: string) {
     .trim();
 }
 
+/**
+ * transforms a skill name from the `skill.ts` list of skill to a name that
+ * is short but unique so it can be used in HashSets
+ */
 export function toNormalized(str: string) {
   return toDisplay(str)
     .replaceAll("_", " ")
