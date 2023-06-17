@@ -1348,9 +1348,10 @@ const database: SkillsDatabase = new Map([
 
 export default database;
 
-console.log(
-  Array.from(database.entries()).map((s) => ({
-    profession: s[0],
-    skills: s[1],
-  }))
-);
+// use the following line(s) to easily log a full list of all the skills:
+// console.log(
+//   Array.from(database.entries()).map((s) => ({
+//     profession: s[0],
+//     skills: s[1],
+//   }))
+// );

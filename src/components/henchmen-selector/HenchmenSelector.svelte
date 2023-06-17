@@ -16,6 +16,9 @@
     `${tooltip_penalty_secondary} disabled skills from secondary profession`,
   ].join("\n");
 
+  $: henchmen_percent = ($store_henchmen_count / 7) * 100;
+  $: background_gradient = getBackgroundGradient(henchmen_percent);
+
   let mouse_down = false;
   let last_y = 0;
   function onMouseDown(e) {
@@ -52,11 +55,23 @@
       $store_henchmen_count = clamped_value;
     }
   }
+
+  function getBackgroundGradient(percent) {
+    if (percent <= 0) {
+      return "white";
+    }
+
+    if (percent >= 100) {
+      return "#fffcf4";
+    }
+
+    const colored = `#fffcf4 ${henchmen_percent - 15}%`;
+    const white = `white ${Number(henchmen_percent) + 15}%`;
+    return `linear-gradient(180deg, ${colored}, ${white})`;
+  }
 </script>
 
-<div class="henchmen-selector">
-  <!--  -->
-
+<div class="henchmen-selector" style={`background: ${background_gradient}`}>
   <span
     on:mousedown={onMouseDown}
     on:mouseup={onMouseUp}
@@ -64,18 +79,18 @@
     on:mousemove={onMouseMove}>group size</span>
   <select bind:value={$store_henchmen_count} title={tooltip}>
     <optgroup label="Veteran">
-      <option value={0}>0</option>
+      <option value={0}>1</option>
     </optgroup>
     <optgroup label="Recommended">
-      <option value={1}>1</option>
-      <option value={2}>2</option>
-      <option value={3}>3</option>
-      <option value={4}>4</option>
+      <option value={1}>2</option>
+      <option value={2}>3</option>
+      <option value={3}>4</option>
+      <option value={4}>5</option>
     </optgroup>
     <optgroup label="Easy">
-      <option value={5}>5</option>
-      <option value={6}>6</option>
-      <option value={7}>7</option>
+      <option value={5}>6</option>
+      <option value={6}>7</option>
+      <option value={7}>8</option>
     </optgroup>
   </select>
 </div>
