@@ -173,8 +173,6 @@ export const all_heal_skills = new Set(
     "Healing Whisper",
     "Heart of Shadow",
     "Heaven's Delight",
-    "Illusion of Pain",
-    "Illusion of Pain (PvP)",
     "Illusion of Weakness",
     "Imbue Health",
     "Infuse Health",
