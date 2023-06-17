@@ -20,6 +20,7 @@
   import background from "./background.webp";
   import HenchmenSelector from "./components/henchmen-selector/HenchmenSelector.svelte";
   import { store_henchmen_count } from "./stores/henchmen";
+  import { store_compact_icons } from "./stores/compact_icons";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -51,6 +52,16 @@
 
 {#if can_display_skillsets}
   <div class="skillsets">
+    <div class="options">
+      <input
+        type="checkbox"
+        name="compact-mode"
+        id="compact-mode"
+        bind:checked={$store_compact_icons} />
+      <label for="compact-mode"
+        >{$store_compact_icons ? "Compact" : "Large"} icons</label>
+    </div>
+
     {#if $store_selected_outpost && $store_selected_outpost.name}
       <h1 class="outpost-name">{$store_selected_outpost.name}</h1>
       <SuggestedOutposts />
@@ -139,5 +150,20 @@
     position: relative;
     display: flex;
     max-width: 1250px;
+  }
+
+  .skillsets .options {
+    display: flex;
+    width: calc(100% - 2em);
+    justify-content: flex-end;
+    padding: 0 1em;
+  }
+
+  #compact-mode {
+    display: none;
+  }
+
+  #compact-mode + label {
+    box-shadow: 0px 0px 12px rgba(20, 20, 20, 0.1);
   }
 </style>

@@ -2,6 +2,7 @@
   import type { Profession } from "../game/professions";
   import type { Skill } from "../game/skills";
   import type { SkillsetEntry } from "../stores/builds";
+  import { store_compact_icons } from "../stores/compact_icons";
   import { store_wiki_iframe } from "../stores/wiki-iframe";
 
   export let skills: SkillsetEntry[] = [];
@@ -19,7 +20,7 @@
   const image_root = import.meta.env.PROD ? import.meta.env.BASE_URL : "";
 </script>
 
-<div class="skill-list">
+<div class="skill-list" class:compact={$store_compact_icons}>
   {#each skills as skill}
     <a
       on:click={(e) => setWikiIframe(e, skill)}
@@ -62,6 +63,7 @@
     display: block;
     margin: auto;
     width: 64px;
+    border-radius: 12px;
   }
 
   .skill.elite {
@@ -80,15 +82,17 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-width: 100%;
     color: white;
+    background-color: rgba(20, 20, 20, 0.3);
     padding: 0.3em;
+    min-width: 100%;
     min-height: 100%;
-    border-radius: 6px;
+    border-radius: 12px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    z-index: 11;
 
     animation-name: slide;
     animation-duration: 0.1s;
@@ -99,7 +103,7 @@
   }
 
   .skill:hover img {
-    opacity: 0.2;
+    opacity: 0.3;
   }
 
   @keyframes slide {
@@ -109,5 +113,16 @@
     to {
       opacity: 1;
     }
+  }
+
+  /* compact mode changes: */
+  .skill-list.compact .skill {
+    outline-width: 1px;
+    margin: 0.2em;
+    box-shadow: 0px 0px 6px 6px rgba(20, 20, 20, 0.1);
+  }
+
+  .skill-list.compact .skill img {
+    width: 56px;
   }
 </style>
