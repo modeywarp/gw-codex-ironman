@@ -57,6 +57,12 @@
         right panel. The more henchmen the smaller your skill pool gets.
       </i>
     </div>
+    <div class="row split">
+      <p>
+        <i>No death penalty</i>
+      </p>
+      <p>On death: you must drop all of your coins to the ground.</p>
+    </div>
   </div>
 
   <p>
