@@ -17,12 +17,6 @@
 
   function toggle() {
     enabled = !enabled;
-
-    // if (enabled) {
-    //   $store_henchmen.delete(profession);
-    // } else {
-    //   $store_henchmen.add(profession);
-    // }
   }
 </script>
 

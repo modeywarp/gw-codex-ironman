@@ -61,7 +61,7 @@
     on:mousedown={onMouseDown}
     on:mouseup={onMouseUp}
     on:mouseleave={onMouseUp}
-    on:mousemove={onMouseMove}>henchmen</span>
+    on:mousemove={onMouseMove}>group size</span>
   <select bind:value={$store_henchmen_count} title={tooltip}>
     <optgroup label="Veteran">
       <option value={0}>0</option>
@@ -92,7 +92,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.4em 0.4em;
+    padding: 1em 0.4em;
     border-radius: 6px 0px 0px 6px;
     box-shadow: 3px 3px 6px rgba(20, 20, 20, 0.2);
     user-select: none;
@@ -126,6 +126,8 @@
 
   select {
     appearance: none;
+    text-align: center;
+    margin-top: 0.6em;
   }
 
   select:hover {
