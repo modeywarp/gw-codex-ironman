@@ -1,6 +1,6 @@
 <footer>
   <a href="https://www.guildwars.com/en/">Guild Wars</a>
-  <a href="https://github.com/Aelto/gw-codex-ironman">Github</a>
+  <a href="https://github.com/Aelto/gw-codex-ironman">GitHub</a>
   <a href="https://wiki.guildwars.com/wiki/Main_Page">Official wiki</a>
 </footer>
 
