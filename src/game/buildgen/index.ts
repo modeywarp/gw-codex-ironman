@@ -4,6 +4,7 @@ import type { Outpost } from "../outposts";
 import type { Profession } from "../professions";
 import { Rng } from "../rng";
 import skills, { type Skill } from "../skills";
+import { cacheKey, getCachedBuild, setCachedBuild } from "./cache";
 import { getSkillPenaltyFromHenchmen } from "./henchmen_restrictions";
 
 export interface BuildGenOptions {
@@ -43,6 +44,19 @@ export function generateSkillset(
     return new Set();
   }
 
+  const cache_key = cacheKey(
+    character_name,
+    outpost,
+    profession,
+    options,
+    available_skill_origins
+  );
+
+  const cached_build = getCachedBuild(cache_key);
+  if (cached_build !== null) {
+    return cached_build;
+  }
+
   return new BuildGenerator(
     character_name,
     outpost,
@@ -61,7 +75,7 @@ export function generateSkillset(
         options.is_primary_profession
       )
     )
-    .build();
+    .build(cache_key);
 }
 
 class BuildGenerator {
@@ -92,16 +106,16 @@ class BuildGenerator {
     options: BuildGenOptions,
     available_skill_origins: Set<SkillOrigin>
   ) {
+    this.available_skills = skills
+      .get(profession)
+      .filter((skill) => available_skill_origins.has(skill.options.origin));
+
     this.rng = new Rng(
       `${character_name.toLowerCase()}-${outpost.link}-${profession}`
     );
     this.rng_profession_independent = new Rng(
       `${character_name.toLowerCase()}-${outpost.link}`
     );
-
-    this.available_skills = skills
-      .get(profession)
-      .filter((skill) => available_skill_origins.has(skill.options.origin));
 
     this.subsets = {
       regulars: this.available_skills.filter((s) => !s.options.is_elite),
@@ -212,15 +226,19 @@ class BuildGenerator {
     return this;
   }
 
-  public build() {
+  public build(cache_key: string): Skillset {
     const skills_array = Array.from(this.skillset);
 
-    return new Set(
+    const skillset = new Set(
       skills_array.map((skill) => ({
         ...skill,
         disabled: this.disabled_skills.has(skill),
       }))
     );
+
+    setCachedBuild(cache_key, skillset);
+
+    return skillset;
   }
 
   private addSubsetSkillsToSkillset(
