@@ -51,8 +51,10 @@ export function generateSkillset(
     available_skill_origins
   )
     .withSelfHeals(1)
-    .withRegularSkills(19)
-    .withElites() // the count is calculated inside the generator
+    .withDefensiveSkills(options.is_primary_profession)
+    .withOffensiveSkills(options.is_primary_profession)
+    .withRegularSkills(17)
+    .withElites(options.is_primary_profession) // the count is calculated inside the generator
     .withDisabledSkills(
       getSkillPenaltyFromHenchmen(
         options.henchmen_count,
@@ -65,11 +67,20 @@ export function generateSkillset(
 class BuildGenerator {
   private rng: Rng;
 
+  /**
+   * unlike the regular `this.rng`, this one is seeded using the character name
+   * and the outpost but NOT the profession. So it can be used in special cases
+   * where a profession doesn't change the outcome of the RNG.
+   */
+  private rng_profession_independent: Rng;
+
   private available_skills: Skill[];
   private subsets: {
     regulars: Skill[];
     selfheals: Skill[];
     elites: Skill[];
+    defensives: Skill[];
+    offensives: Skill[];
   };
 
   private skillset: Set<Skill> = new Set();
@@ -84,6 +95,9 @@ class BuildGenerator {
     this.rng = new Rng(
       `${character_name.toLowerCase()}-${outpost.link}-${profession}`
     );
+    this.rng_profession_independent = new Rng(
+      `${character_name.toLowerCase()}-${outpost.link}`
+    );
 
     this.available_skills = skills
       .get(profession)
@@ -94,68 +108,74 @@ class BuildGenerator {
       selfheals: this.available_skills.filter(
         (s) => !s.options.is_elite && s.options.is_self_heal
       ),
+      defensives: this.available_skills.filter(
+        (s) => s.options.is_defensive && !s.options.is_elite
+      ),
+      offensives: this.available_skills.filter(
+        (s) => s.options.is_offensive && !s.options.is_elite
+      ),
       elites: this.available_skills.filter((s) => s.options.is_elite),
     };
   }
 
   public withSelfHeals(count: number): BuildGenerator {
-    if (this.subsets.selfheals.length > 0) {
-      let target_size = this.skillset.size + count;
-      let shortcircuit = 100;
-
-      while (this.skillset.size < target_size && shortcircuit--) {
-        const index = this.rng.nextRange(this.subsets.selfheals.length);
-
-        this.skillset.add(this.subsets.selfheals.at(index));
-      }
+    if (this.subsets.selfheals.length <= 0) {
+      return this;
     }
 
-    return this;
+    return this.addSubsetSkillsToSkillset(this.subsets.selfheals, count);
   }
 
   public withRegularSkills(count: number): BuildGenerator {
-    let target_size = Math.min(
-      this.skillset.size + count,
-      this.subsets.regulars.length
-    );
-    let shortcircuit = 100;
-
-    while (this.skillset.size < target_size && shortcircuit--) {
-      const skill_index = this.rng.nextRange(this.subsets.regulars.length);
-      const skill = this.subsets.regulars.at(skill_index);
-
-      if (this.skillset.has(skill)) {
-        continue;
-      }
-
-      this.skillset.add(skill);
-    }
-
-    return this;
+    return this.addSubsetSkillsToSkillset(this.subsets.regulars, count);
   }
 
-  public withElites(): BuildGenerator {
-    if (this.subsets.elites.length <= 0) {
+  public withElites(is_primary_profession: boolean): BuildGenerator {
+    if (this.subsets.elites.length <= 0 || !is_primary_profession) {
       return this;
     }
 
     const count = this.rng.nextRange(6, 3);
-    const elites_count = Math.min(this.subsets.elites.length, count);
-    const target_size = this.skillset.size + elites_count;
-    let shortcircuit = 100;
 
-    while (this.skillset.size < target_size && shortcircuit--) {
-      const skill_index = this.rng.nextRange(this.subsets.elites.length);
-      const skill = this.subsets.elites.at(skill_index);
+    return this.addSubsetSkillsToSkillset(this.subsets.elites, count);
+  }
 
-      if (this.skillset.has(skill)) {
-        continue;
-      }
+  /**
+   * Potentially add guaranted defensive skills to the build.
+   *
+   * A build is not guaranted to get defensive skills depending on whether it is
+   * from a primary or secondary profession.
+   */
+  public withDefensiveSkills(is_primary_profession: boolean): BuildGenerator {
+    const primary_has_defensive =
+      this.rng_profession_independent.nextRange(10) < 5;
 
-      this.skillset.add(skill);
+    // the guaranted defensive skills are randomly set to either the primary or
+    // the secondary profession.
+    if (
+      (primary_has_defensive && !is_primary_profession) ||
+      (!primary_has_defensive && is_primary_profession)
+    ) {
+      return this;
     }
 
-    return this;
+    return this.addSubsetSkillsToSkillset(this.subsets.defensives, 2);
+  }
+
+  public withOffensiveSkills(is_primary_profession: boolean): BuildGenerator {
+    const primary_has_offensive =
+      this.rng_profession_independent.nextRange(10) < 5;
+
+    // the guaranted defensive skills are randomly set to either the primary or
+    // the secondary profession.
+    if (
+      (primary_has_offensive && !is_primary_profession) ||
+      (!primary_has_offensive && is_primary_profession)
+    ) {
+      return this;
+    }
+
+    return this.addSubsetSkillsToSkillset(this.subsets.offensives, 2);
   }
 
   public withDisabledSkills(penalty: number): BuildGenerator {
@@ -201,5 +221,27 @@ class BuildGenerator {
         disabled: this.disabled_skills.has(skill),
       }))
     );
+  }
+
+  private addSubsetSkillsToSkillset(
+    subset: Skill[],
+    count: number
+  ): BuildGenerator {
+    const clamped_count = Math.min(subset.length, count);
+    const target_size = this.skillset.size + clamped_count;
+    let shortcircuit = 100;
+
+    while (this.skillset.size < target_size && shortcircuit--) {
+      const skill_index = this.rng.nextRange(subset.length);
+      const skill = subset.at(skill_index);
+
+      if (this.skillset.has(skill)) {
+        continue;
+      }
+
+      this.skillset.add(skill);
+    }
+
+    return this;
   }
 }
