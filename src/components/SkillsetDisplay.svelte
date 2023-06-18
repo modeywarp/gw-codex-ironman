@@ -7,7 +7,7 @@
   export let profession: Profession = "warrior";
   export let skillset: Skillset = null;
 
-  const is_heal = (s: Skill) => s.options.is_heal || s.options.is_self_heal;
+  const is_heal = (s: Skill) => s.options.is_self_heal;
 
   $: skills = Boolean(skillset) ? Array.from(skillset) : [];
   $: regular_skills = skills.filter((s) => !s.options.is_elite && !is_heal(s));
