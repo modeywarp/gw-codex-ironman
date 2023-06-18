@@ -48,7 +48,7 @@ function getRecommendedSkillPacksForProfession(
 export function refreshSkillpacks() {
   const secondary_profession = get(store_secondary_profession);
 
-  const recommended_packs = []
+  const recommended_packs = get(store_selected_skillpacks)
     .concat(getRecommendedSkillPacksForCampaign(get(store_campaign)))
     .concat(
       getRecommendedSkillPacksForProfession(get(store_primary_profession))
@@ -59,7 +59,9 @@ export function refreshSkillpacks() {
         : []
     );
 
-  store_selected_skillpacks.set(recommended_packs);
+  const unique = Array.from(new Set(recommended_packs));
+
+  store_selected_skillpacks.set(unique);
 }
 
 // automatically change the skill pack on campaign change
