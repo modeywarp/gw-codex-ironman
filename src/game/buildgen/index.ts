@@ -138,7 +138,7 @@ export function generateSkillset(
   // enable back a random heal:
   if (enabled_heals.size < 1) {
     const skill_index = rng.nextRange(skillset_heals.length);
-    const skill = skills_array[skill_index];
+    const skill = skillset_heals[skill_index];
 
     disabled_skills.delete(skill);
   }
