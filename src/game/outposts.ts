@@ -277,7 +277,7 @@ const crystal_desert: Region = {
       mission: true,
     },
     {
-      name: "Augury Rock1",
+      name: "Augury Rock",
       link: "/wiki/Augury_Rock_(outpost)",
       mission: true,
     },
@@ -804,7 +804,7 @@ const istan: Region = {
       mission: false,
     },
     {
-      name: "Jokanur Diggings1",
+      name: "Jokanur Diggings",
       link: "/wiki/Jokanur_Diggings_(outpost)",
       mission: true,
     },
@@ -844,7 +844,7 @@ const kourna: Region = {
       mission: false,
     },
     {
-      name: "Nundu Bay1",
+      name: "Nundu Bay",
       link: "/wiki/Nundu_Bay_(outpost)",
       mission: true,
     },
@@ -859,12 +859,12 @@ const kourna: Region = {
       mission: false,
     },
     {
-      name: "Venta Cemetery1",
+      name: "Venta Cemetery",
       link: "/wiki/Venta_Cemetery_(outpost)",
       mission: true,
     },
     {
-      name: "Kodonur Crossroads1",
+      name: "Kodonur Crossroads",
       link: "/wiki/Kodonur_Crossroads_(outpost)",
       mission: true,
     },
@@ -915,7 +915,7 @@ const vabbi: Region = {
       mission: false,
     },
     {
-      name: "Grand Court of Sebelkeh1",
+      name: "Grand Court of Sebelkeh",
       link: "/wiki/Grand_Court_of_Sebelkeh_(outpost)",
       mission: true,
     },
@@ -940,7 +940,7 @@ const vabbi: Region = {
       mission: true,
     },
     {
-      name: "Dzagonur Bastion1",
+      name: "Dzagonur Bastion",
       link: "/wiki/Dzagonur_Bastion_(outpost)",
       mission: true,
     },
@@ -965,7 +965,7 @@ const desolation: Region = {
       mission: false,
     },
     {
-      name: "Gate of Desolation1",
+      name: "Gate of Desolation",
       link: "/wiki/Gate_of_Desolation_(outpost)",
       mission: true,
     },
@@ -1059,8 +1059,8 @@ export const nightfall: RegionDatabase = [
 export const all_outposts = [
   ...pre_searing.flatMap((r) => r.outposts),
   ...prophecy.flatMap((r) => r.outposts),
-  ...nightfall.flatMap((r) => r.outposts),
   ...faction.flatMap((r) => r.outposts),
+  ...nightfall.flatMap((r) => r.outposts),
   ...gwen.flatMap((r) => r.outposts),
 ];
 
