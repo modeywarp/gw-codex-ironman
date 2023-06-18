@@ -112,8 +112,6 @@ const regen_skills = [
 
 export const all_heal_skills = new Set(
   [
-    '"There\'s Nothing to Fear!"',
-    "Air of Superiority",
     "Angelic Bond",
     "Angelic Protection",
     "Aura of Restoration",

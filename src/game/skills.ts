@@ -1,30 +1,31 @@
 import type { Profession } from "./professions";
 import { toIcon, toDisplay, toNormalized } from "./codegen/name-mappers";
-import { self_heals } from "./codegen/subgroups/self-heal";
+import { all_self_heals } from "./codegen/subgroups/self-heal";
 import { all_elites } from "./codegen/subgroups/elites";
 import {
   getSkillOrigin,
   type SkillOrigin,
 } from "./codegen/subgroups/campaigns";
 import { all_heal_skills } from "./codegen/subgroups/heal";
-import { all_offensive_skills } from "./codegen/subgroups/offensive";
 import { all_defensive_skills } from "./codegen/subgroups/defensive";
-import { all_support_skills } from "./codegen/subgroups/support";
 
 function makeSkill(link, options: Partial<SkillOptions>): Skill {
   let normalized_name = toNormalized(link);
+
+  const is_defensive = all_defensive_skills.has(normalized_name);
+  const is_self_heal = all_self_heals.has(normalized_name);
 
   return {
     link,
     name: toDisplay(link),
     icon: toIcon(link),
     options: {
+      is_self_heal,
+      is_defensive,
       is_heal: all_heal_skills.has(normalized_name),
-      is_self_heal: self_heals.has(normalized_name),
       is_elite: all_elites.has(normalized_name),
-      is_offensive: all_offensive_skills.has(normalized_name),
-      is_defensive: all_defensive_skills.has(normalized_name),
-      is_support: all_support_skills.has(normalized_name),
+      is_offensive: !is_defensive,
+      is_support: is_defensive && !is_self_heal,
       origin: getSkillOrigin(normalized_name),
       ...options,
     },
