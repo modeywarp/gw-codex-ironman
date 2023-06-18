@@ -8,6 +8,8 @@ import { store_selected_outpost } from "../stores/outposts";
 import { store_campaign, type Campaign } from "../stores/campaign";
 import type { Profession, SecondaryProfession } from "../game/professions";
 import { getOutpostNyName } from "../game/outposts";
+import { store_selected_skillpacks } from "../stores/skillpacks";
+import type { SkillOrigin } from "../game/codegen/subgroups/campaigns";
 
 export function getUrlFromStores() {
   //@ts-ignore
@@ -18,6 +20,7 @@ export function getUrlFromStores() {
   url.searchParams.set("ps", get(store_secondary_profession));
   url.searchParams.set("otpst", get(store_selected_outpost).name);
   url.searchParams.set("cmpgn", get(store_campaign));
+  url.searchParams.set("skpk", get(store_selected_skillpacks).join(","));
 
   return url.toString();
 }
@@ -50,4 +53,14 @@ export function getCampaignFromUrl() {
 
 export function getOutpostFromUrl() {
   return getOutpostNyName(getQueryParam("otpst"));
+}
+
+export function getSkillpacksFromUrl() {
+  const s = getQueryParam("skpk");
+
+  if (!s) {
+    return null;
+  }
+
+  return s.split(",") as SkillOrigin[];
 }

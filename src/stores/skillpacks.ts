@@ -6,8 +6,15 @@ import {
   store_secondary_profession,
 } from "./character";
 import type { Profession } from "../game/professions";
+import {
+  getSelectedSkillpacksLs,
+  setSelectedSkillpacksLs,
+} from "../localstorage/skillpacks";
+import { getSkillpacksFromUrl } from "../history";
 
-export const store_selected_skillpacks = writable<SkillOrigin[]>(["Core"]);
+export const store_selected_skillpacks = writable<SkillOrigin[]>(
+  getSkillpacksFromUrl() || getSelectedSkillpacksLs() || ["Core"]
+);
 
 function getRecommendedSkillPacksForCampaign(
   campaign: Campaign
@@ -64,5 +71,6 @@ export function refreshSkillpacks() {
   store_selected_skillpacks.set(unique);
 }
 
-// automatically change the skill pack on campaign change
-store_campaign.subscribe((campaign) => {});
+store_selected_skillpacks.subscribe((packs) => {
+  setSelectedSkillpacksLs(packs);
+});
