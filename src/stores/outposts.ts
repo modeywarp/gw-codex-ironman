@@ -7,13 +7,16 @@ import {
   setSelectedOutpostLs,
 } from "../localstorage/selected_outpost";
 import { getOutpostCampaign } from "../game/outposts";
+import { getOutpostFromUrl } from "../history";
 
 export const store_outposts = writable<outposts.RegionDatabase>(
   outposts.prophecy
 );
 
 export const store_selected_outpost = writable<outposts.Outpost>(
-  getSelectedOutpostLs() || outposts.prophecy[0].outposts[0]
+  getOutpostFromUrl() ||
+    getSelectedOutpostLs() ||
+    outposts.prophecy[0].outposts[0]
 );
 
 export const store_suggested_outposts = writable<outposts.Outpost[]>([]);

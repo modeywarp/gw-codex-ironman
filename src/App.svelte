@@ -21,6 +21,7 @@
   import HenchmenSelector from "./components/henchmen-selector/HenchmenSelector.svelte";
   import { store_henchmen_count } from "./stores/henchmen";
   import { store_compact_icons } from "./stores/compact_icons";
+  import { getUrlFromStores } from "./history";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -33,11 +34,6 @@
       (Boolean(secondary_skillset) && secondary_skillset.size)) &&
     Boolean($store_selected_outpost);
 
-  function refreshStuff() {
-    refreshSkillpacks();
-    refreshBuildsStore();
-  }
-
   store_character_name.subscribe(refreshStuff);
   store_primary_profession.subscribe(refreshStuff);
   store_secondary_profession.subscribe(refreshStuff);
@@ -46,6 +42,17 @@
   store_henchmen_count.subscribe(refreshStuff);
 
   store_selected_skillpacks.subscribe(refreshBuildsStore);
+
+  function refreshStuff() {
+    refreshSkillpacks();
+    refreshBuildsStore();
+  }
+
+  function copyUrl() {
+    const url = getUrlFromStores();
+
+    navigator.clipboard.writeText(url);
+  }
 </script>
 
 <Header />
@@ -60,6 +67,21 @@
         bind:checked={$store_compact_icons} />
       <label for="compact-mode"
         >{$store_compact_icons ? "Compact" : "Large"} icons</label>
+
+      <button on:click={copyUrl}
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+        </svg>
+      </button>
     </div>
 
     {#if $store_selected_outpost && $store_selected_outpost.name}
@@ -157,6 +179,10 @@
     width: calc(100% - 2em);
     justify-content: flex-end;
     padding: 0 1em;
+  }
+
+  .skillsets .options > * + * {
+    margin-left: 1em;
   }
 
   #compact-mode {

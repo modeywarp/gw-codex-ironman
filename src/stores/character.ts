@@ -16,10 +16,16 @@ import {
   getCharacterSecondaryProfessionLs,
   setCharacterSecondaryProfessionLs,
 } from "../localstorage/character_secondary_prof";
+import {
+  getCharacterNameFromUrl,
+  getPrimaryProfessionFromUrl,
+} from "../history";
 
-export const store_character_name = writable(getCharacterNameLs());
+export const store_character_name = writable(
+  getCharacterNameFromUrl() || getCharacterNameLs()
+);
 export const store_primary_profession = writable<Profession>(
-  getCharacterPrimaryProfessionLs()
+  getPrimaryProfessionFromUrl() || getCharacterPrimaryProfessionLs()
 );
 export const store_secondary_profession = writable<SecondaryProfession>(
   getCharacterSecondaryProfessionLs()

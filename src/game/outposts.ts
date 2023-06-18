@@ -1068,6 +1068,10 @@ export function getOutpostByLink(link: string): Outpost {
   return all_outposts.find((o) => o.link === link);
 }
 
+export function getOutpostNyName(name: string): Outpost {
+  return all_outposts.find((o) => o.name === name);
+}
+
 export function getSuggestedOutposts(outpost: Outpost): Outpost[] {
   const index = all_outposts.indexOf(outpost);
   const max = all_outposts.length;

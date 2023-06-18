@@ -1,7 +1,9 @@
+import { canStore } from ".";
+
 const KEY = "CHARACTER_NAME";
 
 export function setCharacterNameLs(name: string) {
-  return localStorage.setItem(KEY, name);
+  return canStore() && localStorage.setItem(KEY, name);
 }
 
 export function getCharacterNameLs(): string {
