@@ -49,7 +49,11 @@ store_primary_profession.subscribe((p) => {
   );
 });
 
-store_character_name.subscribe(setCharacterNameLs);
+store_character_name.subscribe((name) => {
+  setCharacterNameLs(name);
+
+  document.title = `${name} | Codex`;
+});
 store_primary_profession.subscribe(setCharacterPrimaryProfessionLs);
 store_secondary_profession.subscribe(setCharacterSecondaryProfessionLs);
 
