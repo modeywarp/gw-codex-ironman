@@ -1,10 +1,10 @@
-import { canStore } from ".";
+import { isInPreview } from ".";
 import type { Campaign } from "../stores/campaign";
 
 const KEY = "SELECTED_CAMPAIGN";
 
 export function setSelectedCampaignLs(campaign: Campaign) {
-  return canStore() && localStorage.setItem(KEY, campaign);
+  return isInPreview() && localStorage.setItem(KEY, campaign);
 }
 
 export function getSelectedCampaignLs(): Campaign {

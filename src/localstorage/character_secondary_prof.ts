@@ -1,4 +1,4 @@
-import { canStore } from ".";
+import { isInPreview } from ".";
 import type { SecondaryProfession } from "../game/professions";
 
 const KEY = "CHARACTER_SECONDARY_PROFESSION";
@@ -6,7 +6,7 @@ const KEY = "CHARACTER_SECONDARY_PROFESSION";
 export function setCharacterSecondaryProfessionLs(
   profession: SecondaryProfession
 ) {
-  return canStore() && localStorage.setItem(KEY, profession);
+  return isInPreview() && localStorage.setItem(KEY, profession);
 }
 
 export function getCharacterSecondaryProfessionLs(): SecondaryProfession {

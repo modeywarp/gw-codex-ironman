@@ -8,6 +8,7 @@ import {
 } from "../localstorage/selected_outpost";
 import { getOutpostCampaign } from "../game/outposts";
 import { getOutpostFromUrl } from "../history";
+import { isInPreview } from "../localstorage";
 
 export const store_outposts = writable<outposts.RegionDatabase>(
   outposts.prophecy
@@ -53,4 +54,27 @@ store_campaign.subscribe((campaign) => {
   }
 });
 
-store_selected_outpost.subscribe(setSelectedOutpostLs);
+const broadcast_channel = new BroadcastChannel("selected-outpost");
+store_selected_outpost.subscribe((outpost) => {
+  setSelectedOutpostLs(outpost);
+
+  broadcast_channel.postMessage({
+    outpost_name: outpost.name,
+    campaign: get(store_campaign),
+  });
+});
+
+broadcast_channel.onmessage = (event) => {
+  if (isInPreview()) {
+    return;
+  }
+
+  const { outpost_name, campaign } = event.data;
+  store_campaign.set(campaign);
+
+  setTimeout(() => {
+    const outpost = outposts.getOutpostNyName(outpost_name);
+
+    store_selected_outpost.set(outpost);
+  }, 100);
+};

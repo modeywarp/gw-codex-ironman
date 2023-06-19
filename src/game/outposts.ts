@@ -1073,7 +1073,7 @@ export function getOutpostNyName(name: string): Outpost {
 }
 
 export function getSuggestedOutposts(outpost: Outpost): Outpost[] {
-  const index = all_outposts.indexOf(outpost);
+  const index = all_outposts.findIndex((o) => o.link === outpost.link);
   const max = all_outposts.length;
 
   return all_outposts

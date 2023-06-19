@@ -1,9 +1,9 @@
-import { canStore } from ".";
+import { isInPreview } from ".";
 
 const KEY = "CHARACTER_NAME";
 
 export function setCharacterNameLs(name: string) {
-  return canStore() && localStorage.setItem(KEY, name);
+  return isInPreview() && localStorage.setItem(KEY, name);
 }
 
 export function getCharacterNameLs(): string {

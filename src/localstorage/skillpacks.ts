@@ -1,11 +1,11 @@
-import { canStore } from ".";
+import { isInPreview } from ".";
 import type { SkillOrigin } from "../game/codegen/subgroups/campaigns";
 import { getOutpostByLink, type Outpost } from "../game/outposts";
 
 const KEY = "SELECTED_SKILLPACKS";
 
 export function setSelectedSkillpacksLs(skillpacks: SkillOrigin[]) {
-  return canStore() && localStorage.setItem(KEY, skillpacks.join(","));
+  return isInPreview() && localStorage.setItem(KEY, skillpacks.join(","));
 }
 
 export function getSelectedSkillpacksLs(): SkillOrigin[] {

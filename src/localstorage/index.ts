@@ -1,5 +1,5 @@
 import { hasAnyQueryParam } from "../history";
 
-export function canStore() {
+export function isInPreview() {
   return !hasAnyQueryParam();
 }
