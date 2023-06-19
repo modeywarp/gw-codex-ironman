@@ -104,7 +104,6 @@ const monk_self_heal = [
   "Dismiss Condition",
   "Divine Healing",
   "Divine Intervention",
-  "Dwayna's Kiss",
   "Ethereal Light",
   "Gift of Health",
   "Glimmer of Light",
