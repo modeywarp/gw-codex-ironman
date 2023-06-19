@@ -8,7 +8,7 @@ import {
 } from "../localstorage/selected_outpost";
 import { getOutpostCampaign } from "../game/outposts";
 import { getOutpostFromUrl } from "../history";
-import { isInPreview } from "../localstorage";
+import { canStore, isPreview } from "../localstorage";
 
 export const store_outposts = writable<outposts.RegionDatabase>(
   outposts.prophecy
@@ -58,14 +58,16 @@ const broadcast_channel = new BroadcastChannel("selected-outpost");
 store_selected_outpost.subscribe((outpost) => {
   setSelectedOutpostLs(outpost);
 
-  broadcast_channel.postMessage({
-    outpost_name: outpost.name,
-    campaign: get(store_campaign),
-  });
+  if (!isPreview()) {
+    broadcast_channel.postMessage({
+      outpost_name: outpost.name,
+      campaign: get(store_campaign),
+    });
+  }
 });
 
 broadcast_channel.onmessage = (event) => {
-  if (isInPreview()) {
+  if (!isPreview()) {
     return;
   }
 
