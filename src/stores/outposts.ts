@@ -60,7 +60,7 @@ store_selected_outpost.subscribe((outpost) => {
 
   if (!isPreview()) {
     broadcast_channel.postMessage({
-      outpost_name: outpost.name,
+      outpost_link: outpost.link,
       campaign: get(store_campaign),
     });
   }
@@ -71,11 +71,11 @@ broadcast_channel.onmessage = (event) => {
     return;
   }
 
-  const { outpost_name, campaign } = event.data;
+  const { outpost_link, campaign } = event.data;
   store_campaign.set(campaign);
 
   setTimeout(() => {
-    const outpost = outposts.getOutpostNyName(outpost_name);
+    const outpost = outposts.getOutpostByLink(outpost_link);
 
     store_selected_outpost.set(outpost);
   }, 100);
