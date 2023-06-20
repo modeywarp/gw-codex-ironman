@@ -67,6 +67,7 @@ export function generateSkillset(
     .withSelfHeals(1)
     .withDefensiveSkills(options.is_primary_profession)
     .withOffensiveSkills(options.is_primary_profession)
+    .withInheritedSkills(profession)
     .withRegularSkills(17)
     .withElites(options.is_primary_profession) // the count is calculated inside the generator
     .withDisabledSkills(
@@ -99,6 +100,9 @@ class BuildGenerator {
 
   private skillset: Set<Skill> = new Set();
   private disabled_skills: Set<Skill> = new Set();
+
+  private inherited_skills_count: number = 0;
+
   constructor(
     character_name: string,
     outpost: Outpost,
@@ -141,7 +145,10 @@ class BuildGenerator {
   }
 
   public withRegularSkills(count: number): BuildGenerator {
-    return this.addSubsetSkillsToSkillset(this.subsets.regulars, count);
+    return this.addSubsetSkillsToSkillset(
+      this.subsets.regulars,
+      Math.max(count - this.inherited_skills_count, 0)
+    );
   }
 
   public withElites(is_primary_profession: boolean): BuildGenerator {
@@ -190,6 +197,59 @@ class BuildGenerator {
     }
 
     return this.addSubsetSkillsToSkillset(this.subsets.offensives, 2);
+  }
+
+  /**
+   * Certain professions inherit guaranted skills in order to unlock the usage of
+   * other skills. For example:
+   * - necromancers inherit one summon
+   * - ritualists inherit one binding ritual
+   * - rangers get Charm Animal
+   * - assassins get a lead & an off-hand attack
+   */
+  public withInheritedSkills(profession: Profession): BuildGenerator {
+    if (profession === "assassin") {
+      this.addSubsetSkillsToSkillset(
+        this.subsets.regulars.filter((s) => s.options.is_lead_attack),
+        1
+      );
+      this.addSubsetSkillsToSkillset(
+        this.subsets.regulars.filter((s) => s.options.is_offhand_attack),
+        1
+      );
+
+      this.inherited_skills_count = 2;
+    } else if (profession === "ritualist") {
+      this.addSubsetSkillsToSkillset(
+        this.subsets.regulars.filter((s) => s.options.is_binding_ritual),
+        1
+      );
+
+      this.inherited_skills_count = 1;
+    } else if (profession === "necromancer") {
+      this.addSubsetSkillsToSkillset(
+        this.subsets.regulars.filter((s) => s.options.is_minion),
+        1
+      );
+
+      this.inherited_skills_count = 1;
+    } else if (profession === "ranger") {
+      this.addSubsetSkillsToSkillset(
+        this.subsets.regulars.filter((s) => s.options.is_pet_summon),
+        1
+      );
+
+      this.inherited_skills_count = 1;
+    } else if (profession === "monk") {
+      this.addSubsetSkillsToSkillset(
+        this.subsets.regulars.filter((s) => s.options.is_resurrection),
+        1
+      );
+
+      this.inherited_skills_count = 1;
+    }
+
+    return this;
   }
 
   public withDisabledSkills(penalty: number): BuildGenerator {

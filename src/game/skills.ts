@@ -8,6 +8,12 @@ import {
 } from "./codegen/subgroups/campaigns";
 import { all_heal_skills } from "./codegen/subgroups/heal";
 import { all_defensive_skills } from "./codegen/subgroups/defensive";
+import { all_lead_attacks } from "./codegen/subgroups/lead-attacks";
+import { all_offhand_attacks } from "./codegen/subgroups/offhand-attacks";
+import { all_binding_rituals } from "./codegen/subgroups/binding-rituals";
+import { all_minions } from "./codegen/subgroups/minions";
+import { all_pet_summons } from "./codegen/subgroups/pet_summons";
+import { all_resurrections } from "./codegen/subgroups/resurrection";
 
 function makeSkill(link, options: Partial<SkillOptions>): Skill {
   let normalized_name = toNormalized(link);
@@ -27,6 +33,12 @@ function makeSkill(link, options: Partial<SkillOptions>): Skill {
       is_offensive: !is_defensive,
       is_support: is_defensive && !is_self_heal,
       origin: getSkillOrigin(normalized_name),
+      is_lead_attack: all_lead_attacks.has(normalized_name),
+      is_offhand_attack: all_offhand_attacks.has(normalized_name),
+      is_binding_ritual: all_binding_rituals.has(normalized_name),
+      is_minion: all_minions.has(normalized_name),
+      is_pet_summon: all_pet_summons.has(normalized_name),
+      is_resurrection: all_resurrections.has(normalized_name),
       ...options,
     },
   };
@@ -41,6 +53,12 @@ interface SkillOptions {
   is_offensive: boolean;
   is_defensive: boolean;
   is_support: boolean;
+  is_lead_attack: boolean;
+  is_offhand_attack: boolean;
+  is_minion: boolean;
+  is_binding_ritual: boolean;
+  is_pet_summon: boolean;
+  is_resurrection: boolean;
   origin: SkillOrigin;
 }
 export interface Skill {
