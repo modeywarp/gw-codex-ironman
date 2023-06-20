@@ -51,17 +51,27 @@
         the <u>last outpost you unlocked.</u>
       </p>
     </div>
-    <div class="row center">
-      <i>
-        Specify how many heroes or henchmen are present in your group in the
-        right panel. The more henchmen the smaller your skill pool gets.
-      </i>
-    </div>
     <div class="row split">
       <p>
         <i>No death penalty</i>
       </p>
       <p>On death: you must drop all of your coins to the ground.</p>
+    </div>
+    <div class="row center">
+      Specify size of your group in the right panel. The more henchmen the
+      smaller your skill pool gets.
+    </div>
+    <div class="row center">
+      <p>
+        You can buy any skill that is offered by skill merchants, even those
+        unlocked skills the merchant wouldn't offer on a fresh account
+      </p>
+    </div>
+    <div class="row center"><p>You can buy & sell regular materials</p></div>
+    <div class="row center"><p>You can only sell rare materials</p></div>
+
+    <div class="row center">
+      You cannot use consumables or anything that comes from your bank account
     </div>
   </div>
 
@@ -133,7 +143,11 @@
   .rules .cells .row.split > * {
     flex-grow: 1;
     width: 50%;
-    margin: 1em;
+    padding: 1em;
+  }
+
+  .rules .cells .row.split > * + * {
+    border-left: solid 1px whitesmoke;
   }
 
   .rules .cells .row.center {
