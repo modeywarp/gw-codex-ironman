@@ -255,32 +255,23 @@ class BuildGenerator {
   public withDisabledSkills(penalty: number): BuildGenerator {
     const skills_to_disable = Array.from(this.skillset);
 
+    const hasAnySelfHealLeft = () => skills_to_disable.some(s => s.options.is_self_heal);
+    const hasAnyEliteLeft = () => skills_to_disable.some(s => s.options.is_elite);
+
     for (let i = 0; i < penalty; i += 1) {
       const skill_index = this.rng.nextRange(skills_to_disable.length);
+
+      // important detail here, the `skills_disable` is mutated with splice
+      // and the skill we get here is extracted out of the array.
       const [skill] = skills_to_disable.splice(skill_index, 1);
 
-      this.disabled_skills.add(skill);
-    }
-
-    // but ensure there is at least 1 available heal even after the penalty:
-    const enabled_skills = new Set(
-      Array.from(this.skillset).filter(
-        (skill) => !this.disabled_skills.has(skill)
-      )
-    );
-    const skillset_heals = this.subsets.selfheals.filter((s) =>
-      this.skillset.has(s)
-    );
-    const enabled_heals = new Set(
-      this.subsets.selfheals.filter((s) => enabled_skills.has(s))
-    );
-
-    // enable back a random heal:
-    if (enabled_heals.size < 1) {
-      const skill_index = this.rng.nextRange(skillset_heals.length);
-      const skill = skillset_heals[skill_index];
-
-      this.disabled_skills.delete(skill);
+      // but it's possible we don't even add this skill to the list of disabled
+      // skills yet we leave it out of the array to ensure it won't be selected
+      // again in future iterations.
+      const can_remove = hasAnySelfHealLeft() && hasAnyEliteLeft();
+      if (can_remove) {
+        this.disabled_skills.add(skill);
+      }
     }
 
     return this;
