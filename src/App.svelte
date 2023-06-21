@@ -20,9 +20,10 @@
   import background from "./background.webp";
   import { store_henchmen_count } from "./stores/henchmen";
   import { store_compact_icons } from "./stores/compact_icons";
-  import { getUrlFromStores } from "./history";
+  import { getUrlFromStores, pushHistoryState } from "./history";
   import GroupSelector from "./components/henchmen-selector/GroupSelector.svelte";
   import { store_players_count } from "./stores/players_count";
+  import { get } from "svelte/store";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -48,6 +49,11 @@
   function refreshStuff() {
     refreshSkillpacks();
     refreshBuildsStore();
+
+    pushHistoryState({
+      campaign: get(store_campaign),
+      outpost_link: get(store_selected_outpost).link,
+    });
   }
 
   function copyUrl() {

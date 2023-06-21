@@ -263,8 +263,6 @@ class BuildGenerator {
   public withDisabledSkills(penalty: number): BuildGenerator {
     const skills_to_disable = Array.from(this.skillset);
 
-    console.log({ penalty })
-
     const hasAnySelfHealLeft = () => skills_to_disable.some(s => s.options.is_self_heal);
     const hasAnyEliteLeft = () => skills_to_disable.some(s => s.options.is_elite);
 
