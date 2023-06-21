@@ -3,9 +3,18 @@ import { canStore } from ".";
 const KEY = "COMPACT_ICON";
 
 export function setCompactIconsLs(enabled: boolean) {
-  return canStore() && localStorage.setItem(KEY, String(enabled));
+  if (!canStore()) {
+    return;
+  }
+
+  if (enabled) {
+    localStorage.setItem(KEY, "");
+  }
+  else {
+    localStorage.removeItem(KEY);
+  }
 }
 
 export function getCompactIconsLs(): boolean {
-  return Boolean(localStorage.getItem(KEY));
+  return localStorage.getItem(KEY) !== null;
 }
