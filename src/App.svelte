@@ -24,6 +24,7 @@
   import GroupSelector from "./components/henchmen-selector/GroupSelector.svelte";
   import { store_players_count } from "./stores/players_count";
   import { get } from "svelte/store";
+  import { store_hardmode } from "./stores/hardmode";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -43,6 +44,7 @@
   store_selected_outpost.subscribe(refreshStuff);
   store_henchmen_count.subscribe(refreshStuff);
   store_players_count.subscribe(refreshStuff);
+  store_hardmode.subscribe(refreshStuff);
 
   store_selected_skillpacks.subscribe(refreshBuildsStore);
 
@@ -68,6 +70,13 @@
 {#if can_display_skillsets}
   <div class="skillsets">
     <div class="options">
+      <input
+        type="checkbox"
+        name="hard-mode"
+        id="hard-mode"
+        bind:checked={$store_hardmode} />
+      <label for="hard-mode">{$store_hardmode ? "Hard" : "Normal"}</label>
+
       <input
         type="checkbox"
         name="compact-mode"
@@ -193,11 +202,19 @@
     margin-left: 1em;
   }
 
-  #compact-mode {
+  #compact-mode,
+  #hard-mode {
     display: none;
   }
 
-  #compact-mode + label {
+  #compact-mode + label,
+  #hard-mode + label {
     box-shadow: 0px 0px 12px rgba(20, 20, 20, 0.1);
+  }
+
+  #hard-mode:checked + label {
+    outline: solid 1px goldenrod;
+    box-shadow: 0px 0px 12px rgba(218, 165, 32, 0.4);
+    color: goldenrod;
   }
 </style>

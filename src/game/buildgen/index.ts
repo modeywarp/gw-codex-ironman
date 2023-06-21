@@ -13,6 +13,7 @@ export interface BuildGenOptions {
   available_skill_origins: SkillOrigin[];
   henchmen_count: number;
   players_count: number;
+  hardmode: boolean;
 }
 
 export function generateSkillset(
@@ -59,6 +60,9 @@ export function generateSkillset(
     return cached_build;
   }
 
+  const { hardmode } = options;
+  const normalmode = !hardmode;
+
   return new BuildGenerator(
     character_name,
     outpost,
@@ -66,11 +70,11 @@ export function generateSkillset(
     options,
     available_skill_origins
   )
-    .withSelfHeals(1)
+    .withSelfHeals(normalmode ? 1 : 2)
     .withDefensiveSkills(options.is_primary_profession)
     .withOffensiveSkills(options.is_primary_profession)
     .withInheritedSkills(profession)
-    .withRegularSkills(17)
+    .withRegularSkills(normalmode ? 17 : 26)
     .withElites(options.is_primary_profession) // the count is calculated inside the generator
     .withDisabledSkills(
       getSkillPenaltyFromHenchmen(
