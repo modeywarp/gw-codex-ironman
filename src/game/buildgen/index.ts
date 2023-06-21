@@ -6,11 +6,13 @@ import { Rng } from "../rng";
 import skills, { type Skill } from "../skills";
 import { cacheKey, getCachedBuild, setCachedBuild } from "./cache";
 import { getSkillPenaltyFromHenchmen } from "./henchmen_restrictions";
+import { getSkillPenaltyFromPlayersCount } from "./players_count_restrictions";
 
 export interface BuildGenOptions {
   is_primary_profession: boolean;
   available_skill_origins: SkillOrigin[];
   henchmen_count: number;
+  players_count: number;
 }
 
 export function generateSkillset(
@@ -73,6 +75,12 @@ export function generateSkillset(
     .withDisabledSkills(
       getSkillPenaltyFromHenchmen(
         options.henchmen_count,
+        options.is_primary_profession
+      )
+    )
+    .withDisabledSkills(
+      getSkillPenaltyFromPlayersCount(
+        options.players_count,
         options.is_primary_profession
       )
     )
@@ -254,6 +262,8 @@ class BuildGenerator {
 
   public withDisabledSkills(penalty: number): BuildGenerator {
     const skills_to_disable = Array.from(this.skillset);
+
+    console.log({ penalty })
 
     const hasAnySelfHealLeft = () => skills_to_disable.some(s => s.options.is_self_heal);
     const hasAnyEliteLeft = () => skills_to_disable.some(s => s.options.is_elite);

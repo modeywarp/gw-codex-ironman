@@ -18,10 +18,11 @@
     store_selected_skillpacks,
   } from "./stores/skillpacks";
   import background from "./background.webp";
-  import HenchmenSelector from "./components/henchmen-selector/HenchmenSelector.svelte";
   import { store_henchmen_count } from "./stores/henchmen";
   import { store_compact_icons } from "./stores/compact_icons";
   import { getUrlFromStores } from "./history";
+  import GroupSelector from "./components/henchmen-selector/GroupSelector.svelte";
+  import { store_players_count } from "./stores/players_count";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -40,6 +41,7 @@
   store_campaign.subscribe(refreshStuff);
   store_selected_outpost.subscribe(refreshStuff);
   store_henchmen_count.subscribe(refreshStuff);
+  store_players_count.subscribe(refreshStuff);
 
   store_selected_skillpacks.subscribe(refreshBuildsStore);
 
@@ -101,7 +103,7 @@
       {/if}
     </div>
 
-    <HenchmenSelector />
+    <GroupSelector />
 
     <img src={background} alt="" class="background" />
   </div>
@@ -114,7 +116,7 @@
 <style>
   .background {
     position: absolute;
-    top: 50%;
+    top: 65%;
     left: 50%;
     min-width: 100%;
     min-height: 100%;

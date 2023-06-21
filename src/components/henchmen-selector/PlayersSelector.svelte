@@ -1,15 +1,15 @@
 <script>
-  import { getSkillPenaltyFromHenchmen } from "../../game/buildgen/henchmen_restrictions";
-  import { store_henchmen_count } from "../../stores/henchmen";
+  import { getSkillPenaltyFromPlayersCount } from "../../game/buildgen/players_count_restrictions";
+  import { store_players_count } from "../../stores/players_count";
 
-  const MAX_HENCHMEN = 7;
+  const MAX_PLAYERS = 12;
 
-  $: tooltip_penalty_primary = getSkillPenaltyFromHenchmen(
-    $store_henchmen_count,
+  $: tooltip_penalty_primary = getSkillPenaltyFromPlayersCount(
+    $store_players_count,
     true
   );
-  $: tooltip_penalty_secondary = getSkillPenaltyFromHenchmen(
-    $store_henchmen_count,
+  $: tooltip_penalty_secondary = getSkillPenaltyFromPlayersCount(
+    $store_players_count,
     false
   );
 
@@ -18,15 +18,15 @@
     `${tooltip_penalty_secondary} disabled skills from secondary profession`,
   ].join("\n");
 
-  $: henchmen_percent = ($store_henchmen_count / 7) * 100;
-  $: background_gradient = getBackgroundGradient(henchmen_percent);
+  $: players_percent = ($store_players_count / 7) * 100;
+  $: background_gradient = getBackgroundGradient(players_percent);
 
   function increaseCount() {
-    store_henchmen_count.update((count) => Math.min(count + 1, MAX_HENCHMEN));
+    store_players_count.update((count) => Math.min(count + 1, MAX_PLAYERS));
   }
 
   function resetCount() {
-    store_henchmen_count.set(0);
+    store_players_count.set(1);
   }
 
   function getBackgroundGradient(percent) {
@@ -38,20 +38,16 @@
       return "#fffcf4";
     }
 
-    const colored = `#fffcf4 ${henchmen_percent - 15}%`;
-    const white = `white ${Number(henchmen_percent) + 15}%`;
+    const colored = `#fffcf4 ${players_percent - 15}%`;
+    const white = `white ${Number(players_percent) + 15}%`;
     return `linear-gradient(180deg, ${colored}, ${white})`;
   }
 </script>
 
-<div class="henchmen-selector" style={`background: ${background_gradient}`}>
+<div class="players-selector" style={`background: ${background_gradient}`}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <span
-    title="click to increase by 1, double click to reset"
-    on:click={increaseCount}
-    on:dblclick={resetCount}>Henchmen</span>
-  <select bind:value={$store_henchmen_count} title={tooltip}>
-    <option value={0}>0</option>
+  <span on:click={increaseCount} on:dblclick={resetCount}>Players</span>
+  <select bind:value={$store_players_count} title={tooltip}>
     <option value={1}>1</option>
     <option value={2}>2</option>
     <option value={3}>3</option>
@@ -59,12 +55,16 @@
     <option value={5}>5</option>
     <option value={6}>6</option>
     <option value={7}>7</option>
+    <option value={8}>8</option>
+    <option value={9}>9</option>
+    <option value={10}>10</option>
+    <option value={11}>11</option>
+    <option value={12}>12</option>
   </select>
 </div>
 
 <style>
-  .henchmen-selector {
-    margin-top: 2em;
+  .players-selector {
     transform: translate(0%, 0%);
     background-color: white;
     /* width: 32px; */
@@ -78,7 +78,7 @@
     user-select: none;
 
     animation-name: appear;
-    animation-duration: 1.25s;
+    animation-duration: 1s;
   }
 
   @keyframes appear {
