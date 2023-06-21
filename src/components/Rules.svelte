@@ -67,8 +67,9 @@
         unlocked skills the merchant wouldn't offer on a fresh account
       </p>
     </div>
-    <div class="row center"><p>You can buy & sell regular materials</p></div>
-    <div class="row center"><p>You can only sell rare materials</p></div>
+    <div class="row center">
+      <p>You cannot buy crafting materials from the trader</p>
+    </div>
 
     <div class="row center">
       You cannot use consumables or anything that comes from your bank account
