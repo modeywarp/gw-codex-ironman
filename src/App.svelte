@@ -131,7 +131,7 @@
 <style>
   .background {
     position: absolute;
-    top: 65%;
+    top: 50%;
     left: 50%;
     min-width: 100%;
     min-height: 100%;
