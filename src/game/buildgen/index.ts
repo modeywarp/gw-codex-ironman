@@ -80,10 +80,7 @@ export function generateSkillset(
       getSkillPenaltyFromHenchmen(
         options.henchmen_count,
         options.is_primary_profession
-      )
-    )
-    .withDisabledSkills(
-      getSkillPenaltyFromPlayersCount(
+      ) + getSkillPenaltyFromPlayersCount(
         options.players_count,
         options.is_primary_profession
       )
@@ -265,7 +262,11 @@ class BuildGenerator {
   }
 
   public withDisabledSkills(penalty: number): BuildGenerator {
-    const skills_to_disable = Array.from(this.skillset);
+    const skills_to_disable = Array.from(this.skillset).filter(s => !this.disabled_skills.has(s));
+
+    if (!skills_to_disable.length) {
+      return this;
+    }
 
     const hasAnySelfHealLeft = () => skills_to_disable.some(s => s.options.is_self_heal);
     const hasAnyEliteLeft = () => skills_to_disable.some(s => s.options.is_elite);
@@ -275,13 +276,20 @@ class BuildGenerator {
 
       // important detail here, the `skills_disable` is mutated with splice
       // and the skill we get here is extracted out of the array.
-      const [skill] = skills_to_disable.splice(skill_index, 1);
+      const slice = skills_to_disable.splice(skill_index, 1);
+
+      if (!slice.length) {
+        continue;
+      }
+
+      const skill = slice[0];
 
       // but it's possible we don't even add this skill to the list of disabled
       // skills yet we leave it out of the array to ensure it won't be selected
       // again in future iterations.
-      const can_remove = hasAnySelfHealLeft() && hasAnyEliteLeft();
-      if (can_remove) {
+      const should_not_remove = (skill.options.is_self_heal && !hasAnySelfHealLeft()) || (skill.options.is_elite && !hasAnyEliteLeft());
+
+      if (!should_not_remove) {
         this.disabled_skills.add(skill);
       }
     }
