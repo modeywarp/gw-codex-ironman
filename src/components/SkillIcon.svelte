@@ -9,8 +9,6 @@
   export let profession: Profession = "warrior";
   export let compact = false;
 
-  let elem$;
-
   function setWikiIframe(e, skill: SkillsetEntry) {
     e.preventDefault();
     e.target.scrollIntoView({ block: "start", behavior: "smooth" });
@@ -19,9 +17,15 @@
   }
 
   function onDragStart(e) {
-    e.dataTransfer.setData("text/plain", JSON.stringify({ skill, profession }));
+    if (skill.disabled) {
+      return e.preventDefault();
+    }
 
-    console.log(skill.link);
+    const img = new Image();
+    img.src = `${image_root}/skill-icons/${profession}/${skill.icon}`;
+
+    e.dataTransfer.setData("text/plain", JSON.stringify({ skill, profession }));
+    e.dataTransfer.setDragImage(img, 48, 48);
   }
 
   function useDragEvent(element, callbackFunction) {

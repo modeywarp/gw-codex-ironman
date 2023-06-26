@@ -11,8 +11,15 @@
   let equipped_skill: SkillbarEntry;
   let previewed_skill: SkillbarEntry;
 
+  $: is_elite =
+    previewed_skill?.skill?.options?.is_elite ||
+    equipped_skill?.skill?.options?.is_elite ||
+    false;
+
   store_skillbar.subscribe((map) => {
     equipped_skill = map.get(slot_number);
+
+    dragLeave();
   });
 
   function equipSkill(e) {
@@ -44,6 +51,7 @@
 
 <div
   class="skillslot"
+  class:elite={is_elite}
   on:dragover={dragOver}
   on:drop={equipSkill}
   on:dragleave={dragLeave}
@@ -52,12 +60,12 @@
     <SkillIcon
       skill={previewed_skill.skill}
       profession={previewed_skill.profession}
-      compact={true} />
+      compact={!is_elite} />
   {:else if equipped_skill}
     <SkillIcon
       skill={equipped_skill.skill}
       profession={equipped_skill.profession}
-      compact={true} />
+      compact={!is_elite} />
   {:else}
     {slot_number + 1}
   {/if}

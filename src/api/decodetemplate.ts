@@ -16,7 +16,7 @@ export async function encodeBuildTemplate(primary: Profession, secondary: Second
   };
 
   const headers = new Headers();
-  headers.append('Access-Control-Allow-Origin', "*");
+  headers.append('Content-Type', 'application/json');
 
   const response = await fetch('https://guildwars-decodetemplate.azurewebsites.net/api/Encode', {
     method: "post",

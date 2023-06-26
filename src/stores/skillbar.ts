@@ -23,6 +23,15 @@ export function addSkilltoSkillbar(slot: number, skill: SkillsetEntry, professio
 
   store_skillbar.update(map => {
     map = _removeSkillFromSkillbar(map, skill);
+
+    if (skill.options.is_elite) {
+      const existing_elite_slot = getEliteSkillSlot(map);
+
+      if (existing_elite_slot > -1) {
+        map.delete(existing_elite_slot);
+      }
+    }
+
     map.set(slot, { skill, profession });
 
     return map;
@@ -41,6 +50,17 @@ function _removeSkillFromSkillbar(map: Skillbar, skill) {
   }
 
   return map;
+}
+
+function getEliteSkillSlot(map: Skillbar): number {
+  const entry = Array.from(map.entries())
+    .find(([slot, entry]) => entry.skill.options.is_elite);
+
+  if (entry) {
+    return entry[0];
+  }
+
+  return -1;
 }
 
 export function getSkillSlot(skill: SkillsetEntry): number {

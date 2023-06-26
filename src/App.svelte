@@ -26,6 +26,7 @@
   import { get } from "svelte/store";
   import { store_hardmode } from "./stores/hardmode";
   import Skillbar from "./components/skillbar/Skillbar.svelte";
+  import Notifications from "./components/Notifications.svelte";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -67,6 +68,7 @@
 </script>
 
 <Header />
+<Notifications />
 
 {#if can_display_skillsets}
   <div class="skillsets">
