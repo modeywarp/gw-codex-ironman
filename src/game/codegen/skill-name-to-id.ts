@@ -1,3 +1,5 @@
+import { toNormalized } from "./name-mappers";
+
 const pairs = [
   {
     id: "0",
@@ -5875,7 +5877,7 @@ const pairs = [
     id: "3431",
     value: "Heroic Refrain",
   },
-];
+].map(({ id, value }) => ({ id, value: toNormalized(value) }));
 
 export const skill_names_to_id = new Map(
   pairs.map((pair) => [pair.value, Number(pair.id)])
