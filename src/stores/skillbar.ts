@@ -2,6 +2,7 @@ import { get, writable } from "svelte/store";
 import type { SkillsetEntry } from "./builds";
 import type { Profession } from "../game/professions";
 import store_builds from "./builds";
+import { getSkillbarLs, setSkillbarLs } from "../localstorage/skillbar";
 
 export interface SkillbarEntry {
   skill: SkillsetEntry,
@@ -10,7 +11,7 @@ export interface SkillbarEntry {
 
 export type Skillbar = Map<number, SkillbarEntry>;
 
-export const store_skillbar = writable<Skillbar>(new Map());
+export const store_skillbar = writable<Skillbar>(getSkillbarLs() || new Map());
 
 export function addSkilltoSkillbar(slot: number, skill: SkillsetEntry, profession: Profession) {
   if (slot < 0 || slot > 7) {
@@ -116,3 +117,5 @@ store_builds.subscribe(builds => {
     return skillbar;
   });
 });
+
+store_skillbar.subscribe(setSkillbarLs);

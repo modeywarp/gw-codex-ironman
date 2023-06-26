@@ -132,6 +132,13 @@
     margin: 1em 0;
   }
 
+  .skillbar,
+  .note {
+    animation-name: appear;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+  }
+
   @keyframes slide {
     from {
       transform: translate(-10%, -50%);
@@ -139,6 +146,20 @@
 
     to {
       transform: translate(0, -50%);
+    }
+  }
+
+  @keyframes appear {
+    0% {
+      opacity: 0;
+    }
+
+    70% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
     }
   }
 </style>
