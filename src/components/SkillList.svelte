@@ -4,36 +4,15 @@
   import type { SkillsetEntry } from "../stores/builds";
   import { store_compact_icons } from "../stores/compact_icons";
   import { store_wiki_iframe } from "../stores/wiki-iframe";
+  import SkillIcon from "./SkillIcon.svelte";
 
   export let skills: SkillsetEntry[] = [];
   export let profession: Profession = "warrior";
-
-  function setWikiIframe(e, skill: Skill) {
-    e.preventDefault();
-    e.target.scrollIntoView({ block: "start", behavior: "smooth" });
-
-    store_wiki_iframe.set(skill.name);
-  }
-
-  // github pages aren't hosted on a domain's root, each repository is in a sub
-  // folder, so this is a way to get icons to load once pushed to production.
-  const image_root = import.meta.env.PROD ? import.meta.env.BASE_URL : "";
 </script>
 
 <div class="skill-list" class:compact={$store_compact_icons}>
   {#each skills as skill}
-    <a
-      on:click={(e) => setWikiIframe(e, skill)}
-      class="skill"
-      href={`https://wiki.guildwars.com/?search=${skill.name}`}
-      class:elite={skill.options.is_elite}
-      class:selfheal={skill.options.is_self_heal}
-      class:disabled={skill.disabled}>
-      <img
-        src={`${image_root}/skill-icons/${profession}/${skill.icon}`}
-        alt="" />
-      <span class="name">{skill.name}</span>
-    </a>
+    <SkillIcon {skill} compact={$store_compact_icons} {profession} />
   {/each}
 </div>
 
@@ -43,86 +22,5 @@
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: flex-start;
-  }
-
-  .skill {
-    position: relative;
-    display: inline-block;
-    text-align: center;
-    margin: 1em;
-    border-radius: 12px;
-    box-shadow: 0px 0px 6px 6px rgba(20, 20, 20, 0.6);
-    background-color: black;
-    outline: solid 6px black;
-    color: white;
-    z-index: 10;
-    transition: 0.1s all ease-in-out;
-  }
-
-  .skill img {
-    display: block;
-    margin: auto;
-    width: 64px;
-    border-radius: 12px;
-  }
-
-  .skill.elite {
-    outline-color: goldenrod;
-  }
-
-  .skill.disabled {
-    opacity: 0.4;
-    transform: scale(0.8);
-    transform-origin: center;
-  }
-
-  span {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    background-color: rgba(20, 20, 20, 0.3);
-    padding: 0.3em;
-    min-width: 100%;
-    min-height: 100%;
-    border-radius: 12px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    z-index: 11;
-
-    animation-name: slide;
-    animation-duration: 0.1s;
-  }
-
-  .skill:hover span {
-    display: flex;
-  }
-
-  .skill:hover img {
-    opacity: 0.3;
-  }
-
-  @keyframes slide {
-    from {
-      opacity: 0.6;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* compact mode changes: */
-  .skill-list.compact .skill {
-    outline-width: 1px;
-    margin: 0.2em;
-    box-shadow: 0px 0px 6px 6px rgba(20, 20, 20, 0.1);
-  }
-
-  .skill-list.compact .skill img {
-    width: 56px;
   }
 </style>

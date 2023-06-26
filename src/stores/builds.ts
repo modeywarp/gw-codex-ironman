@@ -18,8 +18,8 @@ export type Skillset = Set<SkillsetEntry>;
 
 export type BuildsStore = Map<Profession, Skillset>;
 
-const STORE = writable<BuildsStore>(null);
-export default STORE;
+const store_builds = writable<BuildsStore>(null);
+export default store_builds;
 
 export function refreshBuildsStore() {
   const skillset: BuildsStore = new Map();
@@ -59,5 +59,5 @@ export function refreshBuildsStore() {
     );
   }
 
-  STORE.set(skillset);
+  store_builds.set(skillset);
 }

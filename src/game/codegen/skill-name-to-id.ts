@@ -5878,8 +5878,8 @@ const pairs = [
 ];
 
 export const skill_names_to_id = new Map(
-  pairs.map((pair) => [pair.value, pair.id])
+  pairs.map((pair) => [pair.value, Number(pair.id)])
 );
 export const skill_ids_to_name = new Map(
-  pairs.map((pair) => [pair.id, pair.value])
+  pairs.map((pair) => [Number(pair.id), pair.value])
 );
