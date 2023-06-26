@@ -121,7 +121,8 @@ class BuildGenerator {
   ) {
     this.available_skills = skills
       .get(profession)
-      .filter((skill) => available_skill_origins.has(skill.options.origin));
+      .filter((skill) => available_skill_origins.has(skill.options.origin))
+      .filter(skill => options.is_primary_profession || !skill.options.is_primary_attribute);
 
     this.rng = new Rng(
       `${character_name.toLowerCase()}-${outpost.link}-${profession}`

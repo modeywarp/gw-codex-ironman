@@ -14,6 +14,7 @@ import { all_binding_rituals } from "./codegen/subgroups/binding-rituals";
 import { all_minions } from "./codegen/subgroups/minions";
 import { all_pet_summons } from "./codegen/subgroups/pet_summons";
 import { all_resurrections } from "./codegen/subgroups/resurrection";
+import { all_primary_attribute_skills } from "./codegen/subgroups/primary-attributes";
 
 function makeSkill(link, options: Partial<SkillOptions>): Skill {
   let normalized_name = toNormalized(link);
@@ -39,6 +40,7 @@ function makeSkill(link, options: Partial<SkillOptions>): Skill {
       is_minion: all_minions.has(normalized_name),
       is_pet_summon: all_pet_summons.has(normalized_name),
       is_resurrection: all_resurrections.has(normalized_name),
+      is_primary_attribute: all_primary_attribute_skills.has(normalized_name),
       ...options,
     },
   };
@@ -59,6 +61,7 @@ interface SkillOptions {
   is_binding_ritual: boolean;
   is_pet_summon: boolean;
   is_resurrection: boolean;
+  is_primary_attribute: boolean;
   origin: SkillOrigin;
 }
 export interface Skill {
