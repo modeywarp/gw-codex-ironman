@@ -75,7 +75,7 @@ export function generateSkillset(
     .withOffensiveSkills(options.is_primary_profession)
     .withInheritedSkills(profession)
     .withRegularSkills(normalmode ? 17 : 26)
-    .withElites(options.is_primary_profession) // the count is calculated inside the generator
+    .withElites(options.is_primary_profession || hardmode) // the count is calculated inside the generator
     .withDisabledSkills(
       getSkillPenaltyFromHenchmen(
         options.henchmen_count,
