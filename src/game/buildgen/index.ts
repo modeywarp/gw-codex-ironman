@@ -71,7 +71,7 @@ export function generateSkillset(
     available_skill_origins
   )
     .withSelfHeals(normalmode ? 1 : 2)
-    .withDefensiveSkills(options.is_primary_profession)
+    .withDefensiveSkills(options.is_primary_profession, hardmode)
     .withOffensiveSkills(options.is_primary_profession)
     .withInheritedSkills(profession)
     .withRegularSkills(normalmode ? 17 : 26)
@@ -177,17 +177,23 @@ class BuildGenerator {
    * A build is not guaranted to get defensive skills depending on whether it is
    * from a primary or secondary profession.
    */
-  public withDefensiveSkills(is_primary_profession: boolean): BuildGenerator {
+  public withDefensiveSkills(is_primary_profession: boolean, is_hardmode: boolean): BuildGenerator {
     const primary_has_defensive =
       this.rng_profession_independent.nextRange(10) < 5;
 
+
     // the guaranted defensive skills are randomly set to either the primary or
     // the secondary profession.
-    if (
-      (primary_has_defensive && !is_primary_profession) ||
-      (!primary_has_defensive && is_primary_profession)
-    ) {
-      return this;
+    //
+    // but this can only happen in normal mode, in hardmode both professions
+    // have the guaranted skills
+    if (!is_hardmode) {
+      if (
+        (primary_has_defensive && !is_primary_profession) ||
+        (!primary_has_defensive && is_primary_profession)
+      ) {
+        return this;
+      }
     }
 
     return this.addSubsetSkillsToSkillset(this.subsets.defensives, 2);
