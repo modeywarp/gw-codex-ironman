@@ -83,6 +83,7 @@
     display: block;
     margin: auto;
     width: 64px;
+    min-height: 64px;
     border-radius: 12px;
   }
 
@@ -143,5 +144,6 @@
 
   .skill.compact img {
     width: 56px;
+    min-height: 56px;
   }
 </style>

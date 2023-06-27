@@ -66,19 +66,6 @@
       {/each}
     </select>
 
-    {#if display_outposts}
-      <hr class="spacer" />
-      <select name="outpost" bind:value={$store_selected_outpost}>
-        {#each $store_outposts as region}
-          <optgroup label={region.name}>
-            {#each region.outposts as outpost}
-              <option value={outpost}>{outpost.name}</option>
-            {/each}
-          </optgroup>
-        {/each}
-      </select>
-      <!-- <button on:click={onSubmitGenerateSkillset}>Generate skillset</button> -->
-    {/if}
     <hr class="spacer" />
 
     <div class="skill-packs">
@@ -112,13 +99,9 @@
     align-items: center;
   }
 
-  @media (max-width: 1615px) {
+  @media (max-width: 1815px) {
     .actions {
       flex-wrap: wrap;
-    }
-
-    .actions > .spacer ~ .spacer {
-      display: none;
     }
 
     .skill-packs {

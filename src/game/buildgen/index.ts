@@ -76,6 +76,8 @@ export function generateSkillset(
     .withInheritedSkills(profession)
     .withRegularSkills(normalmode ? 17 : 26)
     .withElites(options.is_primary_profession || hardmode) // the count is calculated inside the generator
+    .withProfessionPveSkills(hardmode ? 2 : 1)
+    .withGlobalPveSkills(hardmode && options.is_primary_profession ? 5 : 1)
     .withDisabledSkills(
       getSkillPenaltyFromHenchmen(
         options.henchmen_count,
@@ -103,6 +105,8 @@ class BuildGenerator {
     regulars: Skill[];
     selfheals: Skill[];
     elites: Skill[];
+    profession_pves: Skill[];
+    global_pves: Skill[];
     defensives: Skill[];
     offensives: Skill[];
   };
@@ -132,7 +136,7 @@ class BuildGenerator {
     );
 
     this.subsets = {
-      regulars: this.available_skills.filter((s) => !s.options.is_elite),
+      regulars: this.available_skills.filter((s) => !s.options.is_elite && !s.options.is_profession_pve_skill),
       selfheals: this.available_skills.filter(
         (s) => !s.options.is_elite && s.options.is_self_heal
       ),
@@ -143,6 +147,8 @@ class BuildGenerator {
         (s) => s.options.is_offensive && !s.options.is_elite
       ),
       elites: this.available_skills.filter((s) => s.options.is_elite),
+      profession_pves: this.available_skills.filter(s => s.options.is_profession_pve_skill),
+      global_pves: this.available_skills.filter(s => s.options.is_global_pve_skill)
     };
   }
 
@@ -268,8 +274,20 @@ class BuildGenerator {
     return this;
   }
 
+  public withProfessionPveSkills(count: number): BuildGenerator {
+    console.log(this.subsets.profession_pves);
+    return this.addSubsetSkillsToSkillset(this.subsets.profession_pves, count);
+  }
+
+  public withGlobalPveSkills(count: number): BuildGenerator {
+    return this.addSubsetSkillsToSkillset(this.subsets.global_pves, count);
+  }
+
   public withDisabledSkills(penalty: number): BuildGenerator {
-    const skills_to_disable = Array.from(this.skillset).filter(s => !this.disabled_skills.has(s));
+    const is_whitelisted = (skill: Skill) => skill.options.is_global_pve_skill || skill.options.is_profession_pve_skill;
+    const skills_to_disable = Array.from(this.skillset)
+      .filter(s => !this.disabled_skills.has(s))
+      .filter(s => !is_whitelisted(s));
 
     if (!skills_to_disable.length) {
       return this;

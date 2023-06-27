@@ -12,7 +12,7 @@
     store_primary_profession,
     store_secondary_profession,
   } from "./stores/character";
-  import { store_selected_outpost } from "./stores/outposts";
+  import { store_outposts, store_selected_outpost } from "./stores/outposts";
   import {
     refreshSkillpacks,
     store_selected_skillpacks,
@@ -107,10 +107,19 @@
     </div>
 
     {#if $store_selected_outpost && $store_selected_outpost.name}
-      <h1 class="outpost-name">
-        <a href={`https://wiki.guildwars.com${$store_selected_outpost.link}`}
-          >{$store_selected_outpost.name}</a>
-      </h1>
+      <select
+        class="outpost-name"
+        name="outpost"
+        bind:value={$store_selected_outpost}>
+        {#each $store_outposts as region}
+          <optgroup label={region.name}>
+            {#each region.outposts as outpost}
+              <option class="outpost-option" value={outpost}
+                >{outpost.name}</option>
+            {/each}
+          </optgroup>
+        {/each}
+      </select>
       <SuggestedOutposts />
     {/if}
 
@@ -171,10 +180,13 @@
     text-align: center;
     text-decoration: underline;
     margin: 0;
+    padding: 0;
+    font-size: 3em;
+    background-color: transparent;
   }
 
-  .outpost-name a {
-    color: currentColor;
+  .outpost-name > * {
+    font-size: 1rem;
   }
 
   .skillsets {

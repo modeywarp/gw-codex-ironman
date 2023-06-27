@@ -28,13 +28,13 @@ function makeSkill(link, options: Partial<SkillOptions>): Skill {
     name: toDisplay(link),
     icon: toIcon(link),
     options: {
+      origin: getSkillOrigin(normalized_name),
       is_self_heal,
       is_defensive,
       is_heal: all_heal_skills.has(normalized_name),
       is_elite: all_elites.has(normalized_name),
       is_offensive: !is_defensive,
       is_support: is_defensive && !is_self_heal,
-      origin: getSkillOrigin(normalized_name),
       is_lead_attack: all_lead_attacks.has(normalized_name),
       is_offhand_attack: all_offhand_attacks.has(normalized_name),
       is_binding_ritual: all_binding_rituals.has(normalized_name),
@@ -43,6 +43,10 @@ function makeSkill(link, options: Partial<SkillOptions>): Skill {
       is_resurrection: all_resurrections.has(normalized_name),
       is_primary_attribute: all_primary_attribute_skills.has(normalized_name),
       is_profession_pve_skill: all_profession_pve_skills.has(normalized_name),
+
+      // defaults to false unless `options` overwrites it:
+      is_global_pve_skill: false,
+
       ...options,
     },
   };
@@ -65,6 +69,7 @@ interface SkillOptions {
   is_resurrection: boolean;
   is_primary_attribute: boolean;
   is_profession_pve_skill: boolean;
+  is_global_pve_skill: boolean;
   origin: SkillOrigin;
 }
 export interface Skill {
@@ -228,6 +233,10 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Whirling_Axe_(large).jpg", {}),
       makeSkill("/wiki/File:Wild_Blow_(large).jpg", {}),
       makeSkill("/wiki/File:Yeti_Smash_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Seven_Weapons_Stance.jpg", {}),
+      makeSkill("/wiki/File:%22Save_Yourselves!%22.jpg", {}),
+      makeSkill("/wiki/File:Whirlwind_Attack.jpg", {})
     ],
   ],
   [
@@ -373,6 +382,10 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Winter_(large).jpg", {}),
       makeSkill("/wiki/File:Zojun%27s_Haste_(large).jpg", {}),
       makeSkill("/wiki/File:Zojun%27s_Shot_(large).jpg", {}),
+
+      makeSkill("/wiki/File:%22Together_as_One!%22.jpg", {}),
+      makeSkill("/wiki/File:Never_Rampage_Alone.jpg", {}),
+      makeSkill("/wiki/File:Triple_Shot.jpg", {}),
     ],
   ],
   [
@@ -519,6 +532,10 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Words_of_Comfort_(large).jpg", {}),
       makeSkill("/wiki/File:Zealot%27s_Fire_(large).jpg", {}),
       makeSkill("/wiki/File:Zealous_Benediction_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Judgment_Strike.jpg", {}),
+      makeSkill("/wiki/File:Selfless_Spirit.jpg", {}),
+      makeSkill("/wiki/File:Seed_of_Life.jpg", {})
     ],
   ],
   [
@@ -668,6 +685,10 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Whirlwind_(large).jpg", {}),
       makeSkill("/wiki/File:Windborne_Speed_(large).jpg", {}),
       makeSkill("/wiki/File:Winter%27s_Embrace_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Over_the_Limit.jpg", {}),
+      makeSkill("/wiki/File:Elemental_Lord.jpg", {}),
+      makeSkill("/wiki/File:Intensity.jpg", {}),
     ],
   ],
   [
@@ -815,6 +836,10 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Well_of_Weariness_(large).jpg", {}),
       makeSkill("/wiki/File:Wither_(large).jpg", {}),
       makeSkill("/wiki/File:Withering_Aura_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Soul_Taker.jpg", {}),
+      makeSkill("/wiki/File:Signet_of_Corruption.jpg", {}),
+      makeSkill("/wiki/File:Necrosis.jpg", {}),
     ],
   ],
   [
@@ -957,6 +982,10 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Wastrel%27s_Demise_(large).jpg", {}),
       makeSkill("/wiki/File:Wastrel%27s_Worry_(large).jpg", {}),
       makeSkill("/wiki/File:Web_of_Disruption_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Time_Ward.jpg", {}),
+      makeSkill("/wiki/File:Ether_Nightmare.jpg", {}),
+      makeSkill("/wiki/File:Cry_of_Pain.jpg", {}),
     ],
   ],
   [
@@ -1072,6 +1101,10 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Way_of_the_Lotus_(large).jpg", {}),
       makeSkill("/wiki/File:Way_of_the_Master_(large).jpg", {}),
       makeSkill("/wiki/File:Wild_Strike_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Shadow_Theft.jpg", {}),
+      makeSkill("/wiki/File:Shadow_Sanctuary.jpg", {}),
+      makeSkill("/wiki/File:Critical_Agility.jpg", {}),
     ],
   ],
   [
@@ -1187,6 +1220,10 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Wielder%27s_Strike_(large).jpg", {}),
       makeSkill("/wiki/File:Wielder%27s_Zeal_(large).jpg", {}),
       makeSkill("/wiki/File:Xinrae%27s_Weapon_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Weapons_of_Three_Forges.jpg", {}),
+      makeSkill("/wiki/File:Summon_Spirits.jpg", {}),
+      makeSkill("/wiki/File:Vampirism.jpg", {}),
     ],
   ],
   [
@@ -1277,6 +1314,11 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Zealous_Renewal_(large).jpg", {}),
       makeSkill("/wiki/File:Zealous_Sweep_(large).jpg", {}),
       makeSkill("/wiki/File:Zealous_Vow_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Vow_of_Revolution.jpg", {}),
+      makeSkill("/wiki/File:Aura_of_Holy_Might.jpg", {}),
+      makeSkill("/wiki/File:Eternal_Aura.jpg", {}),
+
     ],
   ],
   [
@@ -1367,11 +1409,73 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Wearying_Spear_(large).jpg", {}),
       makeSkill("/wiki/File:Wild_Throw_(large).jpg", {}),
       makeSkill("/wiki/File:Zealous_Anthem_(large).jpg", {}),
+
+      makeSkill("/wiki/File:Heroic_Refrain.jpg", {}),
+      makeSkill("/wiki/File:Spear_of_Fury.jpg", {}),
+      makeSkill("/wiki/File:%22There%27s_Nothing_to_Fear!%22.jpg", {}),
     ],
   ],
 ]);
 
 export default database;
+
+const pve_database = [
+  // makeSkill("/wiki/File:Signet_of_Capture.jpg", { is_global_pve_skill: true }),
+
+  // makeSkill("/wiki/File:Lightbringer_Signet.jpg", { is_global_pve_skill: true }),
+  // makeSkill("/wiki/File:Lightbringer%27s_Gaze.jpg", { is_global_pve_skill: true }),
+
+  makeSkill("/wiki/File:Air_of_Superiority.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Asuran_Scan.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Mental_Block.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Mindbender.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Pain_Inverter.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Radiation_Field.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Smooth_Criminal.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Summon_Ice_Imp.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Summon_Mursaat.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Summon_Naga_Shaman.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Summon_Ruby_Djinn.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Technobabble.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22By_Ural%27s_Hammer!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22Don%27t_Trip!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Alkar%27s_Alchemical_Acid.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Black_Powder_Mine.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Brawling_Headbutt.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Breath_of_the_Great_Dwarf.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Drunken_Master.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Dwarven_Stability.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ear_Bite.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Great_Dwarf_Armor.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Great_Dwarf_Weapon.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Light_of_Deldrimor.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Low_Blow.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Snow_Storm.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Deft_Strike.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Courage.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Honor.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Wisdom.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ebon_Escape.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ebon_Vanguard_Assassin_Support.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ebon_Vanguard_Sniper_Support.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Signet_of_Infection.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Sneak_Attack.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Tryptophan_Signet.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Weakness_Trap.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Winds.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22Dodge_This!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22Finish_Him!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22I_Am_Unstoppable!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22I_Am_the_Strongest!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22You_Are_All_Weaklings!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22You_Move_Like_a_Dwarf!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:A_Touch_of_Guile.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Club_of_a_Thousand_Bears.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Feel_No_Pain.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Raven_Blessing.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ursan_Blessing.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Volfen_Blessing.jpg", { is_global_pve_skill: true }),
+];
 
 // use the following line(s) to easily log a full list of all the skills:
 // console.log(

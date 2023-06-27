@@ -6,8 +6,10 @@ export function toDisplay(str: string) {
   return str
     .trimStart()
     .replace("/wiki/File:", "")
-    .replace("(large).png", "")
-    .replace("(large).jpg", "")
+    .replace("(large)", "")
+    .replace("(large)", "")
+    .replace('.jpg', "")
+    .replace('.png', "")
     .replaceAll("%20", " ")
     .replaceAll("%22", '"')
     .replaceAll("%27", "'")
