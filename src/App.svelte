@@ -27,6 +27,7 @@
   import { store_hardmode } from "./stores/hardmode";
   import Skillbar from "./components/skillbar/Skillbar.svelte";
   import Notifications from "./components/Notifications.svelte";
+  import { notify_info } from "./stores/notifications";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -64,6 +65,7 @@
     const url = getUrlFromStores();
 
     navigator.clipboard.writeText(url);
+    notify_info("Preview link copied.");
   }
 </script>
 
@@ -105,7 +107,10 @@
     </div>
 
     {#if $store_selected_outpost && $store_selected_outpost.name}
-      <h1 class="outpost-name">{$store_selected_outpost.name}</h1>
+      <h1 class="outpost-name">
+        <a href={`https://wiki.guildwars.com${$store_selected_outpost.link}`}
+          >{$store_selected_outpost.name}</a>
+      </h1>
       <SuggestedOutposts />
     {/if}
 
@@ -166,6 +171,10 @@
     text-align: center;
     text-decoration: underline;
     margin: 0;
+  }
+
+  .outpost-name a {
+    color: currentColor;
   }
 
   .skillsets {
