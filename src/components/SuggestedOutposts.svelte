@@ -8,9 +8,38 @@
   function onClickedSuggestedOutpost(outpost: Outpost) {
     store_selected_outpost.set(outpost);
   }
+
+  function listenArrowKeys(element, callbackFunction) {
+    function onKeyPress(event) {
+      if (event.key === "ArrowLeft") {
+        const outpost = $store_suggested_outposts[1];
+
+        if (outpost) {
+          store_selected_outpost.set(outpost);
+        }
+      } else if (event.key === "ArrowRight") {
+        const outpost = $store_suggested_outposts[2];
+
+        if (outpost) {
+          store_selected_outpost.set(outpost);
+        }
+      }
+    }
+
+    window.addEventListener("keydown", onKeyPress);
+
+    return {
+      update(newCallbackFunction) {
+        callbackFunction = newCallbackFunction;
+      },
+      destroy() {
+        window.removeEventListener("keydown", onKeyPress);
+      },
+    };
+  }
 </script>
 
-<div class="suggested-outposts">
+<div class="suggested-outposts" use:listenArrowKeys={() => {}}>
   {#each $store_suggested_outposts.slice(0, 2) as outpost}
     <button class="outpost" on:click={() => onClickedSuggestedOutpost(outpost)}>
       {outpost.name}
