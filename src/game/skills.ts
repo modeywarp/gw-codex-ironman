@@ -75,7 +75,13 @@ interface SkillOptions {
 export interface Skill {
   name: string;
   link: string;
+
+  /**
+   * the name of the icon file, for example `Triple Shot` will have
+   * `icon = "triple shot.webp"`
+   */
   icon: string;
+
   options: SkillOptions;
 }
 

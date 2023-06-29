@@ -48,6 +48,12 @@
   // github pages aren't hosted on a domain's root, each repository is in a sub
   // folder, so this is a way to get icons to load once pushed to production.
   const image_root = import.meta.env.PROD ? import.meta.env.BASE_URL : "";
+
+  // the global pve skills are not tied to a profession, their path points to a
+  // special directory
+  $: src = skill.options.is_global_pve_skill
+    ? `${image_root}/skill-icons/global-pve/${skill.icon}`
+    : `${image_root}/skill-icons/${profession}/${skill.icon}`;
 </script>
 
 <a
@@ -60,7 +66,7 @@
   class:selfheal={skill.options.is_self_heal}
   class:disabled={skill.disabled}
   class:compact>
-  <img src={`${image_root}/skill-icons/${profession}/${skill.icon}`} alt="" />
+  <img {src} alt="" />
   <span class="name">{skill.name}</span>
 </a>
 
