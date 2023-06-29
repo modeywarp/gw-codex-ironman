@@ -530,6 +530,16 @@ const kaineng: Region = {
       mission: true,
     },
     {
+      name: "Tahnnakai Temple",
+      link: "/wiki/Tahnnakai_Temple_(outpost)",
+      mission: true,
+    },
+    {
+      name: "Dragon's Throat",
+      link: "/wiki/Dragon%27s_Throat_(outpost)",
+      mission: true,
+    },
+    {
       name: "Nahpui Quarter",
       link: "/wiki/Nahpui_Quarter_(outpost)",
       mission: true,
@@ -540,11 +550,6 @@ const kaineng: Region = {
       mission: false,
     },
     {
-      name: "Tahnnakai Temple",
-      link: "/wiki/Tahnnakai_Temple_(outpost)",
-      mission: true,
-    },
-    {
       name: "Zin Ku Corridor",
       link: "/wiki/Zin_Ku_Corridor",
       mission: false,
@@ -553,11 +558,6 @@ const kaineng: Region = {
       name: "Maatu Keep",
       link: "/wiki/Maatu_Keep",
       mission: false,
-    },
-    {
-      name: "Dragon's Throat",
-      link: "/wiki/Dragon%27s_Throat_(outpost)",
-      mission: true,
     },
     {
       name: "Sunjiang District",
