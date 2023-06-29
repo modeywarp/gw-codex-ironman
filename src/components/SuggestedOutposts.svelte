@@ -15,13 +15,13 @@
         const outpost = $store_suggested_outposts[1];
 
         if (outpost) {
-          store_selected_outpost.set(outpost);
+          onClickedSuggestedOutpost(outpost);
         }
       } else if (event.key === "ArrowRight") {
         const outpost = $store_suggested_outposts[2];
 
         if (outpost) {
-          store_selected_outpost.set(outpost);
+          onClickedSuggestedOutpost(outpost);
         }
       }
     }

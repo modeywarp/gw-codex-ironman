@@ -46,7 +46,10 @@
 
 <div class="players-selector" style={`background: ${background_gradient}`}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <span on:click={increaseCount} on:dblclick={resetCount}>Players</span>
+  <span
+    on:click={increaseCount}
+    on:dblclick={resetCount}
+    title="click to increase by 1, double click to reset">Players</span>
   <select bind:value={$store_players_count} title={tooltip}>
     <option value={1}>1</option>
     <option value={2}>2</option>
