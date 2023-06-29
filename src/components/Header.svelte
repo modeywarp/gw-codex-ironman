@@ -68,7 +68,9 @@
 
     <hr class="spacer" />
 
-    <div class="skill-packs">
+    <div
+      class="skill-packs"
+      title="Set one or more skill packs to use while generating the codex skills">
       <span> Skill packs: </span>
 
       {#each ALL_SKILL_ORIGINS as pack}
