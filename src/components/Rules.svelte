@@ -58,8 +58,9 @@
       <p>On death: you must drop all of your coins to the ground.</p>
     </div>
     <div class="row center">
-      Specify size of your group in the right panel. The more henchmen the
-      smaller your skill pool gets.
+      Specify the size of your group in the right panel. The henchmen, unlike
+      players & heroes, result in harsher punishments due to their uncontrolled
+      builds
     </div>
     <div class="row center">
       <p>
