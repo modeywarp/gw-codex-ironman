@@ -1,5 +1,5 @@
 /**
- * the key is the henchmen count, the value is the penalty for that count
+ * the key is the players count, the value is the penalty for that count
  */
 const PENALTY_TABLE = {
   1: 0,

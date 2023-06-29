@@ -1057,7 +1057,7 @@ export const nightfall: RegionDatabase = [
 ];
 
 export const all_outposts = [
-  ...pre_searing.flatMap((r) => r.outposts),
+  // ...pre_searing.flatMap((r) => r.outposts),
   ...prophecy.flatMap((r) => r.outposts),
   ...faction.flatMap((r) => r.outposts),
   ...nightfall.flatMap((r) => r.outposts),

@@ -9,7 +9,6 @@ export async function encodeBuildTemplate(primary: Profession, secondary: Second
     .map(slot => skillbar.get(slot))
     .map(s => s ? skill_names_to_id.get(toNormalized(s.skill.name)) || 0 : 0);
 
-
   const body = {
     attributes: [],
     primaryProfession: profession_names_to_id.get(primary),
