@@ -192,7 +192,6 @@ export class BuildGenerator {
   }
 
   public withProfessionPveSkills(count: number): BuildGenerator {
-    console.log(this.subsets.profession_pves);
     return this.addSubsetSkillsToSkillset(this.subsets.profession_pves, count);
   }
 

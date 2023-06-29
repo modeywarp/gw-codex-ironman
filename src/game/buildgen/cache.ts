@@ -4,8 +4,18 @@ import type { SkillOrigin } from "../codegen/subgroups/campaigns";
 import type { Outpost } from "../outposts";
 import type { Profession } from "../professions";
 
+/**
+ * A in-memory cache to avoid computing the whole skillset from scratch everytime,
+ * especially if the input doesn't change.
+ * 
+ * There is no localstorage for this, it is reset on reload.
+ */
 const cache = new Map<string, Skillset>();
 
+/**
+ * generates a unique cache key for the skillset that be the result of the given
+ * parameters.
+ */
 export function cacheKey(
   character_name: string,
   outpost: Outpost,
