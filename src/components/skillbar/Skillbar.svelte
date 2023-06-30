@@ -2,6 +2,7 @@
   import { get } from "svelte/store";
   import { encodeBuildTemplate } from "../../api/decodetemplate";
   import {
+    store_character_name,
     store_primary_profession,
     store_secondary_profession,
   } from "../../stores/character";
@@ -26,7 +27,9 @@
       get(store_skillbar)
     );
 
-    navigator.clipboard.writeText(response.code);
+    navigator.clipboard.writeText(
+      `[${$store_character_name};${response.code}]`
+    );
 
     notify_info("Build template copied.");
   }

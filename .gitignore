@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 public/skill-icons.small
+docs/skill-icons.small
