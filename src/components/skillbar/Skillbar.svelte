@@ -12,6 +12,7 @@
   } from "../../stores/skillbar";
   import Skillslot from "./Skillslot.svelte";
   import { notify_info } from "../../stores/notifications";
+  import { store_selected_outpost } from "../../stores/outposts";
 
   function clearSkillbar() {
     removeAllSkillsFromSkillbar();
@@ -28,7 +29,7 @@
     );
 
     navigator.clipboard.writeText(
-      `[${$store_character_name};${response.code}]`
+      `[${$store_character_name} - ${$store_selected_outpost};${response.code}]`
     );
 
     notify_info("Build template copied.");
