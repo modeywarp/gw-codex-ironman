@@ -29,7 +29,7 @@
     );
 
     navigator.clipboard.writeText(
-      `[${$store_character_name} - ${$store_selected_outpost};${response.code}]`
+      `[${$store_character_name} - ${$store_selected_outpost.name};${response.code}]`
     );
 
     notify_info("Build template copied.");
