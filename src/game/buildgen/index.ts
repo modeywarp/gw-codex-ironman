@@ -73,11 +73,8 @@ export function generateSkillset(
     .withSelfHeals(normalmode ? 1 : 2)
     .withDefensiveSkills(options.is_primary_profession, hardmode)
     .withOffensiveSkills(options.is_primary_profession)
-    .withInheritedSkills(profession)
     .withRegularSkills(normalmode ? 17 : 26)
     .withElites(options.is_primary_profession || hardmode) // the count is calculated inside the generator
-    .withProfessionPveSkills(hardmode ? 2 : 1)
-    .withGlobalPveSkills(hardmode && options.is_primary_profession ? 5 : 1)
     .withDisabledSkills(
       getSkillPenaltyFromHenchmen(
         options.henchmen_count,
@@ -87,6 +84,9 @@ export function generateSkillset(
         options.is_primary_profession
       )
     )
+    .withInheritedSkills(profession)
+    .withProfessionPveSkills(hardmode ? 2 : 1)
+    .withGlobalPveSkills(hardmode && options.is_primary_profession ? 5 : 1)
     .build(cache_key);
 }
 
