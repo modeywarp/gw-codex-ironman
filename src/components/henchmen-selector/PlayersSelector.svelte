@@ -25,8 +25,10 @@
     store_players_count.update((count) => Math.min(count + 1, MAX_PLAYERS));
   }
 
-  function resetCount() {
-    store_players_count.set(1);
+  function decreaseCount(e) {
+    store_players_count.update((count) => Math.max(count - 1, 1));
+
+    e.preventDefault();
   }
 
   function getBackgroundGradient(percent) {
@@ -48,8 +50,8 @@
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <span
     on:click={increaseCount}
-    on:dblclick={resetCount}
-    title="click to increase by 1, double click to reset">Players</span>
+    on:contextmenu={decreaseCount}
+    title="click to increase by 1, right click to decrease by 1">Players</span>
   <select bind:value={$store_players_count} title={tooltip}>
     <option value={1}>1</option>
     <option value={2}>2</option>
@@ -104,7 +106,7 @@
     text-transform: uppercase;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
-    cursor: row-resize;
+    cursor: pointer;
   }
 
   select {

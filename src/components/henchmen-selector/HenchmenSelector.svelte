@@ -25,8 +25,10 @@
     store_henchmen_count.update((count) => Math.min(count + 1, MAX_HENCHMEN));
   }
 
-  function resetCount() {
-    store_henchmen_count.set(0);
+  function decreaseCount(e) {
+    store_henchmen_count.update((count) => Math.max(count - 1, 0));
+
+    e.preventDefault();
   }
 
   function getBackgroundGradient(percent) {
@@ -47,9 +49,9 @@
 <div class="henchmen-selector" style={`background: ${background_gradient}`}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <span
-    title="click to increase by 1, double click to reset"
+    title="click to increase by 1, right click to decrease by 1"
     on:click={increaseCount}
-    on:dblclick={resetCount}>Henchmen</span>
+    on:contextmenu={decreaseCount}>Henchmen</span>
   <select bind:value={$store_henchmen_count} title={tooltip}>
     <option value={0}>0</option>
     <option value={1}>1</option>
@@ -101,7 +103,7 @@
     text-transform: uppercase;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
-    cursor: row-resize;
+    cursor: pointer;
   }
 
   select {
