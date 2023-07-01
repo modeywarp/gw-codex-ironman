@@ -237,6 +237,8 @@ export class BuildGenerator {
       return this;
     }
 
+    const branch_rng = this.rng.branch();
+
     const hasAnySelfHealLeft = () =>
       skills_to_disable.some(
         (s) => s.options.is_self_heal && !s.options.is_elite
@@ -245,7 +247,7 @@ export class BuildGenerator {
       skills_to_disable.some((s) => s.options.is_elite);
 
     for (let i = 0; i < penalty; i += 1) {
-      const skill_index = this.rng.nextRange(skills_to_disable.length);
+      const skill_index = branch_rng.nextRange(skills_to_disable.length);
 
       // important detail here, the `skills_disable` is mutated with splice
       // and the skill we get here is extracted out of the array.

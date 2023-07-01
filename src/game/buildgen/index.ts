@@ -1,4 +1,4 @@
-import type { Skillset, } from "../../stores/builds";
+import type { Skillset } from "../../stores/builds";
 import type { SkillOrigin } from "../codegen/subgroups/campaigns";
 import type { Outpost } from "../outposts";
 import type { Profession } from "../professions";
@@ -79,14 +79,14 @@ export function generateSkillset(
       getSkillPenaltyFromHenchmen(
         options.henchmen_count,
         options.is_primary_profession
-      ) + getSkillPenaltyFromPlayersCount(
-        options.players_count,
-        options.is_primary_profession
-      )
+      ) +
+        getSkillPenaltyFromPlayersCount(
+          options.players_count,
+          options.is_primary_profession
+        )
     )
     .withInheritedSkills(profession)
     .withProfessionPveSkills(hardmode ? 2 : 1)
     .withGlobalPveSkills(hardmode && options.is_primary_profession ? 5 : 1)
     .build(cache_key);
 }
-

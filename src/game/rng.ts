@@ -13,10 +13,19 @@ export function uuid(length = 10): Uuid {
 
 export class Rng {
   private generator: any;
+  private seed: Seed;
 
   constructor(seed: Seed = uuid()) {
     //@ts-ignore
     this.generator = new Math.seedrandom(seed);
+    this.seed = seed;
+  }
+
+  /**
+   * create a new Rng from the current state of this Rng instance
+   */
+  branch(): Rng {
+    return new Rng(this.seed + String(this.next()));
   }
 
   next(): number {
