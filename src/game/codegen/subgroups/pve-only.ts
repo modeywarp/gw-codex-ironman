@@ -1,13 +1,14 @@
 import { toNormalized } from "../name-mappers";
+import { all_pve_skills } from "./campaigns/pve";
 
 const warrior_pve_skills = [
   "Seven Weapons Stance",
   "Whirlwind Attack",
-  "\"Save Yourselves!\"",
+  '"Save Yourselves!"',
 ].map(toNormalized);
 
 const ranger_pve_skills = [
-  "\"Together as One!\"",
+  '"Together as One!"',
   "Triple Shot",
   "Never Rampage Alone",
 ].map(toNormalized);
@@ -18,11 +19,9 @@ const monk_pve_skills = [
   "Seed of Life",
 ].map(toNormalized);
 
-const mesmer_pve_skills = [
-  "Time Ward",
-  "Ether Nightmare",
-  "Cry of Pain",
-].map(toNormalized);
+const mesmer_pve_skills = ["Time Ward", "Ether Nightmare", "Cry of Pain"].map(
+  toNormalized
+);
 
 const necromancer_pve_skills = [
   "Soul Taker",
@@ -39,7 +38,7 @@ const elementalist_pve_skills = [
 const assassin_pve_skills = [
   "Shadow Theft",
   "Shadow Sanctuary",
-  "Critical Agility"
+  "Critical Agility",
 ].map(toNormalized);
 
 const ritualist_pve_skills = [
@@ -51,13 +50,13 @@ const ritualist_pve_skills = [
 const paragon_pve_skills = [
   "Heroic Refrain",
   "Spear of Fury",
-  "\"There's Nothing to Fear!\""
+  '"There\'s Nothing to Fear!"',
 ].map(toNormalized);
 
 const dervish_pve_skills = [
   "Eternal Aura",
   "Aura of Holy Might",
-  "Vow of Revolution"
+  "Vow of Revolution",
 ].map(toNormalized);
 
 export const all_profession_pve_skills = new Set([
@@ -70,5 +69,9 @@ export const all_profession_pve_skills = new Set([
   ...assassin_pve_skills,
   ...ritualist_pve_skills,
   ...paragon_pve_skills,
-  ...dervish_pve_skills
+  ...dervish_pve_skills,
 ]);
+
+export const all_global_pve_skills = new Set(
+  Array.from(all_pve_skills).filter((s) => !all_profession_pve_skills.has(s))
+);

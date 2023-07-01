@@ -1,11 +1,12 @@
 import type { BuildGenOptions } from ".";
 import type { Skillset } from "../../stores/builds";
 import type { SkillOrigin } from "../codegen/subgroups/campaigns";
+import { all_global_pve_skills } from "../codegen/subgroups/pve-only";
 import { ALL_WARRIOR_WEAPON_TYPES } from "../codegen/subgroups/weapons";
 import type { Outpost } from "../outposts";
 import type { Profession } from "../professions";
 import { Rng } from "../rng";
-import skills, { type Skill } from "../skills";
+import skills, { pve_database, type Skill } from "../skills";
 import { setCachedBuild } from "./cache";
 
 export class BuildGenerator {
@@ -87,9 +88,9 @@ export class BuildGenerator {
       profession_pves: this.available_skills.filter(
         (s) => s.options.is_profession_pve_skill
       ),
-      global_pves: this.available_skills.filter(
-        (s) => s.options.is_global_pve_skill
-      ),
+      global_pves: available_skill_origins.has("PVE")
+        ? pve_database.filter((s) => s.options.is_global_pve_skill)
+        : [],
     };
   }
 

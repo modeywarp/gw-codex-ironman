@@ -15,7 +15,10 @@ import { all_minions } from "./codegen/subgroups/minions";
 import { all_pet_summons } from "./codegen/subgroups/pet_summons";
 import { all_resurrections } from "./codegen/subgroups/resurrection";
 import { all_primary_attribute_skills } from "./codegen/subgroups/primary-attributes";
-import { all_profession_pve_skills } from "./codegen/subgroups/pve-only";
+import {
+  all_global_pve_skills,
+  all_profession_pve_skills,
+} from "./codegen/subgroups/pve-only";
 import {
   getSkillWarriorWeaponType,
   type WarriorWeaponType,
@@ -47,10 +50,7 @@ function makeSkill(link, options: Partial<SkillOptions>): Skill {
       is_resurrection: all_resurrections.has(normalized_name),
       is_primary_attribute: all_primary_attribute_skills.has(normalized_name),
       is_profession_pve_skill: all_profession_pve_skills.has(normalized_name),
-
-      // defaults to false unless `options` overwrites it:
-      is_global_pve_skill: false,
-
+      is_global_pve_skill: all_global_pve_skills.has(normalized_name),
       warrior_weapon_type: getSkillWarriorWeaponType(normalized_name),
 
       ...options,
@@ -1431,7 +1431,7 @@ const database: SkillsDatabase = new Map([
 
 export default database;
 
-const pve_database = [
+export const pve_database = [
   // makeSkill("/wiki/File:Signet_of_Capture.jpg", { is_global_pve_skill: true }),
 
   // makeSkill("/wiki/File:Lightbringer_Signet.jpg", { is_global_pve_skill: true }),
