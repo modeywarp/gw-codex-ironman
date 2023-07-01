@@ -43,7 +43,10 @@ export class BuildGenerator {
     this.available_skills = skills
       .get(profession)
       .filter((skill) => available_skill_origins.has(skill.options.origin))
-      .filter(skill => options.is_primary_profession || !skill.options.is_primary_attribute);
+      .filter(
+        (skill) =>
+          options.is_primary_profession || !skill.options.is_primary_attribute
+      );
 
     this.rng = new Rng(
       `${character_name.toLowerCase()}-${outpost.link}-${profession}`
@@ -53,7 +56,9 @@ export class BuildGenerator {
     );
 
     this.subsets = {
-      regulars: this.available_skills.filter((s) => !s.options.is_elite && !s.options.is_profession_pve_skill),
+      regulars: this.available_skills.filter(
+        (s) => !s.options.is_elite && !s.options.is_profession_pve_skill
+      ),
       selfheals: this.available_skills.filter(
         (s) => !s.options.is_elite && s.options.is_self_heal
       ),
@@ -64,8 +69,12 @@ export class BuildGenerator {
         (s) => s.options.is_offensive && !s.options.is_elite
       ),
       elites: this.available_skills.filter((s) => s.options.is_elite),
-      profession_pves: this.available_skills.filter(s => s.options.is_profession_pve_skill),
-      global_pves: this.available_skills.filter(s => s.options.is_global_pve_skill)
+      profession_pves: this.available_skills.filter(
+        (s) => s.options.is_profession_pve_skill
+      ),
+      global_pves: this.available_skills.filter(
+        (s) => s.options.is_global_pve_skill
+      ),
     };
   }
 
@@ -100,10 +109,12 @@ export class BuildGenerator {
    * A build is not guaranted to get defensive skills depending on whether it is
    * from a primary or secondary profession.
    */
-  public withDefensiveSkills(is_primary_profession: boolean, is_hardmode: boolean): BuildGenerator {
+  public withDefensiveSkills(
+    is_primary_profession: boolean,
+    is_hardmode: boolean
+  ): BuildGenerator {
     const primary_has_defensive =
       this.rng_profession_independent.nextRange(10) < 5;
-
 
     // the guaranted defensive skills are randomly set to either the primary or
     // the secondary profession.
@@ -200,17 +211,23 @@ export class BuildGenerator {
   }
 
   public withDisabledSkills(penalty: number): BuildGenerator {
-    const is_whitelisted = (skill: Skill) => skill.options.is_global_pve_skill || skill.options.is_profession_pve_skill;
+    const is_whitelisted = (skill: Skill) =>
+      skill.options.is_global_pve_skill ||
+      skill.options.is_profession_pve_skill;
     const skills_to_disable = Array.from(this.skillset)
-      .filter(s => !this.disabled_skills.has(s))
-      .filter(s => !is_whitelisted(s));
+      .filter((s) => !this.disabled_skills.has(s))
+      .filter((s) => !is_whitelisted(s));
 
     if (!skills_to_disable.length) {
       return this;
     }
 
-    const hasAnySelfHealLeft = () => skills_to_disable.some(s => s.options.is_self_heal);
-    const hasAnyEliteLeft = () => skills_to_disable.some(s => s.options.is_elite);
+    const hasAnySelfHealLeft = () =>
+      skills_to_disable.some(
+        (s) => s.options.is_self_heal && !s.options.is_elite
+      );
+    const hasAnyEliteLeft = () =>
+      skills_to_disable.some((s) => s.options.is_elite);
 
     for (let i = 0; i < penalty; i += 1) {
       const skill_index = this.rng.nextRange(skills_to_disable.length);
@@ -228,7 +245,9 @@ export class BuildGenerator {
       // but it's possible we don't even add this skill to the list of disabled
       // skills yet we leave it out of the array to ensure it won't be selected
       // again in future iterations.
-      const should_not_remove = (skill.options.is_self_heal && !hasAnySelfHealLeft()) || (skill.options.is_elite && !hasAnyEliteLeft());
+      const should_not_remove =
+        (skill.options.is_self_heal && !hasAnySelfHealLeft()) ||
+        (skill.options.is_elite && !hasAnyEliteLeft());
 
       if (!should_not_remove) {
         this.disabled_skills.add(skill);
@@ -275,4 +294,3 @@ export class BuildGenerator {
     return this;
   }
 }
-
