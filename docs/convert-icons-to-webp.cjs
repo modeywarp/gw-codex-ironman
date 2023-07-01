@@ -13,6 +13,7 @@ const professions = [
   "ritualist",
   "dervish",
   "paragon",
+  "global-pve",
 ];
 
 for (const profession of professions) {
