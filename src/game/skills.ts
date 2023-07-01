@@ -16,6 +16,10 @@ import { all_pet_summons } from "./codegen/subgroups/pet_summons";
 import { all_resurrections } from "./codegen/subgroups/resurrection";
 import { all_primary_attribute_skills } from "./codegen/subgroups/primary-attributes";
 import { all_profession_pve_skills } from "./codegen/subgroups/pve-only";
+import {
+  getSkillWarriorWeaponType,
+  type WarriorWeaponType,
+} from "./codegen/subgroups/weapons";
 
 function makeSkill(link, options: Partial<SkillOptions>): Skill {
   let normalized_name = toNormalized(link);
@@ -47,6 +51,8 @@ function makeSkill(link, options: Partial<SkillOptions>): Skill {
       // defaults to false unless `options` overwrites it:
       is_global_pve_skill: false,
 
+      warrior_weapon_type: getSkillWarriorWeaponType(normalized_name),
+
       ...options,
     },
   };
@@ -70,6 +76,7 @@ interface SkillOptions {
   is_primary_attribute: boolean;
   is_profession_pve_skill: boolean;
   is_global_pve_skill: boolean;
+  warrior_weapon_type: WarriorWeaponType | null;
   origin: SkillOrigin;
 }
 export interface Skill {
@@ -242,7 +249,7 @@ const database: SkillsDatabase = new Map([
 
       makeSkill("/wiki/File:Seven_Weapons_Stance.jpg", {}),
       makeSkill("/wiki/File:%22Save_Yourselves!%22.jpg", {}),
-      makeSkill("/wiki/File:Whirlwind_Attack.jpg", {})
+      makeSkill("/wiki/File:Whirlwind_Attack.jpg", {}),
     ],
   ],
   [
@@ -541,7 +548,7 @@ const database: SkillsDatabase = new Map([
 
       makeSkill("/wiki/File:Judgment_Strike.jpg", {}),
       makeSkill("/wiki/File:Selfless_Spirit.jpg", {}),
-      makeSkill("/wiki/File:Seed_of_Life.jpg", {})
+      makeSkill("/wiki/File:Seed_of_Life.jpg", {}),
     ],
   ],
   [
@@ -1324,7 +1331,6 @@ const database: SkillsDatabase = new Map([
       makeSkill("/wiki/File:Vow_of_Revolution.jpg", {}),
       makeSkill("/wiki/File:Aura_of_Holy_Might.jpg", {}),
       makeSkill("/wiki/File:Eternal_Aura.jpg", {}),
-
     ],
   ],
   [
@@ -1443,12 +1449,20 @@ const pve_database = [
   makeSkill("/wiki/File:Summon_Naga_Shaman.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Summon_Ruby_Djinn.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Technobabble.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:%22By_Ural%27s_Hammer!%22.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:%22Don%27t_Trip!%22.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Alkar%27s_Alchemical_Acid.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22By_Ural%27s_Hammer!%22.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:%22Don%27t_Trip!%22.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:Alkar%27s_Alchemical_Acid.jpg", {
+    is_global_pve_skill: true,
+  }),
   makeSkill("/wiki/File:Black_Powder_Mine.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Brawling_Headbutt.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Breath_of_the_Great_Dwarf.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Breath_of_the_Great_Dwarf.jpg", {
+    is_global_pve_skill: true,
+  }),
   makeSkill("/wiki/File:Drunken_Master.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Dwarven_Stability.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Ear_Bite.jpg", { is_global_pve_skill: true }),
@@ -1458,25 +1472,47 @@ const pve_database = [
   makeSkill("/wiki/File:Low_Blow.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Snow_Storm.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Deft_Strike.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Courage.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Honor.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Wisdom.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Courage.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Honor.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:Ebon_Battle_Standard_of_Wisdom.jpg", {
+    is_global_pve_skill: true,
+  }),
   makeSkill("/wiki/File:Ebon_Escape.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Ebon_Vanguard_Assassin_Support.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Ebon_Vanguard_Sniper_Support.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Signet_of_Infection.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Ebon_Vanguard_Assassin_Support.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:Ebon_Vanguard_Sniper_Support.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:Signet_of_Infection.jpg", {
+    is_global_pve_skill: true,
+  }),
   makeSkill("/wiki/File:Sneak_Attack.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Tryptophan_Signet.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Weakness_Trap.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Winds.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:%22Dodge_This!%22.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:%22Finish_Him!%22.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:%22I_Am_Unstoppable!%22.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:%22I_Am_the_Strongest!%22.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:%22You_Are_All_Weaklings!%22.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:%22You_Move_Like_a_Dwarf!%22.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:%22I_Am_Unstoppable!%22.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:%22I_Am_the_Strongest!%22.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:%22You_Are_All_Weaklings!%22.jpg", {
+    is_global_pve_skill: true,
+  }),
+  makeSkill("/wiki/File:%22You_Move_Like_a_Dwarf!%22.jpg", {
+    is_global_pve_skill: true,
+  }),
   makeSkill("/wiki/File:A_Touch_of_Guile.jpg", { is_global_pve_skill: true }),
-  makeSkill("/wiki/File:Club_of_a_Thousand_Bears.jpg", { is_global_pve_skill: true }),
+  makeSkill("/wiki/File:Club_of_a_Thousand_Bears.jpg", {
+    is_global_pve_skill: true,
+  }),
   makeSkill("/wiki/File:Feel_No_Pain.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Raven_Blessing.jpg", { is_global_pve_skill: true }),
   makeSkill("/wiki/File:Ursan_Blessing.jpg", { is_global_pve_skill: true }),

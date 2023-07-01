@@ -1,6 +1,7 @@
 import type { BuildGenOptions } from ".";
 import type { Skillset } from "../../stores/builds";
 import type { SkillOrigin } from "../codegen/subgroups/campaigns";
+import { ALL_WARRIOR_WEAPON_TYPES } from "../codegen/subgroups/weapons";
 import type { Outpost } from "../outposts";
 import type { Profession } from "../professions";
 import { Rng } from "../rng";
@@ -54,6 +55,20 @@ export class BuildGenerator {
     this.rng_profession_independent = new Rng(
       `${character_name.toLowerCase()}-${outpost.link}`
     );
+
+    // if the profession is warrior, then we pick a random weapon mastery and
+    // exclude the other ones to make it easier for them to craft builds:
+    if (profession === "warrior") {
+      const picked_weapon = ALL_WARRIOR_WEAPON_TYPES.at(
+        this.rng.nextRange(ALL_WARRIOR_WEAPON_TYPES.length)
+      );
+
+      this.available_skills = this.available_skills.filter(
+        (skill) =>
+          skill.options.warrior_weapon_type === null ||
+          skill.options.warrior_weapon_type === picked_weapon
+      );
+    }
 
     this.subsets = {
       regulars: this.available_skills.filter(
