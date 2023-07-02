@@ -241,6 +241,11 @@ const crystal_desert: Region = {
       mission: false,
     },
     {
+      name: "Augury Rock",
+      link: "/wiki/Augury_Rock_(outpost)",
+      mission: true,
+    },
+    {
       name: "Heroes' Audience",
       link: "/wiki/Heroes%27_Audience",
       mission: false,
@@ -254,11 +259,6 @@ const crystal_desert: Region = {
     {
       name: "Seeker's Passage",
       link: "/wiki/Seeker%27s_Passage",
-      mission: false,
-    },
-    {
-      name: "Tomb of the Primeval Kings",
-      link: "/wiki/Tomb_of_the_Primeval_Kings",
       mission: false,
     },
     {
@@ -277,14 +277,14 @@ const crystal_desert: Region = {
       mission: true,
     },
     {
-      name: "Augury Rock",
-      link: "/wiki/Augury_Rock_(outpost)",
-      mission: true,
-    },
-    {
       name: "The Dragon's Lair",
       link: "/wiki/The_Dragon%27s_Lair_(outpost)",
       mission: true,
+    },
+    {
+      name: "Tomb of the Primeval Kings",
+      link: "/wiki/Tomb_of_the_Primeval_Kings",
+      mission: false,
     },
   ],
 };
