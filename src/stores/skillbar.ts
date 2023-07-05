@@ -27,17 +27,30 @@ export function addSkilltoSkillbar(
   }
 
   store_skillbar.update((map) => {
-    map = _removeSkillFromSkillbar(map, skill);
+    // the slot the skill we're trying to equip may already have, if the skill
+    // is already present on the bar then the value will be anything from 0 to 7
+    // otherwise it is -1
+    const skill_existing_slot = getSkillSlot(skill);
 
-    if (skill.options.is_elite) {
-      const existing_elite_slot = getEliteSkillSlot(map);
+    // perform a skill swap
+    if (map.has(slot) && skill_existing_slot >= 0) {
+      const skill_in_slot = map.get(slot);
 
-      if (existing_elite_slot > -1) {
-        map.delete(existing_elite_slot);
-      }
+      map.set(slot, { skill, profession });
+      map.set(skill_existing_slot, skill_in_slot);
     }
+    // perform a regular skill insert
+    else {
+      if (skill.options.is_elite) {
+        const existing_elite_slot = getEliteSkillSlot(map);
 
-    map.set(slot, { skill, profession });
+        if (existing_elite_slot > -1) {
+          map.delete(existing_elite_slot);
+        }
+      }
+
+      map.set(slot, { skill, profession });
+    }
 
     return map;
   });
