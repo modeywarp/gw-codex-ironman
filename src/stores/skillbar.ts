@@ -78,6 +78,23 @@ export function removeSkillFromSkillslot(slot: number) {
   });
 }
 
+function _setSkillbarSlotEnabled(
+  map: Skillbar,
+  slot: number,
+  enabled: boolean = true
+) {
+  if (!map.has(slot)) {
+    return map;
+  }
+
+  const entry = map.get(slot);
+  entry.skill.disabled = !enabled;
+
+  map.set(slot, entry);
+
+  return map;
+}
+
 function getEliteSkillSlot(map: Skillbar): number {
   const entry = Array.from(map.entries()).find(
     ([slot, entry]) => entry.skill.options.is_elite
@@ -120,24 +137,22 @@ store_builds.subscribe((builds) => {
   }
 
   store_skillbar.update((skillbar) => {
-    for (const entry of skillbar.values()) {
+    for (const [slot, entry] of skillbar.entries()) {
       // remove the skill since its profession isn't in the selected professions
       // anymore
       if (!builds.has(entry.profession)) {
-        skillbar = _removeSkillFromSkillbar(skillbar, entry.skill);
+        skillbar = _setSkillbarSlotEnabled(skillbar, slot, false);
 
         continue;
       }
 
-      // remove the skill because it couldn't be found as enabled in the
+      // set the skill as disabled as it couldn't be found as enabled in the
       // generated builds
       const skill = Array.from(builds.values())
         .flatMap((s) => Array.from(s.values()))
         .find((s) => !s.disabled && s.link == entry.skill.link);
 
-      if (!skill) {
-        skillbar = _removeSkillFromSkillbar(skillbar, entry.skill);
-      }
+      skillbar = _setSkillbarSlotEnabled(skillbar, slot, Boolean(skill));
     }
 
     return skillbar;
