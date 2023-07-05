@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { notify_info } from "../../stores/notifications";
   import {
     addSkilltoSkillbar,
     store_skillbar,
     type SkillbarEntry,
+    removeSkillFromSkillslot,
   } from "../../stores/skillbar";
   import SkillIcon from "../SkillIcon.svelte";
 
@@ -10,6 +12,7 @@
 
   let equipped_skill: SkillbarEntry;
   let previewed_skill: SkillbarEntry;
+  let disable_preview = false;
 
   $: is_elite =
     previewed_skill?.skill?.options?.is_elite ||
@@ -47,6 +50,18 @@
   function dragLeave() {
     previewed_skill = null;
   }
+
+  function dragStart() {
+    disable_preview = true;
+  }
+
+  function dragEnd({ detail }) {
+    disable_preview = false;
+
+    if (!detail.success) {
+      removeSkillFromSkillslot(slot_number);
+    }
+  }
 </script>
 
 <div
@@ -56,16 +71,20 @@
   on:drop={equipSkill}
   on:dragleave={dragLeave}
   on:dragenter={dragEnter}>
-  {#if previewed_skill}
+  {#if previewed_skill && !disable_preview}
     <SkillIcon
       skill={previewed_skill.skill}
       profession={previewed_skill.profession}
-      compact={!is_elite} />
+      compact={!is_elite}
+      on:drag-start={dragStart}
+      on:drag-end={dragEnd} />
   {:else if equipped_skill}
     <SkillIcon
       skill={equipped_skill.skill}
       profession={equipped_skill.profession}
-      compact={!is_elite} />
+      compact={!is_elite}
+      on:drag-start={dragStart}
+      on:drag-end={dragEnd} />
   {:else}
     {slot_number + 1}
   {/if}

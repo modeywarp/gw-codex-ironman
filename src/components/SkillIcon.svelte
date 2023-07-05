@@ -1,13 +1,23 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import type { Profession } from "../game/professions";
-  import type { Skill } from "../game/skills";
   import type { SkillsetEntry } from "../stores/builds";
   import { store_wiki_iframe } from "../stores/wiki-iframe";
 
   export let skill: SkillsetEntry;
   export let profession: Profession = "warrior";
   export let compact = false;
+
+  const dispatch = createEventDispatcher();
+  // github pages aren't hosted on a domain's root, each repository is in a sub
+  // folder, so this is a way to get icons to load once pushed to production.
+  const image_root = import.meta.env.PROD ? import.meta.env.BASE_URL : "";
+
+  // the global pve skills are not tied to a profession, their path points to a
+  // special directory
+  $: src = skill.options.is_global_pve_skill
+    ? `${image_root}/skill-icons/global-pve/${skill.icon}`
+    : `${image_root}/skill-icons/${profession}/${skill.icon}`;
 
   function setWikiIframe(e, skill: SkillsetEntry) {
     e.preventDefault();
@@ -22,42 +32,26 @@
     }
 
     const img = new Image();
-    img.src = `${image_root}/skill-icons/${profession}/${skill.icon}`;
+    img.src = src;
 
-    e.dataTransfer.setData("text/plain", JSON.stringify({ skill, profession }));
+    const drag_data = { skill, profession };
+    e.dataTransfer.setData("text/plain", JSON.stringify(drag_data));
     e.dataTransfer.setDragImage(img, 48, 48);
+
+    dispatch("drag-start", drag_data);
   }
 
-  function useDragEvent(element, callbackFunction) {
-    function action(e) {
-      callbackFunction(e);
-    }
-
-    element.addEventListener("dragstart", action);
-
-    return {
-      update(newCallbackFunction) {
-        callbackFunction = newCallbackFunction;
-      },
-      destroy() {
-        element.removeEventListener("dragstart", action);
-      },
-    };
+  function onDragEnd(e) {
+    // whether dropEffect is "none" can be used to detect if the drag operation
+    // succeeded and ended on a valid drop target or not. If it doesn't exist
+    // the operation did not end on a valid target and was cancelled.
+    dispatch("drag-end", { success: e.dataTransfer.dropEffect !== "none" });
   }
-
-  // github pages aren't hosted on a domain's root, each repository is in a sub
-  // folder, so this is a way to get icons to load once pushed to production.
-  const image_root = import.meta.env.PROD ? import.meta.env.BASE_URL : "";
-
-  // the global pve skills are not tied to a profession, their path points to a
-  // special directory
-  $: src = skill.options.is_global_pve_skill
-    ? `${image_root}/skill-icons/global-pve/${skill.icon}`
-    : `${image_root}/skill-icons/${profession}/${skill.icon}`;
 </script>
 
 <a
-  use:useDragEvent={onDragStart}
+  on:dragstart={onDragStart}
+  on:dragend={onDragEnd}
   draggable="true"
   on:click={(e) => setWikiIframe(e, skill)}
   class="skill"

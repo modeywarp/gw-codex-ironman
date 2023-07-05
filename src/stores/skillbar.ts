@@ -5,15 +5,19 @@ import store_builds from "./builds";
 import { getSkillbarLs, setSkillbarLs } from "../localstorage/skillbar";
 
 export interface SkillbarEntry {
-  skill: SkillsetEntry,
-  profession: Profession
-};
+  skill: SkillsetEntry;
+  profession: Profession;
+}
 
 export type Skillbar = Map<number, SkillbarEntry>;
 
 export const store_skillbar = writable<Skillbar>(getSkillbarLs() || new Map());
 
-export function addSkilltoSkillbar(slot: number, skill: SkillsetEntry, profession: Profession) {
+export function addSkilltoSkillbar(
+  slot: number,
+  skill: SkillsetEntry,
+  profession: Profession
+) {
   if (slot < 0 || slot > 7) {
     return;
   }
@@ -22,7 +26,7 @@ export function addSkilltoSkillbar(slot: number, skill: SkillsetEntry, professio
     return;
   }
 
-  store_skillbar.update(map => {
+  store_skillbar.update((map) => {
     map = _removeSkillFromSkillbar(map, skill);
 
     if (skill.options.is_elite) {
@@ -36,11 +40,11 @@ export function addSkilltoSkillbar(slot: number, skill: SkillsetEntry, professio
     map.set(slot, { skill, profession });
 
     return map;
-  })
+  });
 }
 
 export function removeSkillFromSkillbar(skill: SkillsetEntry) {
-  store_skillbar.subscribe(map => _removeSkillFromSkillbar(map, skill))
+  store_skillbar.subscribe((map) => _removeSkillFromSkillbar(map, skill));
 }
 
 function _removeSkillFromSkillbar(map: Skillbar, skill) {
@@ -53,9 +57,18 @@ function _removeSkillFromSkillbar(map: Skillbar, skill) {
   return map;
 }
 
+export function removeSkillFromSkillslot(slot: number) {
+  store_skillbar.update((bar) => {
+    bar.delete(slot);
+
+    return bar;
+  });
+}
+
 function getEliteSkillSlot(map: Skillbar): number {
-  const entry = Array.from(map.entries())
-    .find(([slot, entry]) => entry.skill.options.is_elite);
+  const entry = Array.from(map.entries()).find(
+    ([slot, entry]) => entry.skill.options.is_elite
+  );
 
   if (entry) {
     return entry[0];
@@ -69,8 +82,9 @@ export function getSkillSlot(skill: SkillsetEntry): number {
 }
 
 function _getSkillSlot(map: Skillbar, skill: SkillsetEntry): number {
-  const entry = Array.from(map.entries())
-    .find(([index, s]) => skill.link === s.skill.link);
+  const entry = Array.from(map.entries()).find(
+    ([index, s]) => skill.link === s.skill.link
+  );
 
   if (entry) {
     return entry[0];
@@ -80,20 +94,19 @@ function _getSkillSlot(map: Skillbar, skill: SkillsetEntry): number {
 }
 
 export function removeAllSkillsFromSkillbar() {
-  store_skillbar.update(bar => {
+  store_skillbar.update((bar) => {
     bar.clear();
 
     return bar;
-  })
+  });
 }
 
-store_builds.subscribe(builds => {
+store_builds.subscribe((builds) => {
   if (!builds) {
     return;
   }
 
-
-  store_skillbar.update(skillbar => {
+  store_skillbar.update((skillbar) => {
     for (const entry of skillbar.values()) {
       // remove the skill since its profession isn't in the selected professions
       // anymore
@@ -106,8 +119,8 @@ store_builds.subscribe(builds => {
       // remove the skill because it couldn't be found as enabled in the
       // generated builds
       const skill = Array.from(builds.values())
-        .flatMap(s => Array.from(s.values()))
-        .find(s => !s.disabled && s.link == entry.skill.link);
+        .flatMap((s) => Array.from(s.values()))
+        .find((s) => !s.disabled && s.link == entry.skill.link);
 
       if (!skill) {
         skillbar = _removeSkillFromSkillbar(skillbar, entry.skill);
