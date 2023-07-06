@@ -48,7 +48,7 @@ export function addSkilltoSkillbar(
           map.delete(existing_elite_slot);
         }
       }
-
+      map = _removeSkillFromSkillbar(map, skill);
       map.set(slot, { skill, profession });
     }
 
