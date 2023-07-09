@@ -27,10 +27,6 @@
   }
 
   function onDragStart(e) {
-    if (skill.disabled) {
-      return e.preventDefault();
-    }
-
     const img = new Image();
     img.src = src;
 
