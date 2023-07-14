@@ -9,6 +9,10 @@
   let selected_profession: Profession | null = null;
 
   $: selected_region = getRegionForOutpost($store_selected_outpost);
+
+  // github pages aren't hosted on a domain's root, each repository is in a sub
+  // folder, so this is a way to get icons to load once pushed to production.
+  const image_root = import.meta.env.PROD ? import.meta.env.BASE_URL : "";
 </script>
 
 <div class="hero-builds">
@@ -18,7 +22,7 @@
     {#each professions as profession}
       <button on:click={() => (selected_profession = profession)}
         ><img
-          src={`/profession-icons/${profession}.png`}
+          src={`${image_root}/profession-icons/${profession}.png`}
           alt={`${profession} icon`} /></button>
     {/each}
 
