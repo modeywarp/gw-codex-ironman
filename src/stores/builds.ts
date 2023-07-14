@@ -36,6 +36,7 @@ export function refreshBuildsStore() {
         henchmen_count: get(store_henchmen_count),
         players_count: get(store_players_count),
         hardmode: get(store_hardmode),
+        is_hero_build: false,
       }
     )
   );
@@ -54,6 +55,7 @@ export function refreshBuildsStore() {
           henchmen_count: get(store_henchmen_count),
           players_count: get(store_players_count),
           hardmode: get(store_hardmode),
+          is_hero_build: false,
         }
       )
     );

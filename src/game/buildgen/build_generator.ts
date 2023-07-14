@@ -34,6 +34,7 @@ export class BuildGenerator {
   private disabled_skills: Set<Skill> = new Set();
 
   private inherited_skills_count: number = 0;
+  private hero_build_mode: boolean = false;
 
   constructor(
     character_name: string,
@@ -94,6 +95,16 @@ export class BuildGenerator {
     };
   }
 
+  /**
+   * if enabled it changes the generation rules to return a skill pool of exactly
+   * 8 skills so that it can be used as a full skillbar
+   */
+  public withHeroMode(enabled: boolean): BuildGenerator {
+    this.hero_build_mode = enabled;
+
+    return this;
+  }
+
   public withSelfHeals(count: number): BuildGenerator {
     if (this.subsets.selfheals.length <= 0) {
       return this;
@@ -127,7 +138,8 @@ export class BuildGenerator {
    */
   public withDefensiveSkills(
     is_primary_profession: boolean,
-    is_hardmode: boolean
+    is_hardmode: boolean,
+    count: number
   ): BuildGenerator {
     const primary_has_defensive =
       this.rng_profession_independent.nextRange(10) < 5;
@@ -137,7 +149,7 @@ export class BuildGenerator {
     //
     // but this can only happen in normal mode, in hardmode both professions
     // have the guaranted skills
-    if (!is_hardmode) {
+    if (!is_hardmode && !this.hero_build_mode) {
       if (
         (primary_has_defensive && !is_primary_profession) ||
         (!primary_has_defensive && is_primary_profession)
@@ -146,10 +158,13 @@ export class BuildGenerator {
       }
     }
 
-    return this.addSubsetSkillsToSkillset(this.subsets.defensives, 2);
+    return this.addSubsetSkillsToSkillset(this.subsets.defensives, count);
   }
 
-  public withOffensiveSkills(is_primary_profession: boolean): BuildGenerator {
+  public withOffensiveSkills(
+    is_primary_profession: boolean,
+    count: number
+  ): BuildGenerator {
     const primary_has_offensive =
       this.rng_profession_independent.nextRange(10) < 5;
 
@@ -162,7 +177,7 @@ export class BuildGenerator {
       return this;
     }
 
-    return this.addSubsetSkillsToSkillset(this.subsets.offensives, 2);
+    return this.addSubsetSkillsToSkillset(this.subsets.offensives, count);
   }
 
   /**
@@ -227,6 +242,10 @@ export class BuildGenerator {
   }
 
   public withDisabledSkills(penalty: number): BuildGenerator {
+    if (penalty <= 0) {
+      return this;
+    }
+
     const is_whitelisted = (skill: Skill) =>
       skill.options.is_global_pve_skill ||
       skill.options.is_profession_pve_skill;
@@ -290,10 +309,35 @@ export class BuildGenerator {
     return skillset;
   }
 
+  /**
+   * returns the current size of the skillset
+   */
+  public getSkillsetSize(): number {
+    return this.skillset.size;
+  }
+
+  public getInhreitedSkillsCount(): number {
+    return this.inherited_skills_count;
+  }
+
+  public getRandRange(max: number): number {
+    return this.rng.nextRange(max);
+  }
+
   private addSubsetSkillsToSkillset(
     subset: Skill[],
     count: number
   ): BuildGenerator {
+    if (this.hero_build_mode) {
+      const skills_left = 8 - this.getSkillsetSize();
+
+      count = Math.min(count, skills_left);
+    }
+
+    if (count <= 0) {
+      return this;
+    }
+
     const clamped_count = Math.min(subset.length, count);
     const target_size = this.skillset.size + clamped_count;
     let shortcircuit = 100;

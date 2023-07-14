@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { notify_info } from "../../stores/notifications";
   import {
     addSkilltoSkillbar,
     store_skillbar,

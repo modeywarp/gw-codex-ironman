@@ -1056,6 +1056,13 @@ export const nightfall: RegionDatabase = [
   vortex,
 ];
 
+export const all_regions: Region[] = [
+  ...prophecy,
+  ...faction,
+  ...nightfall,
+  ...gwen,
+];
+
 export const all_outposts = [
   // ...pre_searing.flatMap((r) => r.outposts),
   ...prophecy.flatMap((r) => r.outposts),
@@ -1099,4 +1106,10 @@ export function getOutpostCampaign(outpost: Outpost): Campaign {
   }
 
   return "GWEN";
+}
+
+export function getRegionForOutpost(outpost: Outpost): Region {
+  return all_regions.find((region) =>
+    region.outposts.find((o) => o.link === outpost.link)
+  );
 }

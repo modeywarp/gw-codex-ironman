@@ -28,6 +28,7 @@
   import Skillbar from "./components/skillbar/Skillbar.svelte";
   import Notifications from "./components/Notifications.svelte";
   import { notify_info } from "./stores/notifications";
+  import HeroBuilds from "./components/hero-builds/HeroBuilds.svelte";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -154,6 +155,7 @@
     <GroupSelector />
 
     <Skillbar />
+    <HeroBuilds />
 
     <img src={background} alt="" class="background" />
   </div>

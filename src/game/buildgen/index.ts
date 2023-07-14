@@ -14,6 +14,7 @@ export interface BuildGenOptions {
   henchmen_count: number;
   players_count: number;
   hardmode: boolean;
+  is_hero_build: boolean;
 }
 
 export function generateSkillset(
@@ -63,30 +64,61 @@ export function generateSkillset(
   const { hardmode } = options;
   const normalmode = !hardmode;
 
-  return new BuildGenerator(
-    character_name,
-    outpost,
-    profession,
-    options,
-    available_skill_origins
-  )
-    .withSelfHeals(normalmode ? 1 : 2)
-    .withDefensiveSkills(options.is_primary_profession, hardmode)
-    .withOffensiveSkills(options.is_primary_profession)
-    .withRegularSkills(normalmode ? 17 : 26)
-    .withElites(options.is_primary_profession || hardmode) // the count is calculated inside the generator
-    .withDisabledSkills(
-      getSkillPenaltyFromHenchmen(
-        options.henchmen_count,
-        options.is_primary_profession
-      ) +
-        getSkillPenaltyFromPlayersCount(
-          options.players_count,
-          options.is_primary_profession
-        )
+  if (!options.is_hero_build) {
+    return new BuildGenerator(
+      character_name,
+      outpost,
+      profession,
+      options,
+      available_skill_origins
     )
-    .withInheritedSkills(profession)
-    .withProfessionPveSkills(hardmode ? 2 : 1)
-    .withGlobalPveSkills(hardmode && options.is_primary_profession ? 5 : 1)
-    .build(cache_key);
+      .withHeroMode(options.is_hero_build)
+      .withSelfHeals(normalmode ? 1 : 2)
+      .withDefensiveSkills(options.is_primary_profession, hardmode, 2)
+      .withOffensiveSkills(options.is_primary_profession, 2)
+      .withRegularSkills(normalmode ? 17 : 26)
+      .withElites(options.is_primary_profession || hardmode) // the count is calculated inside the generator
+      .withDisabledSkills(
+        getSkillPenaltyFromHenchmen(
+          options.henchmen_count,
+          options.is_primary_profession
+        ) +
+          getSkillPenaltyFromPlayersCount(
+            options.players_count,
+            options.is_primary_profession
+          )
+      )
+      .withInheritedSkills(profession)
+      .withProfessionPveSkills(hardmode ? 2 : 1)
+      .withGlobalPveSkills(hardmode && options.is_primary_profession ? 5 : 1)
+      .build(cache_key);
+  } else {
+    const buildgen = new BuildGenerator(
+      character_name,
+      outpost,
+      profession,
+      options,
+      available_skill_origins
+    )
+      .withHeroMode(true)
+      .withSelfHeals(1)
+      .withInheritedSkills(profession);
+
+    if (buildgen.getRandRange(10) < 5) {
+      buildgen.withDefensiveSkills(options.is_primary_profession, false, 3);
+    } else {
+      buildgen.withOffensiveSkills(options.is_primary_profession, 3);
+    }
+
+    return buildgen
+
+      .withRegularSkills(
+        8 - buildgen.getSkillsetSize() + buildgen.getInhreitedSkillsCount() - 1
+      ) // 1 skill left for the elite
+      .withElites(true) // the count is calculated inside the generator
+      .withDisabledSkills(0)
+      .withProfessionPveSkills(0)
+      .withGlobalPveSkills(0)
+      .build(cache_key);
+  }
 }

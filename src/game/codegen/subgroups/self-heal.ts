@@ -121,7 +121,6 @@ const monk_self_heal = [
   "Orison of Healing",
   "Patient Spirit",
   "Restful Breeze",
-  "Renew Life",
   "Signet of Devotion",
   "Signet of Rejuvenation",
   "Vigorous Spirit",

@@ -77,12 +77,20 @@
     </div>
   </div>
 
+  <hr />
+
   <p>
-    Heroes are subject to the same rules as the player character with one
-    exception: they are able to keep the skill pools from any of the previously
-    discovered outposts, as it would be too cumbersome to edit the build of a
-    whole group every outpost.
+    If using heroes, they must use one of the pre-generated builds for the
+    region of the outpost you used for your own build.
   </p>
+
+  <ul>
+    <li>
+      select the profession of your hero in the hero builds section under the
+      skillbar
+    </li>
+    <li>select one of the listed builds for the hero</li>
+  </ul>
 
   <hr />
 
