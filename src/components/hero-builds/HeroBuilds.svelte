@@ -16,7 +16,7 @@
 </script>
 
 <div class="hero-builds">
-  <h1>{selected_region.name} - Hero builds</h1>
+  <h1>Hero builds - {selected_region.name}</h1>
 
   <div class="profession-selector">
     {#each professions as profession}
