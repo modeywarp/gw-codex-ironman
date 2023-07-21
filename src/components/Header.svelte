@@ -35,10 +35,10 @@
 
     <button
       class:active={$store_campaign == "Prophecies"}
-      on:click={() => store_campaign.set("Prophecies")}>Prophecy</button>
+      on:click={() => store_campaign.set("Prophecies")}>Prophecies</button>
     <button
       class:active={$store_campaign == "Factions"}
-      on:click={() => store_campaign.set("Factions")}>Faction</button>
+      on:click={() => store_campaign.set("Factions")}>Factions</button>
     <button
       class:active={$store_campaign == "Nightfall"}
       on:click={() => store_campaign.set("Nightfall")}>Nightfall</button>
