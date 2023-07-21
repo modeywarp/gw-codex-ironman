@@ -10,8 +10,8 @@ export type SkillOrigin = Campaign | "Core" | "PVE";
 export const ALL_SKILL_ORIGINS: SkillOrigin[] = [
   "Core",
   "PVE",
-  "Prophecy",
-  "Faction",
+  "Prophecies",
+  "Factions",
   "Nightfall",
   "GWEN",
 ];
@@ -21,13 +21,12 @@ export function getSkillOrigin(skill: string): SkillOrigin {
   // are technically from the CORE, or FACTION, or NIGHTFALL packs
   if (all_pve_skills.has(skill)) {
     return "PVE";
-  }
-  else if (core_skills.has(skill)) {
+  } else if (core_skills.has(skill)) {
     return "Core";
   } else if (prophecy_skills.has(skill)) {
-    return "Prophecy";
+    return "Prophecies";
   } else if (factions_skills.has(skill)) {
-    return "Faction";
+    return "Factions";
   } else if (nightfall_skills.has(skill)) {
     return "Nightfall";
   }

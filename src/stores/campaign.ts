@@ -5,7 +5,7 @@ import {
 } from "../localstorage/selected_campaign";
 import { getCampaignFromUrl } from "../history";
 
-export type Campaign = "Prophecy" | "Faction" | "Nightfall" | "GWEN";
+export type Campaign = "Prophecies" | "Factions" | "Nightfall" | "GWEN";
 
 export const store_campaign = writable<Campaign>(
   getCampaignFromUrl() || getSelectedCampaignLs()

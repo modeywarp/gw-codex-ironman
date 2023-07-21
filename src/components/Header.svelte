@@ -34,11 +34,11 @@
     <hr class="spacer" />
 
     <button
-      class:active={$store_campaign == "Prophecy"}
-      on:click={() => store_campaign.set("Prophecy")}>Prophecy</button>
+      class:active={$store_campaign == "Prophecies"}
+      on:click={() => store_campaign.set("Prophecies")}>Prophecy</button>
     <button
-      class:active={$store_campaign == "Faction"}
-      on:click={() => store_campaign.set("Faction")}>Faction</button>
+      class:active={$store_campaign == "Factions"}
+      on:click={() => store_campaign.set("Factions")}>Faction</button>
     <button
       class:active={$store_campaign == "Nightfall"}
       on:click={() => store_campaign.set("Nightfall")}>Nightfall</button>
