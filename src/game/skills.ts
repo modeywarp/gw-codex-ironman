@@ -23,6 +23,10 @@ import {
   getSkillWarriorWeaponType,
   type WarriorWeaponType,
 } from "./codegen/subgroups/weapons";
+import {
+  getSkillElementalistElement,
+  type ElementalistElement,
+} from "./codegen/subgroups/element";
 
 function makeSkill(link, options: Partial<SkillOptions>): Skill {
   let normalized_name = toNormalized(link);
@@ -52,6 +56,7 @@ function makeSkill(link, options: Partial<SkillOptions>): Skill {
       is_profession_pve_skill: all_profession_pve_skills.has(normalized_name),
       is_global_pve_skill: all_global_pve_skills.has(normalized_name),
       warrior_weapon_type: getSkillWarriorWeaponType(normalized_name),
+      elementalist_element: getSkillElementalistElement(normalized_name),
 
       ...options,
     },
@@ -77,6 +82,7 @@ interface SkillOptions {
   is_profession_pve_skill: boolean;
   is_global_pve_skill: boolean;
   warrior_weapon_type: WarriorWeaponType | null;
+  elementalist_element: ElementalistElement | null;
   origin: SkillOrigin;
 }
 export interface Skill {

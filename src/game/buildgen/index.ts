@@ -41,7 +41,7 @@ export function generateSkillset(
 
   if (
     (profession === "assassin" || profession === "ritualist") &&
-    !available_skill_origins.has("Faction") &&
+    !available_skill_origins.has("Factions") &&
     !available_skill_origins.has("Nightfall") &&
     !available_skill_origins.has("GWEN")
   ) {
@@ -72,7 +72,6 @@ export function generateSkillset(
       options,
       available_skill_origins
     )
-      .withHeroMode(options.is_hero_build)
       .withSelfHeals(normalmode ? 1 : 2)
       .withDefensiveSkills(options.is_primary_profession, hardmode, 2)
       .withOffensiveSkills(options.is_primary_profession, 2)
@@ -100,7 +99,6 @@ export function generateSkillset(
       options,
       available_skill_origins
     )
-      .withHeroMode(true)
       .withSelfHeals(1)
       .withInheritedSkills(profession);
 

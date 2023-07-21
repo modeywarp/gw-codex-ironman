@@ -1,6 +1,7 @@
 import type { BuildGenOptions } from ".";
 import type { Skillset } from "../../stores/builds";
 import type { SkillOrigin } from "../codegen/subgroups/campaigns";
+import { ALL_ELEMENTALIST_ELEMENTS } from "../codegen/subgroups/element";
 import { all_global_pve_skills } from "../codegen/subgroups/pve-only";
 import { ALL_WARRIOR_WEAPON_TYPES } from "../codegen/subgroups/weapons";
 import type { Outpost } from "../outposts";
@@ -43,6 +44,7 @@ export class BuildGenerator {
     options: BuildGenOptions,
     available_skill_origins: Set<SkillOrigin>
   ) {
+    this.hero_build_mode = options.is_hero_build;
     this.available_skills = skills
       .get(profession)
       .filter((skill) => available_skill_origins.has(skill.options.origin))
@@ -69,6 +71,28 @@ export class BuildGenerator {
         (skill) =>
           skill.options.warrior_weapon_type === null ||
           skill.options.warrior_weapon_type === picked_weapon
+      );
+    }
+    // elementalists get AT MOST 2 elements at once
+    else if (profession === "elementalist") {
+      let available_elements = new Set(ALL_ELEMENTALIST_ELEMENTS);
+
+      const max_elements_count = this.hero_build_mode ? 2 : 3;
+
+      while (available_elements.size > max_elements_count) {
+        const elements_arr = Array.from(available_elements.values());
+        const index = this.rng.nextRange(elements_arr.length);
+        const element_to_remove = elements_arr[index];
+
+        available_elements.delete(element_to_remove);
+      }
+
+      console.log(available_elements);
+
+      this.available_skills = this.available_skills.filter(
+        (skill) =>
+          skill.options.elementalist_element === null ||
+          available_elements.has(skill.options.elementalist_element)
       );
     }
 
