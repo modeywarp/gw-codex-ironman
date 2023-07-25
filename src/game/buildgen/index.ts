@@ -5,8 +5,7 @@ import type { Profession } from "../professions";
 import { BuildGenerator } from "./build_generator";
 
 import { cacheKey, getCachedBuild } from "./cache";
-import { getSkillPenaltyFromHenchmen } from "./henchmen_restrictions";
-import { getSkillPenaltyFromPlayersCount } from "./players_count_restrictions";
+import { getSkillPenalty } from "./restrictions";
 
 export interface BuildGenOptions {
   is_primary_profession: boolean;
@@ -78,14 +77,11 @@ export function generateSkillset(
       .withRegularSkills(normalmode ? 17 : 26)
       .withElites(options.is_primary_profession || hardmode) // the count is calculated inside the generator
       .withDisabledSkills(
-        getSkillPenaltyFromHenchmen(
+        getSkillPenalty(
+          options.players_count,
           options.henchmen_count,
           options.is_primary_profession
-        ) +
-          getSkillPenaltyFromPlayersCount(
-            options.players_count,
-            options.is_primary_profession
-          )
+        )
       )
       .withInheritedSkills(profession)
       .withProfessionPveSkills(hardmode ? 2 : 1)

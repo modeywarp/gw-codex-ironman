@@ -30,14 +30,14 @@ store_campaign.subscribe((campaign) => {
     campaign !== getOutpostCampaign(get(store_selected_outpost));
 
   switch (campaign) {
-    case "Prophecy":
+    case "Prophecies":
       store_outposts.set(outposts.prophecy);
 
       if (can_switch_selected_outpost) {
         store_selected_outpost.set(outposts.prophecy[0].outposts[0]);
       }
       break;
-    case "Faction":
+    case "Factions":
       store_outposts.set(outposts.faction);
 
       if (can_switch_selected_outpost) {

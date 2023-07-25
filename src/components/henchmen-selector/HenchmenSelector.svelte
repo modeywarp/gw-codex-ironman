@@ -1,14 +1,17 @@
 <script>
-  import { getSkillPenaltyFromHenchmen } from "../../game/buildgen/henchmen_restrictions";
+  import { getSkillPenalty } from "../../game/buildgen/restrictions";
   import { store_henchmen_count } from "../../stores/henchmen";
+  import { store_players_count } from "../../stores/players_count";
 
   const MAX_HENCHMEN = 7;
 
-  $: tooltip_penalty_primary = getSkillPenaltyFromHenchmen(
+  $: tooltip_penalty_primary = getSkillPenalty(
+    $store_players_count,
     $store_henchmen_count,
     true
   );
-  $: tooltip_penalty_secondary = getSkillPenaltyFromHenchmen(
+  $: tooltip_penalty_secondary = getSkillPenalty(
+    $store_players_count,
     $store_henchmen_count,
     false
   );

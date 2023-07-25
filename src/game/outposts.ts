@@ -1092,11 +1092,11 @@ export function getOutpostCampaign(outpost: Outpost): Campaign {
   if (
     prophecy.flatMap((r) => r.outposts).find((o) => o.link === outpost.link)
   ) {
-    return "Prophecy";
+    return "Prophecies";
   }
 
   if (faction.flatMap((r) => r.outposts).find((o) => o.link === outpost.link)) {
-    return "Faction";
+    return "Factions";
   }
 
   if (

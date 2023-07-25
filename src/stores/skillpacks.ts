@@ -19,12 +19,12 @@ export const store_selected_skillpacks = writable<SkillOrigin[]>(
 function getRecommendedSkillPacksForCampaign(
   campaign: Campaign
 ): SkillOrigin[] {
-  if (campaign == "Prophecy") {
-    return ["Core", "Prophecy"];
+  if (campaign == "Prophecies") {
+    return ["Core", "Prophecies"];
   }
 
-  if (campaign == "Faction") {
-    return ["Core", "Faction"];
+  if (campaign == "Factions") {
+    return ["Core", "Factions"];
   }
 
   if (campaign == "Nightfall") {
@@ -32,7 +32,7 @@ function getRecommendedSkillPacksForCampaign(
   }
 
   if (campaign == "GWEN") {
-    return ["Core", "Prophecy", "Faction", "Nightfall", "GWEN"];
+    return ["Core", "Prophecies", "Factions", "Nightfall", "GWEN"];
   }
 
   return ["Core"];
@@ -42,7 +42,7 @@ function getRecommendedSkillPacksForProfession(
   profession: Profession
 ): SkillOrigin[] {
   if (profession === "assassin" || profession === "ritualist") {
-    return ["Faction"];
+    return ["Factions"];
   }
 
   if (profession === "dervish" || profession === "paragon") {

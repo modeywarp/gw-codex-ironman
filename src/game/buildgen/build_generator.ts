@@ -87,8 +87,6 @@ export class BuildGenerator {
         available_elements.delete(element_to_remove);
       }
 
-      console.log(available_elements);
-
       this.available_skills = this.available_skills.filter(
         (skill) =>
           skill.options.elementalist_element === null ||
