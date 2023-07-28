@@ -36,7 +36,8 @@ export function refreshBuildsStore() {
       get(store_selected_outpost),
       get(store_primary_profession),
       get(store_secondary_profession),
-      20
+      20,
+      new Set(get(store_selected_skillpacks))
     )
   );
 

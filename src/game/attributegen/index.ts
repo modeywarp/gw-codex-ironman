@@ -4,6 +4,7 @@ import {
   type Attribute,
 } from "../codegen/attributes";
 import { all_weapon_attributes } from "../codegen/attributes/martial-weapon-attributes";
+import type { SkillOrigin } from "../codegen/subgroups/campaigns";
 import type { Outpost } from "../outposts";
 import type { Profession, SecondaryProfession } from "../professions";
 import { Rng } from "../rng";
@@ -28,8 +29,16 @@ export function generateAttributeSet(
   outpost: Outpost,
   primary: Profession,
   secondary: SecondaryProfession,
-  level: number
+  level: number,
+  available_skill_origins: Set<SkillOrigin>
 ): AttributesSkillset {
+  if (available_skill_origins.size <= 0) {
+    return {
+      attributes: new Map(),
+      suggested_bars: [],
+    };
+  }
+
   const rng = new Rng(
     `${character_name.toLowerCase()}-${outpost.link}-${primary}`
   );
@@ -85,7 +94,13 @@ export function generateAttributeSet(
 
   return {
     attributes: output,
-    suggested_bars: generateSuggestedSkillbars(rng, output, primary, secondary),
+    suggested_bars: generateSuggestedSkillbars(
+      rng,
+      output,
+      primary,
+      secondary,
+      available_skill_origins
+    ),
   };
 }
 
@@ -179,20 +194,19 @@ function generateSuggestedSkillbars(
   rng: Rng,
   tree: AttributesTree,
   primary: Profession,
-  secondary: SecondaryProfession
+  secondary: SecondaryProfession,
+  available_skill_origins: Set<SkillOrigin>
 ): SuggestedAttributeBars {
   const common_list_of_skills = database
     .get(primary)
     .concat(secondary !== "none" ? database.get(secondary) : []);
   const attributes = Array.from(tree.keys());
   const common_bar = attributes.map((attribute) => {
-    const skills_for_attribute = common_list_of_skills.filter(
-      (skill) => skill.options.attribute === attribute
-    );
+    const skills_for_attribute = common_list_of_skills
+      .filter((skill) => skill.options.attribute === attribute)
+      .filter((skill) => available_skill_origins.has(skill.options.origin));
 
     const non_elites = skills_for_attribute.filter((s) => !s.options.is_elite);
-
-    console.log(non_elites, attribute, skills_for_attribute);
 
     return {
       skills_for_attribute,
@@ -211,6 +225,7 @@ function generateSuggestedSkillbars(
           ? elites_for_attribute[rng.nextRange(elites_for_attribute.length)]
           : obj.selected_skill;
       })
+      .filter(Boolean)
       .map((s) => ({ disabled: false, ...s }))
   );
 

@@ -15,8 +15,6 @@
     .sort(([_, a], [__, b]) => Number(b) - Number(a));
 
   $: suggested_bars = tree.suggested_bars;
-
-  $: console.log(suggested_bars);
 </script>
 
 <div class="attributes-tree">
