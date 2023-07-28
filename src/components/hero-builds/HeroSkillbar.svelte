@@ -1,28 +1,41 @@
 <script lang="ts">
   import { encodeBuildTemplate } from "../../api/decodetemplate";
+  import type { AttributesTree } from "../../game/attributegen";
   import type { Region } from "../../game/outposts";
-  import type { Profession } from "../../game/professions";
+  import type { Profession, SecondaryProfession } from "../../game/professions";
   import type { SkillsetEntry } from "../../stores/builds";
   import { store_compact_icons } from "../../stores/compact_icons";
   import { notify_info } from "../../stores/notifications";
+  import capitalize from "../../utils/capitalize";
   import SkillIcon from "../SkillIcon.svelte";
 
+  export let attributes: AttributesTree = null;
   export let build: SkillsetEntry[] = [];
   export let profession: Profession = "warrior";
-  export let region: Region;
+  export let secondary_profession: SecondaryProfession = "none";
 
   async function copyBuildTemplate() {
     notify_info("Generating build template...");
 
     const response = await encodeBuildTemplate(
       profession,
-      "none",
-      new Map(build.map((skill, i) => [i, { skill, profession }]))
+      secondary_profession,
+      new Map(build.map((skill, i) => [i, { skill, profession }])),
+      attributes
     );
 
-    navigator.clipboard.writeText(
-      `[${profession} hero - ${region.name};${response.code}]`
-    );
+    let message = `${capitalize(profession)}`;
+
+    if (secondary_profession !== "none") {
+      message += `/${capitalize(secondary_profession)}`;
+    }
+
+    const elite = build.find((s) => s.options.is_elite);
+    if (elite) {
+      message += ` - ${elite.name}`;
+    }
+
+    navigator.clipboard.writeText(`[${message};${response.code}]`);
 
     notify_info("Build template copied.");
   }
@@ -32,8 +45,9 @@
 
     const response = await encodeBuildTemplate(
       profession,
-      "none",
-      new Map(build.map((skill, i) => [i, { skill, profession }]))
+      secondary_profession,
+      new Map(build.map((skill, i) => [i, { skill, profession }])),
+      attributes
     );
 
     navigator.clipboard.writeText(response.code);
@@ -44,7 +58,7 @@
 
 <div class="hero-skillbar">
   {#each build as skill}
-    <SkillIcon {skill} {profession} compact={$store_compact_icons} />
+    <SkillIcon {skill} compact={$store_compact_icons} />
   {/each}
 
   <button on:click={copyBuildTemplate} title="Generate & copy build template">

@@ -1,3 +1,6 @@
+import type { AttributesTree } from "../game/attributegen";
+import { attribute_name_to_id } from "../game/codegen/attributes/attribute-name-to-id";
+import { getSkillAttribute } from "../game/codegen/attributes/skill-id-to-attribute";
 import { toNormalized } from "../game/codegen/name-mappers";
 import { profession_names_to_id } from "../game/codegen/profession-to-id";
 import { skill_names_to_id } from "../game/codegen/skill-name-to-id";
@@ -7,7 +10,8 @@ import type { Skillbar } from "../stores/skillbar";
 export async function encodeBuildTemplate(
   primary: Profession,
   secondary: SecondaryProfession,
-  skillbar: Skillbar
+  skillbar: Skillbar,
+  attributes: AttributesTree = null
 ) {
   const skills = [0, 1, 2, 3, 4, 5, 6, 7]
     .map((slot) => skillbar.get(slot))
@@ -23,8 +27,30 @@ export async function encodeBuildTemplate(
       return skill_names_to_id.get(toNormalized(entry.skill.name)) || 0;
     });
 
+  const generated_attributes =
+    attributes === null
+      ? [skills]
+          .map((skills) =>
+            Array.from(
+              new Set(
+                skills
+                  .map(getSkillAttribute)
+                  .filter(Boolean)
+                  .map((n) => attribute_name_to_id.get(n))
+              )
+            )
+          )
+          .map((attributes) =>
+            attributes.map((attr) => ({ id: attr, level: 9 }))
+          )
+          .at(0)
+      : Array.from(attributes.entries()).map(([id, level]) => ({
+          id: attribute_name_to_id.get(id),
+          level,
+        }));
+
   const body = {
-    attributes: [],
+    attributes: generated_attributes,
     primaryProfession: profession_names_to_id.get(primary),
     secondaryProfession: profession_names_to_id.get(secondary),
     skills,

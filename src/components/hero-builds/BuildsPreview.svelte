@@ -41,7 +41,7 @@
   <h2>{profession}</h2>
 
   {#each builds as build}
-    <HeroSkillbar {profession} {build} {region} />
+    <HeroSkillbar {profession} {build} />
   {/each}
 </div>
 

@@ -7,12 +7,11 @@
   import SkillIcon from "./SkillIcon.svelte";
 
   export let skills: SkillsetEntry[] = [];
-  export let profession: Profession = "warrior";
 </script>
 
 <div class="skill-list" class:compact={$store_compact_icons}>
   {#each skills as skill}
-    <SkillIcon {skill} compact={$store_compact_icons} {profession} />
+    <SkillIcon {skill} compact={$store_compact_icons} />
   {/each}
 </div>
 

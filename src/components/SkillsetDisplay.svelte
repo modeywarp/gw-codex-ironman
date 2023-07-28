@@ -20,20 +20,20 @@
     <h2>{profession}</h2>
     <span class="skilllist">
       <h3>Regular skills</h3>
-      <SkillList skills={regular_skills} {profession} />
+      <SkillList skills={regular_skills} />
     </span>
 
     {#if heal_skills.length}
       <span class="skilllist">
         <h3>Healing skills</h3>
-        <SkillList skills={heal_skills} {profession} />
+        <SkillList skills={heal_skills} />
       </span>
     {/if}
 
     {#if elite_skills.length}
       <span class="skilllist">
         <h3>Elite skills</h3>
-        <SkillList skills={elite_skills} {profession} />
+        <SkillList skills={elite_skills} />
       </span>
     {/if}
   </div>

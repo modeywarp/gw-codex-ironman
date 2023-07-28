@@ -5,7 +5,10 @@
   import SkillsetDisplay from "./components/SkillsetDisplay.svelte";
   import SuggestedOutposts from "./components/SuggestedOutposts.svelte";
   import WikiIframe from "./components/WikiIframe.svelte";
-  import store_skillset, { refreshBuildsStore } from "./stores/builds";
+  import store_skillset, {
+    refreshBuildsStore,
+    store_attributes,
+  } from "./stores/builds";
   import { store_campaign } from "./stores/campaign";
   import {
     store_character_name,
@@ -24,11 +27,14 @@
   import GroupSelector from "./components/henchmen-selector/GroupSelector.svelte";
   import { store_players_count } from "./stores/players_count";
   import { get } from "svelte/store";
-  import { store_hardmode } from "./stores/hardmode";
+  import { store_gamemode } from "./stores/gamemode";
   import Skillbar from "./components/skillbar/Skillbar.svelte";
   import Notifications from "./components/Notifications.svelte";
   import { notify_info } from "./stores/notifications";
   import HeroBuilds from "./components/hero-builds/HeroBuilds.svelte";
+  import GamemodeSwapper from "./components/GamemodeSwapper.svelte";
+  import AttributesTree from "./components/AttributesTreeDisplay.svelte";
+  import AttributesTreeDisplay from "./components/AttributesTreeDisplay.svelte";
 
   $: primary_skillset = $store_skillset.get($store_primary_profession);
   $: secondary_skillset =
@@ -48,7 +54,7 @@
   store_selected_outpost.subscribe(refreshStuff);
   store_henchmen_count.subscribe(refreshStuff);
   store_players_count.subscribe(refreshStuff);
-  store_hardmode.subscribe(refreshStuff);
+  store_gamemode.subscribe(refreshStuff);
 
   store_selected_skillpacks.subscribe(refreshBuildsStore);
 
@@ -76,12 +82,7 @@
 {#if can_display_skillsets}
   <div class="skillsets">
     <div class="options">
-      <input
-        type="checkbox"
-        name="hard-mode"
-        id="hard-mode"
-        bind:checked={$store_hardmode} />
-      <label for="hard-mode">{$store_hardmode ? "Hard" : "Normal"}</label>
+      <GamemodeSwapper />
 
       <input
         type="checkbox"
@@ -141,20 +142,29 @@
     {/if}
 
     <div class="inner">
-      <SkillsetDisplay
-        profession={$store_primary_profession}
-        skillset={primary_skillset} />
-
-      {#if $store_secondary_profession !== "none"}
+      {#if $store_gamemode !== "attributes"}
         <SkillsetDisplay
-          profession={$store_secondary_profession}
-          skillset={secondary_skillset} />
+          profession={$store_primary_profession}
+          skillset={primary_skillset} />
+
+        {#if $store_secondary_profession !== "none"}
+          <SkillsetDisplay
+            profession={$store_secondary_profession}
+            skillset={secondary_skillset} />
+        {/if}
+      {:else}
+        <AttributesTreeDisplay
+          profession={$store_primary_profession}
+          secondary_profession={$store_secondary_profession}
+          tree={$store_attributes} />
       {/if}
     </div>
 
     <GroupSelector />
 
-    <Skillbar />
+    {#if $store_gamemode !== "attributes"}
+      <Skillbar />
+    {/if}
     <HeroBuilds />
 
     <img src={background} alt="" class="background" />
@@ -208,10 +218,6 @@
     background: white;
   }
 
-  .outpost-name + a {
-    display: inline;
-  }
-
   .skillsets {
     display: flex;
     flex-direction: column;
@@ -251,19 +257,11 @@
     margin-left: 1em;
   }
 
-  #compact-mode,
-  #hard-mode {
+  #compact-mode {
     display: none;
   }
 
-  #compact-mode + label,
-  #hard-mode + label {
+  #compact-mode + label {
     box-shadow: 0px 0px 12px rgba(20, 20, 20, 0.1);
-  }
-
-  #hard-mode:checked + label {
-    outline: solid 1px goldenrod;
-    box-shadow: 0px 0px 12px rgba(218, 165, 32, 0.4);
-    color: goldenrod;
   }
 </style>

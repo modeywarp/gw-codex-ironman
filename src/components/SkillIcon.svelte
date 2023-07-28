@@ -5,8 +5,9 @@
   import { store_wiki_iframe } from "../stores/wiki-iframe";
 
   export let skill: SkillsetEntry;
-  export let profession: Profession = "warrior";
   export let compact = false;
+
+  $: profession = skill.options.profession;
 
   const dispatch = createEventDispatcher();
   // github pages aren't hosted on a domain's root, each repository is in a sub
