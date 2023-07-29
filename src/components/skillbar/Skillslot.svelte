@@ -73,14 +73,12 @@
   {#if previewed_skill && !disable_preview}
     <SkillIcon
       skill={previewed_skill.skill}
-      profession={previewed_skill.profession}
       compact={!is_elite}
       on:drag-start={dragStart}
       on:drag-end={dragEnd} />
   {:else if equipped_skill}
     <SkillIcon
       skill={equipped_skill.skill}
-      profession={equipped_skill.profession}
       compact={!is_elite}
       on:drag-start={dragStart}
       on:drag-end={dragEnd} />
