@@ -41,6 +41,7 @@
     {#each suggested_bars as skillbar}
       <HeroSkillbar
         attributes={tree.attributes}
+        {profession}
         {secondary_profession}
         build={skillbar} />
     {/each}

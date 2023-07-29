@@ -1,7 +1,6 @@
 <script lang="ts">
   import { encodeBuildTemplate } from "../../api/decodetemplate";
   import type { AttributesTree } from "../../game/attributegen";
-  import type { Region } from "../../game/outposts";
   import type { Profession, SecondaryProfession } from "../../game/professions";
   import type { SkillsetEntry } from "../../stores/builds";
   import { store_compact_icons } from "../../stores/compact_icons";
