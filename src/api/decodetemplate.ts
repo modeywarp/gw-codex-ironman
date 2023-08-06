@@ -10,6 +10,13 @@ import type { Skillbar } from "../stores/skillbar";
 export type buildTemplateParams = {
   primary: Profession;
   secondary: SecondaryProfession;
+
+  /**
+   * @todo this shouldn't be a Skillbar but rather an array of SkillsetEntry.
+   *
+   * The fact it's a skillbar forces us to transform arrays of skills into a
+   * skillbar which then gets converted back to an array of skills afterward...
+   */
   skillbar: Skillbar;
   attributes: AttributesTree | null;
 };
