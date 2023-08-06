@@ -111,7 +111,7 @@
 
     <button
       on:click={generateTemplateZipFile}
-      title="Generate & copy template folder for all hero builds">
+      title="Generate & copy template folder with all hero builds">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
