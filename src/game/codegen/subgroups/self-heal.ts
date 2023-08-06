@@ -105,7 +105,6 @@ const monk_self_heal = [
   "Divine Healing",
   "Divine Intervention",
   "Ethereal Light",
-  "Gift of Health",
   "Glimmer of Light",
   "Heal Area",
   "Heal Party",
