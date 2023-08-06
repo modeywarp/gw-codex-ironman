@@ -66,8 +66,6 @@ function makeEncodeBody(params: buildTemplateParams) {
         return 0;
       }
 
-      console.log(entry);
-
       if (entry.skill.disabled) {
         return 0;
       }
