@@ -22,11 +22,12 @@
   async function copyBuildTemplate() {
     notify_info("Generating build template...");
 
-    const response = await encodeBuildTemplate(
-      get(store_primary_profession),
-      get(store_secondary_profession),
-      get(store_skillbar)
-    );
+    const response = await encodeBuildTemplate({
+      attributes: null,
+      primary: get(store_primary_profession),
+      secondary: get(store_secondary_profession),
+      skillbar: get(store_skillbar),
+    });
 
     navigator.clipboard.writeText(
       `[${$store_character_name} - ${$store_selected_outpost.name};${response.code}]`

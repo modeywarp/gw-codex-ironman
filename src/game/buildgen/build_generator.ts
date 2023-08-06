@@ -1,5 +1,6 @@
 import type { BuildGenOptions } from ".";
-import type { Skillset } from "../../stores/builds";
+import type { Skillset, SkillsetEntry } from "../../stores/builds";
+import type { Skillbar } from "../../stores/skillbar";
 import type { SkillOrigin } from "../codegen/subgroups/campaigns";
 import { ALL_ELEMENTALIST_ELEMENTS } from "../codegen/subgroups/element";
 import { all_global_pve_skills } from "../codegen/subgroups/pve-only";
@@ -377,4 +378,17 @@ export class BuildGenerator {
 
     return this;
   }
+}
+
+export function skillsetEntriesToSingleProfessionSkillbar(
+  profession: Profession,
+  skills: SkillsetEntry[]
+): Skillbar {
+  const output: Skillbar = new Map();
+
+  for (let i = 0; i < skills.length; i += 1) {
+    output.set(i, { profession, skill: skills[i] });
+  }
+
+  return output;
 }

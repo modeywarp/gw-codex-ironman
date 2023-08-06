@@ -7,18 +7,66 @@ import { skill_names_to_id } from "../game/codegen/skill-name-to-id";
 import type { Profession, SecondaryProfession } from "../game/professions";
 import type { Skillbar } from "../stores/skillbar";
 
-export async function encodeBuildTemplate(
-  primary: Profession,
-  secondary: SecondaryProfession,
-  skillbar: Skillbar,
-  attributes: AttributesTree = null
-) {
+export type buildTemplateParams = {
+  primary: Profession;
+  secondary: SecondaryProfession;
+  skillbar: Skillbar;
+  attributes: AttributesTree | null;
+};
+
+export type EncodeResponse = {
+  code: string;
+};
+
+export async function encodeBuildTemplate(params: buildTemplateParams) {
+  const body = makeEncodeBody(params);
+
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  const response = await fetch(
+    "https://guildwars-decodetemplate.azurewebsites.net/api/Encode",
+    {
+      method: "post",
+      body: JSON.stringify(body),
+      headers,
+    }
+  );
+
+  return await response.json();
+}
+
+export async function encodeBuildTemplates(
+  params: buildTemplateParams[]
+): Promise<EncodeResponse[]> {
+  const body = params.map(makeEncodeBody);
+
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  const response = await fetch(
+    "https://guildwars-decodetemplate.azurewebsites.net/api/EncodeMultiple",
+    {
+      method: "post",
+      body: JSON.stringify(body),
+      headers,
+    }
+  );
+
+  return await response.json();
+}
+
+function makeEncodeBody(params: buildTemplateParams) {
+  const { primary, secondary, skillbar, attributes = null } = params;
+
   const skills = [0, 1, 2, 3, 4, 5, 6, 7]
     .map((slot) => skillbar.get(slot))
     .map((entry) => {
       if (!entry) {
         return 0;
       }
+
+      console.log(entry);
 
       if (entry.skill.disabled) {
         return 0;
@@ -49,24 +97,10 @@ export async function encodeBuildTemplate(
           level,
         }));
 
-  const body = {
+  return {
     attributes: generated_attributes,
     primaryProfession: profession_names_to_id.get(primary),
     secondaryProfession: profession_names_to_id.get(secondary),
     skills,
   };
-
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-
-  const response = await fetch(
-    "https://guildwars-decodetemplate.azurewebsites.net/api/Encode",
-    {
-      method: "post",
-      body: JSON.stringify(body),
-      headers,
-    }
-  );
-
-  return await response.json();
 }

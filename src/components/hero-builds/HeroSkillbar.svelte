@@ -1,6 +1,7 @@
 <script lang="ts">
   import { encodeBuildTemplate } from "../../api/decodetemplate";
   import type { AttributesTree } from "../../game/attributegen";
+  import { skillsetEntriesToSingleProfessionSkillbar } from "../../game/buildgen/build_generator";
   import type { Profession, SecondaryProfession } from "../../game/professions";
   import type { SkillsetEntry } from "../../stores/builds";
   import { store_compact_icons } from "../../stores/compact_icons";
@@ -16,12 +17,12 @@
   async function copyBuildTemplate() {
     notify_info("Generating build template...");
 
-    const response = await encodeBuildTemplate(
-      profession,
-      secondary_profession,
-      new Map(build.map((skill, i) => [i, { skill, profession }])),
-      attributes
-    );
+    const response = await encodeBuildTemplate({
+      attributes,
+      primary: profession,
+      secondary: secondary_profession,
+      skillbar: skillsetEntriesToSingleProfessionSkillbar(profession, build),
+    });
 
     let message = `${capitalize(profession)}`;
 
@@ -42,12 +43,12 @@
   async function copyBuildTemplateCode() {
     notify_info("Generating build template code...");
 
-    const response = await encodeBuildTemplate(
-      profession,
-      secondary_profession,
-      new Map(build.map((skill, i) => [i, { skill, profession }])),
-      attributes
-    );
+    const response = await encodeBuildTemplate({
+      attributes,
+      primary: profession,
+      secondary: secondary_profession,
+      skillbar: skillsetEntriesToSingleProfessionSkillbar(profession, build),
+    });
 
     navigator.clipboard.writeText(response.code);
 
