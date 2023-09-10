@@ -960,11 +960,6 @@ const desolation: Region = {
   name: "The Desolation",
   outposts: [
     {
-      name: "Basalt Grotto",
-      link: "/wiki/Basalt_Grotto",
-      mission: false,
-    },
-    {
       name: "Gate of Desolation",
       link: "/wiki/Gate_of_Desolation_(outpost)",
       mission: true,
