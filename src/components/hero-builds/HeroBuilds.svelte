@@ -49,16 +49,29 @@
 
     for (const prof of professions) {
       const folder = templates.folder(String(prof));
+      const elites_number = new Map();
 
       for (let i = 0; i < builds.length; i += 1) {
         const { build, profession } = builds[i];
+
         if (profession === prof) {
           const elite = build.find((s) => s.options.is_elite);
-          const build_name =
-            elite.name.replace(/[^a-z0-9]/gi, "") ?? profession;
           const template_code = template_codes[i];
 
-          folder.file(`${build_name}.txt`, template_code.code);
+          // get the name of the build, if there is already a build
+          // with this elite then add a number suffix to it.
+          const build_name =
+          elite.name.replace(/[^a-z0-9 ]/gi, "") ?? profession;
+          const build_number = elites_number.get(build_name) || 0;
+          const numbered_build_name = build_number > 0
+             ? `${build_name} - ${build_number}`
+             : build_name;
+
+          // add the number for the elite + 1 so the next time it
+          // is used it starts from that number
+          elites_number.set(build_name, build_number + 1);
+
+          folder.file(`${numbered_build_name}.txt`, template_code.code);
         }
       }
     }
