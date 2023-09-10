@@ -8,7 +8,7 @@ import { ALL_WARRIOR_WEAPON_TYPES } from "../codegen/subgroups/weapons";
 import type { Outpost } from "../outposts";
 import type { Profession } from "../professions";
 import { Rng } from "../rng";
-import skills, { pve_database, type Skill } from "../skills";
+import skills, { common_skills_database, pve_database, type Skill } from "../skills";
 import { setCachedBuild } from "./cache";
 
 export class BuildGenerator {
@@ -321,7 +321,7 @@ export class BuildGenerator {
     const skills_array = Array.from(this.skillset);
 
     const skillset = new Set(
-      skills_array.map((skill) => ({
+      skills_array.concat(this.getGuaranteedSkills()).map((skill) => ({
         ...skill,
         disabled: this.disabled_skills.has(skill),
       }))
@@ -345,6 +345,10 @@ export class BuildGenerator {
 
   public getRandRange(max: number): number {
     return this.rng.nextRange(max);
+  }
+
+  private getGuaranteedSkills(): Skill[] {
+    return common_skills_database;
   }
 
   private addSubsetSkillsToSkillset(
