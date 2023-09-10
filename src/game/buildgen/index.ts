@@ -83,7 +83,7 @@ export function generateSkillset(
           options.is_primary_profession
         )
       )
-      .withInheritedSkills(profession)
+      .withInheritedSkills(profession, options.is_primary_profession, options.is_hero_build)
       .withProfessionPveSkills(hardmode ? 2 : 1)
       .withGlobalPveSkills(hardmode && options.is_primary_profession ? 5 : 1)
       .build(cache_key);
@@ -96,7 +96,7 @@ export function generateSkillset(
       available_skill_origins
     )
       .withSelfHeals(1)
-      .withInheritedSkills(profession);
+      .withInheritedSkills(profession, options.is_primary_profession, options.is_hero_build);
 
     if (buildgen.getRandRange(10) < 5) {
       buildgen.withDefensiveSkills(options.is_primary_profession, false, 3);

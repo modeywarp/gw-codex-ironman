@@ -211,7 +211,7 @@ export class BuildGenerator {
    * - rangers get Charm Animal
    * - assassins get a lead & an off-hand attack
    */
-  public withInheritedSkills(profession: Profession): BuildGenerator {
+  public withInheritedSkills(profession: Profession, is_primary_profession: boolean, is_hero_build: boolean): BuildGenerator {
     if (profession === "assassin") {
       this.addSubsetSkillsToSkillset(
         this.subsets.regulars.filter((s) => s.options.is_lead_attack),
@@ -251,6 +251,13 @@ export class BuildGenerator {
       );
 
       this.inherited_skills_count = 1;
+    }
+
+    if (!is_hero_build && is_primary_profession) {
+      this.addSubsetSkillsToSkillset(
+        this.getGuaranteedSkills(),
+        Infinity
+      );
     }
 
     return this;
@@ -321,7 +328,7 @@ export class BuildGenerator {
     const skills_array = Array.from(this.skillset);
 
     const skillset = new Set(
-      skills_array.concat(this.getGuaranteedSkills()).map((skill) => ({
+      skills_array.map((skill) => ({
         ...skill,
         disabled: this.disabled_skills.has(skill),
       }))
