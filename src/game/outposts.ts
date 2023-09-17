@@ -393,6 +393,11 @@ const norn = {
       mission: false,
     },
     {
+      name: "Gunnar's Hold",
+      link: "/wiki/Gunnar's_Hold",
+      mission: false,
+    },
+    {
       name: "Olafstead",
       link: "/wiki/Olafstead",
       mission: false,
