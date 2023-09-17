@@ -51,6 +51,13 @@ store_campaign.subscribe((campaign) => {
         store_selected_outpost.set(outposts.nightfall[0].outposts[0]);
       }
       break;
+    case "GWEN":
+      store_outposts.set(outposts.gwen);
+
+      if (can_switch_selected_outpost) {
+        store_selected_outpost.set(outposts.gwen[0].outposts[0]);
+      }
+      break;
   }
 });
 
