@@ -90,6 +90,8 @@ function makeEncodeBody(params: buildTemplateParams) {
                   .map(getSkillAttribute)
                   .filter(Boolean)
                   .map((n) => attribute_name_to_id.get(n))
+                  // exclude any invalid/undefined attribute id
+                  .filter(Boolean)
               )
             )
           )
