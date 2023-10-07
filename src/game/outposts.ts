@@ -428,8 +428,23 @@ const asura = {
   name: "Asura",
   outposts: [
     {
-      name: "Gadd's Encampment",
-      link: "/wiki/Gadd%27s_Encampment",
+      name: "Umbral Grotto",
+      link: "/wiki/Umbral_Grotto",
+      mission: false,
+    },
+    {
+      name: "Vlox's Falls",
+      link: "/wiki/Vlox%27s_Falls",
+      mission: false,
+    },
+    {
+      name: "Rata Sum",
+      link: "/wiki/Rata_Sum",
+      mission: false,
+    },
+    {
+      name: "Vlox's Falls",
+      link: "/wiki/Vlox%27s_Falls",
       mission: false,
     },
     {
@@ -438,13 +453,8 @@ const asura = {
       mission: false,
     },
     {
-      name: "Umbral Grotto",
-      link: "/wiki/Umbral_Grotto",
-      mission: false,
-    },
-    {
-      name: "Vlox's Falls",
-      link: "/wiki/Vlox%27s_Falls",
+      name: "Gadd's Encampment",
+      link: "/wiki/Gadd%27s_Encampment",
       mission: false,
     },
   ],
