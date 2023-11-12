@@ -253,12 +253,14 @@ export class BuildGenerator {
       this.inherited_skills_count = 1;
     }
 
+    /*
     if (!is_hero_build && is_primary_profession) {
       this.addSubsetSkillsToSkillset(
         this.getGuaranteedSkills(),
         Infinity
       );
     }
+    */
 
     return this;
   }
